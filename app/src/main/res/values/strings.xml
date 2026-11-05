@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PayUp</string>
+    <string name="tagline">Poker buy-ins, settled.</string>
+
+    <!-- common -->
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="amount">Amount</string>
+    <string name="player_name">Player name</string>
+
+    <!-- home -->
+    <string name="new_game">New game</string>
+    <string name="continue_game">Continue game</string>
+    <string name="history">History</string>
+    <string name="friends">Friends</string>
+    <string name="discard_active_title">Game in progress</string>
+    <string name="discard_active_message">Starting a new game will discard the game that is still in progress.</string>
+    <string name="discard">Discard</string>
+
+    <!-- settings -->
+    <string name="settings">Settings</string>
+    <string name="color_theme">Color theme</string>
+    <string name="theme_original">Original</string>
+    <string name="theme_color_blind">Color blind</string>
+    <string name="theme_rich">Rich</string>
+    <string name="theme_white_black">White &amp; black</string>
+    <string name="theme_dark">Dark</string>
+    <string name="language">Language</string>
+    <string name="currency">Currency</string>
+    <string name="system_default">System default</string>
+
+    <!-- setup -->
+    <string name="setup_title">New game</string>
+    <string name="buy_in_amount">Buy-in amount</string>
+    <string name="players">Players</string>
+    <string name="add_player">Add player</string>
+    <string name="setup_hint">Every player starts with one buy-in.</string>
+    <string name="no_friends_yet">Type a name above to add your first player.</string>
+    <plurals name="start_game">
+        <item quantity="one">Start game · %d player</item>
+        <item quantity="other">Start game · %d players</item>
+    </plurals>
+    <string name="random_dealer">Random dealer</string>
+    <string name="random_dealer_hint">Deal cards before the game; the first ace is the dealer.</string>
+    <string name="dealing_title">Dealing…</string>
+    <string name="dealing_hint">First ace is the dealer</string>
+    <string name="dealer_is">%1$s is the dealer!</string>
+    <string name="to_the_table">To the table</string>
+    <string name="dealer_badge">D</string>
+    <string name="pick_two">Pick at least 2 players</string>
+
+    <!-- table -->
+    <string name="table_title">The table</string>
+    <string name="pot">Pot</string>
+    <plurals name="buy_ins_count">
+        <item quantity="one">%d buy-in</item>
+        <item quantity="other">%d buy-ins</item>
+    </plurals>
+    <string name="add_buy_in">+%1$s</string>
+    <string name="custom">Custom</string>
+    <string name="custom_buy_in_title">Custom buy-in for %1$s</string>
+    <string name="undo_last">Undo last</string>
+    <string name="undone">Removed %1$s from %2$s</string>
+    <string name="end_game">End game</string>
+    <string name="name_taken">%1$s is already at the table</string>
+    <string name="no_buy_ins">No buy-ins.</string>
+    <string name="edit_buy_in">Edit buy-in</string>
+    <string name="edit_buy_in_title">Edit buy-in for %1$s</string>
+    <string name="remove_buy_in">Remove buy-in</string>
+    <string name="remove_buy_in_title">Remove %1$s from %2$s?</string>
+    <string name="remove_buy_in_message">The pot goes down by this amount.</string>
+    <string name="remove_player">Remove player</string>
+    <string name="remove_player_min">A game needs at least 2 players.</string>
+    <string name="remove_player_title">Remove %1$s?</string>
+    <string name="remove_player_message">They leave the game and %1$s leaves the pot.</string>
+
+    <!-- cash-out -->
+    <string name="cashout_title">Cash out</string>
+    <string name="cashout_hint">How much did each player finish with?</string>
+    <string name="counted_of_pot">Counted %1$s of %2$s</string>
+    <string name="count_in_chips">Count in chips</string>
+    <string name="chip_value">Value of one chip</string>
+    <string name="chips">Chips</string>
+    <string name="worth">Worth</string>
+    <string name="round_to_whole">Round to whole units</string>
+    <string name="round_hint">Halves and smaller go to the biggest loser.</string>
+    <string name="exact_hint">Exact amounts, including fractions.</string>
+    <string name="put_in">Put in %1$s</string>
+    <string name="final_amount">Finished with</string>
+    <string name="auto_filled">Auto-filled</string>
+    <string name="missing">%1$s missing</string>
+    <string name="extra">%1$s extra</string>
+    <string name="mismatch_hint">Fix the amounts, or void the difference.</string>
+    <string name="void_amount">Void %1$s</string>
+    <string name="void_title">Void %1$s?</string>
+    <string name="void_missing_message">%1$s is missing from the count. The losers will pay %1$s less in total, split by how much each lost.</string>
+    <string name="void_extra_message">There is %1$s more than the pot. The winners will get %1$s less in total, split by how much each won.</string>
+    <string name="payup">PAYUP!</string>
+
+    <!-- result -->
+    <string name="results">Results</string>
+    <string name="winners">Winners</string>
+    <string name="losers">Losers</string>
+    <string name="broke_even">Broke even</string>
+    <string name="who_pays_whom">Who pays whom</string>
+    <string name="nobody_pays">Everyone broke even. Nobody pays!</string>
+    <string name="voided_missing">%1$s was missing and voided</string>
+    <string name="voided_extra">%1$s extra was voided</string>
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
+    <string name="pays">pays</string>
+    <string name="buy_ins_title">Buy-ins</string>
+    <string name="total_put_in">Total put in</string>
+    <string name="chips_at">%1$d chips × %2$s</string>
+    <string name="payments">Payments</string>
+    <string name="no_payments">No payments</string>
+    <string name="pays_to">Pays %1$s</string>
+    <string name="gets_from">Gets from %1$s</string>
+    <string name="share">Share</string>
+    <string name="share_text">Share as text</string>
+    <string name="share_image">Share as image</string>
+    <string name="share_chooser">Share results</string>
+    <string name="share_header">PayUp · %1$s · %2$s · %3$s</string>
+
+    <!-- history -->
+    <string name="history_empty">No games yet. Finished games show up here.</string>
+    <plurals name="players_count">
+        <item quantity="one">%d player</item>
+        <item quantity="other">%d players</item>
+    </plurals>
+    <string name="pot_value">Pot %1$s</string>
+    <string name="delete_game_title">Delete this game?</string>
+    <string name="delete_game_message">It will be removed from your history.</string>
+
+    <!-- friends -->
+    <string name="friends_empty">No friends saved yet. Tap + to add your regulars.</string>
+    <string name="delete_friend_title">Delete %1$s?</string>
+    <string name="delete_friend_message">Past games keep their results.</string>
+    <string name="friend_exists">%1$s already exists</string>
+
+    <!-- leaderboard -->
+    <string name="leaderboard">Leaderboard</string>
+    <string name="leaderboard_empty">No finished games in this period.</string>
+    <string name="period_month">This month</string>
+    <string name="period_year">This year</string>
+    <string name="period_all">All time</string>
+    <string name="metric_profit">Profit</string>
+    <string name="metric_win_rate">Win rate</string>
+    <string name="metric_avg">Avg per game</string>
+    <string name="metric_best">Biggest win</string>
+    <string name="stat_profit">Profit</string>
+    <string name="stat_games">Games</string>
+    <string name="stat_win_rate">Win %</string>
+    <string name="stat_avg">Avg</string>
+    <string name="stat_best">Best</string>
+    <string name="stat_worst">Worst</string>
+    <string name="stat_buy_ins">Buy-ins</string>
+    <string name="percent">%1$d%%</string>
+</resources>

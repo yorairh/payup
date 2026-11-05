@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PayUp</string>
+    <string name="tagline">Les mises de poker, réglées.</string>
+
+    <!-- common -->
+    <string name="back">Retour</string>
+    <string name="cancel">Annuler</string>
+    <string name="save">Enregistrer</string>
+    <string name="add">Ajouter</string>
+    <string name="delete">Supprimer</string>
+    <string name="rename">Renommer</string>
+    <string name="amount">Montant</string>
+    <string name="player_name">Nom du joueur</string>
+
+    <!-- home -->
+    <string name="new_game">Nouvelle partie</string>
+    <string name="continue_game">Reprendre la partie</string>
+    <string name="history">Historique</string>
+    <string name="friends">Amis</string>
+    <string name="discard_active_title">Partie en cours</string>
+    <string name="discard_active_message">Lancer une nouvelle partie supprimera celle qui est encore en cours.</string>
+    <string name="discard">Supprimer</string>
+
+    <!-- settings -->
+    <string name="settings">Paramètres</string>
+    <string name="color_theme">Thème de couleurs</string>
+    <string name="theme_original">Original</string>
+    <string name="theme_color_blind">Daltonisme</string>
+    <string name="theme_rich">Luxe</string>
+    <string name="theme_white_black">Noir et blanc</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="language">Langue</string>
+    <string name="currency">Devise</string>
+    <string name="system_default">Par défaut du système</string>
+
+    <!-- setup -->
+    <string name="setup_title">Nouvelle partie</string>
+    <string name="buy_in_amount">Montant du buy-in</string>
+    <string name="players">Joueurs</string>
+    <string name="add_player">Ajouter un joueur</string>
+    <string name="setup_hint">Chaque joueur commence avec un buy-in.</string>
+    <string name="no_friends_yet">Saisissez un nom ci-dessus pour ajouter le premier joueur.</string>
+    <plurals name="start_game">
+        <item quantity="one">Lancer la partie · %d joueur</item>
+        <item quantity="many">Lancer la partie · %d joueurs</item>
+        <item quantity="other">Lancer la partie · %d joueurs</item>
+    </plurals>
+    <string name="random_dealer">Donneur aléatoire</string>
+    <string name="random_dealer_hint">Les cartes sont distribuées avant la partie ; le premier as est le donneur.</string>
+    <string name="dealing_title">Distribution…</string>
+    <string name="dealing_hint">Le premier as est le donneur</string>
+    <string name="dealer_is">%1$s est le donneur !</string>
+    <string name="to_the_table">À la table</string>
+    <string name="dealer_badge">D</string>
+    <string name="pick_two">Choisissez au moins 2 joueurs</string>
+
+    <!-- table -->
+    <string name="table_title">La table</string>
+    <string name="pot">Pot</string>
+    <plurals name="buy_ins_count">
+        <item quantity="one">%d buy-in</item>
+        <item quantity="many">%d buy-ins</item>
+        <item quantity="other">%d buy-ins</item>
+    </plurals>
+    <string name="add_buy_in">+%1$s</string>
+    <string name="custom">Autre</string>
+    <string name="custom_buy_in_title">Buy-in personnalisé pour %1$s</string>
+    <string name="undo_last">Annuler le dernier</string>
+    <string name="undone">%1$s retiré à %2$s</string>
+    <string name="end_game">Terminer la partie</string>
+    <string name="name_taken">%1$s est déjà à la table</string>
+    <string name="no_buy_ins">Aucun buy-in.</string>
+    <string name="edit_buy_in">Modifier le buy-in</string>
+    <string name="edit_buy_in_title">Modifier le buy-in de %1$s</string>
+    <string name="remove_buy_in">Retirer le buy-in</string>
+    <string name="remove_buy_in_title">Retirer %1$s à %2$s ?</string>
+    <string name="remove_buy_in_message">Le pot diminue de ce montant.</string>
+    <string name="remove_player">Retirer le joueur</string>
+    <string name="remove_player_min">Une partie nécessite au moins 2 joueurs.</string>
+    <string name="remove_player_title">Retirer %1$s ?</string>
+    <string name="remove_player_message">Il quitte la partie et %1$s sortent du pot.</string>
+
+    <!-- cash-out -->
+    <string name="cashout_title">Décompte</string>
+    <string name="cashout_hint">Avec combien chaque joueur a-t-il fini ?</string>
+    <string name="counted_of_pot">%1$s comptés sur %2$s</string>
+    <string name="put_in">A mis %1$s</string>
+    <string name="final_amount">A fini avec</string>
+    <string name="auto_filled">Rempli automatiquement</string>
+    <string name="count_in_chips">Compter en jetons</string>
+    <string name="chip_value">Valeur d’un jeton</string>
+    <string name="chips">Jetons</string>
+    <string name="worth">Vaut</string>
+    <string name="round_to_whole">Arrondir aux unités entières</string>
+    <string name="round_hint">Les moitiés et fractions vont au plus gros perdant.</string>
+    <string name="exact_hint">Montants exacts, y compris les fractions.</string>
+    <string name="missing">%1$s manquants</string>
+    <string name="extra">%1$s en trop</string>
+    <string name="mismatch_hint">Corrigez les montants ou annulez la différence.</string>
+    <string name="void_amount">Annuler %1$s</string>
+    <string name="void_title">Annuler %1$s ?</string>
+    <string name="void_missing_message">%1$s manquent dans le décompte. Les perdants paieront %1$s de moins au total, selon ce que chacun a perdu.</string>
+    <string name="void_extra_message">Il y a %1$s de plus que dans le pot. Les gagnants recevront %1$s de moins au total, selon ce que chacun a gagné.</string>
+    <string name="payup">PAYEZ !</string>
+
+    <!-- result -->
+    <string name="results">Résultats</string>
+    <string name="winners">Gagnants</string>
+    <string name="losers">Perdants</string>
+    <string name="broke_even">À l’équilibre</string>
+    <string name="who_pays_whom">Qui paie qui</string>
+    <string name="nobody_pays">Tout le monde est à l’équilibre. Personne ne paie !</string>
+    <string name="voided_missing">%1$s manquaient et ont été annulés</string>
+    <string name="voided_extra">%1$s en trop ont été annulés</string>
+    <string name="skip">Passer</string>
+    <string name="done">Terminé</string>
+    <string name="pays">paie</string>
+    <string name="buy_ins_title">Buy-ins</string>
+    <string name="total_put_in">Total misé</string>
+    <string name="chips_at">%1$d jetons × %2$s</string>
+    <string name="payments">Paiements</string>
+    <string name="no_payments">Aucun paiement</string>
+    <string name="pays_to">Paie %1$s</string>
+    <string name="gets_from">Reçoit de %1$s</string>
+    <string name="share">Partager</string>
+    <string name="share_text">Partager en texte</string>
+    <string name="share_image">Partager en image</string>
+    <string name="share_chooser">Partager les résultats</string>
+    <string name="share_header">PayUp · %1$s · %2$s · %3$s</string>
+
+    <!-- history -->
+    <string name="history_empty">Aucune partie pour l’instant. Les parties terminées apparaîtront ici.</string>
+    <plurals name="players_count">
+        <item quantity="one">%d joueur</item>
+        <item quantity="many">%d joueurs</item>
+        <item quantity="other">%d joueurs</item>
+    </plurals>
+    <string name="pot_value">Pot %1$s</string>
+    <string name="delete_game_title">Supprimer cette partie ?</string>
+    <string name="delete_game_message">Elle sera retirée de votre historique.</string>
+
+    <!-- friends -->
+    <string name="friends_empty">Aucun ami enregistré. Touchez + pour ajouter vos habitués.</string>
+    <string name="delete_friend_title">Supprimer %1$s ?</string>
+    <string name="delete_friend_message">Les parties passées gardent leurs résultats.</string>
+    <string name="friend_exists">%1$s existe déjà</string>
+
+    <!-- leaderboard -->
+    <string name="leaderboard">Classement</string>
+    <string name="leaderboard_empty">Aucune partie terminée sur cette période.</string>
+    <string name="period_month">Ce mois-ci</string>
+    <string name="period_year">Cette année</string>
+    <string name="period_all">Depuis toujours</string>
+    <string name="metric_profit">Gain</string>
+    <string name="metric_win_rate">Taux de victoire</string>
+    <string name="metric_avg">Moyenne par partie</string>
+    <string name="metric_best">Plus grosse victoire</string>
+    <string name="stat_profit">Gain</string>
+    <string name="stat_games">Parties</string>
+    <string name="stat_win_rate">Victoires %</string>
+    <string name="stat_avg">Moy.</string>
+    <string name="stat_best">Meilleur</string>
+    <string name="stat_worst">Pire</string>
+    <string name="stat_buy_ins">Buy-ins</string>
+    <string name="percent">%1$d%%</string>
+</resources>
