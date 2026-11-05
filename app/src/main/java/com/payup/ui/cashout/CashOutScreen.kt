@@ -53,7 +53,6 @@ import com.payup.domain.CashOutRow
 import com.payup.domain.CashOutSession
 import com.payup.domain.CashOutState
 import com.payup.domain.CashOutStep
-import com.payup.domain.CashOutWrite
 import com.payup.domain.Currency
 import com.payup.domain.ChipSettings
 import com.payup.domain.Money
@@ -122,9 +121,8 @@ class CashOutViewModel(private val repository: GameRepository, handle: SavedStat
         if (finishing) return
         finishing = true
         viewModelScope.launch {
-            // Make sure every field (including empty = 0) is stored before settling.
-            session.value?.finalWrites()?.forEach { save(it) }
-            repository.finishGame(gameId, voidDifference)
+            // Every field (including empty = 0) is stored as part of settling.
+            repository.finishGame(gameId, session.value?.finalWrites().orEmpty(), voidDifference)
             onDone()
         }
     }
@@ -132,13 +130,7 @@ class CashOutViewModel(private val repository: GameRepository, handle: SavedStat
     private fun apply(event: (CashOutSession) -> CashOutStep) {
         val step = event(session.value ?: return)
         session.value = step.session
-        viewModelScope.launch { step.writes.forEach { save(it) } }
-    }
-
-    private suspend fun save(write: CashOutWrite) = when (write) {
-        is CashOutWrite.FinalAmount -> repository.setFinalAmount(write.playerId, write.amount)
-        is CashOutWrite.Chips -> repository.setChips(write.playerId, write.chips)
-        is CashOutWrite.ChipSettingsChanged -> repository.setChipSettings(gameId, write.chipValue, write.roundToWhole)
+        if (step.writes.isNotEmpty()) viewModelScope.launch { repository.saveCashOut(gameId, step.writes) }
     }
 }
 
