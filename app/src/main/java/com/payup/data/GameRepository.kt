@@ -1,6 +1,7 @@
 package com.payup.data
 
 import androidx.room.withTransaction
+import com.payup.domain.CashOutWrite
 import com.payup.domain.Currency
 import com.payup.domain.GameResult
 import com.payup.domain.Settlement
@@ -92,24 +93,29 @@ class GameRepository(private val db: AppDatabase) {
         (dao.playerName(last.playerId) ?: "") to last.amount
     }
 
-    suspend fun setFinalAmount(playerId: Long, amount: Int?) = dao.setFinalAmount(playerId, amount)
+    /** Stores one cash-out event's changes together, so a game never holds half of them. */
+    suspend fun saveCashOut(gameId: Long, writes: List<CashOutWrite>) = db.withTransaction {
+        writes.forEach { store(gameId, it) }
+    }
 
-    suspend fun setChips(playerId: Long, chips: Int?) = dao.setChips(playerId, chips)
+    private suspend fun store(gameId: Long, write: CashOutWrite) = when (write) {
+        is CashOutWrite.FinalAmount -> dao.setFinalAmount(write.playerId, write.amount)
+        is CashOutWrite.Chips -> dao.setChips(write.playerId, write.chips)
+        is CashOutWrite.ChipSettingsChanged -> dao.setChipSettings(gameId, write.chipValue, write.roundToWhole)
+    }
 
     suspend fun setDealer(gameId: Long, playerId: Long?) = dao.setDealer(gameId, playerId)
-
-    suspend fun setChipSettings(gameId: Long, chipValue: Int?, roundToWhole: Boolean) =
-        dao.setChipSettings(gameId, chipValue, roundToWhole)
 
     /** (chip value, round) from the last game counted in chips, or null if there was none. */
     suspend fun lastChipSettings(): Pair<Int, Boolean>? =
         dao.lastChipGame()?.let { game -> game.chipValue?.let { it to game.roundToWhole } }
 
     /**
-     * Settles the game: computes each player's net, voids any counting difference if [voidDifference]
-     * is set, stores the transfers and moves the game to history.
+     * Settles the game: stores [finalWrites], computes each player's net, voids any counting difference if
+     * [voidDifference] is set, stores the transfers and moves the game to history. All of it happens or none does.
      */
-    suspend fun finishGame(gameId: Long, voidDifference: Boolean) = db.withTransaction {
+    suspend fun finishGame(gameId: Long, finalWrites: List<CashOutWrite>, voidDifference: Boolean) = db.withTransaction {
+        finalWrites.forEach { store(gameId, it) }
         val details = dao.gameOnce(gameId) ?: return@withTransaction
         val players = details.players
         val rawNets = players.map { (it.player.finalAmount ?: 0) - it.totalIn }
