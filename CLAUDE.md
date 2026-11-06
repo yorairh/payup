@@ -60,5 +60,7 @@ There are 9 languages: `values` (English), `values-iw` (Hebrew), `-es`, `-ru`, `
 
 ## Working with this project
 
+- Web roadmap: `docs/WEB_ROADMAP.md` lists the tasks. Each milestone gets its own branch (for example `milestone-0-prepare`) with one commit per task, merged to `main` through a pull request. Roadmap tasks 1 and 2 went straight to `main`.
+
 - Ask about missing information rather than assuming, and agree on a plan before building features.
 - `FUTURE_PLANS.md` lists tester requests. When asked to "add to future features", only write it there; don't plan or build it.
