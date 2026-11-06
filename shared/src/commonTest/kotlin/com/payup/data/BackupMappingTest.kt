@@ -3,9 +3,9 @@ package com.payup.data
 import com.payup.domain.BackupBuyIn
 import com.payup.domain.BackupMerge
 import com.payup.domain.GameKey
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
+import kotlin.test.Test
 
 class BackupMappingTest {
     private fun game(dealerPlayerId: Long?) = GameWithDetails(
