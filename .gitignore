@@ -6,6 +6,7 @@ build/
 .DS_Store
 .kotlin/
 captures/
+.firebase/
 *.jks
 *.keystore
 keystore.properties

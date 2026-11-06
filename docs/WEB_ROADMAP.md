@@ -32,19 +32,19 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 ## Milestone 0 — prepare (before touching the code layout)
 - [x] **1.** **Save this roadmap** into the repo as `docs/WEB_ROADMAP.md`, with a checkbox per task.
 - [x] **2.** **Backup / restore of games (JSON export and import)** on Android, from Settings. It protects your real games during the database upgrade and later lets you move games to the web. Done: plain JSON file (format `payup-backup`, version 1), merge-only restore with a preview, one transaction. Still to confirm on a phone.
-- [ ] **3.** **Firebase project.** You create it in the Firebase console with your Google account (I can't create accounts). Then I connect Hosting with a preview channel for testing.
-- [ ] **4.** **Spike A: web on iPhone (throwaway branch).** A tiny Compose web page with:
+- [x] **3.** **Firebase project.** You create it in the Firebase console with your Google account (I can't create accounts). Then I connect Hosting with a preview channel for testing. Done: project `payup-ae6fc` (free Spark plan, Analytics off), Hosting site `payup-ae6fc.web.app` with nothing deployed live yet. `firebase.json` + `.firebaserc` + `web-placeholder/` are in the repo; a test page was deployed to a 7-day preview channel. Deploy a new preview with `firebase hosting:channel:deploy test --expires 7d`. Firestore and anonymous sign-in are set up later (task 22+). There is also an unused second project `payup-b239b` in the same account.
+- [x] **4.** **Spike A: web on iPhone (throwaway branch).** Done: deployed, and it works on a real iPhone (plus Android Chrome and desktop Brave). See `docs/SPIKE_A_RESULTS.md`. A tiny Compose web page with:
   - Hebrew, Arabic and English text fields and money input;
   - right-to-left layout;
   - Russian and Arabic plurals from Compose resources (check that `values-iw` works for browser Hebrew `he`);
   - bundled Hebrew, Arabic and Chinese fonts.
 
   Deploy it to the preview channel, and you try it on an iPhone (and Android Chrome). Also measure first-load size and time on mobile data.
-- [ ] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
-- [ ] **6.** **Go/no-go checkpoint (your call).** If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
+- [x] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** Done (branch `spike-b-room3`, never merged): builds, 106 tests pass, schema identity hash identical, and the phone test passed (Room 3 opened the Room 2.6.1 database with all games). See `docs/SPIKE_B_RESULTS.md`. On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
+- [x] **6.** **Go/no-go checkpoint (your call).** Decided GO on 2026-11-06: both spikes passed (Compose web works on a real iPhone; Room 3 opens the existing database). If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
 
 ## Milestone 1 — code split, no visible change (release 0.3.0)
-- [ ] **7.** Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check.
+- [ ] **7.** Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check. **Do this together with task 9:** Room 2.6.1 does not build on KSP 2 (Spike B), so the toolchain and Room 3 move in one step.
 - [ ] **8.** Create `:shared` (KMP, Android target only for now) and `:androidApp`. Move `domain/` and its tests to commonMain/commonTest. Replace `java.time` in `Leaderboard.kt` with kotlinx-datetime.
 - [ ] **9.** Move the database to Room 3 in `:shared`. DAOs become suspend/Flow, migrations are ported, and the database name, version and schemas stay the same.
 - [ ] **10.** Replace `ThemeStore` and `CurrencyStore` (SharedPreferences) with multiplatform settings, migrating the existing values.
