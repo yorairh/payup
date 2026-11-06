@@ -66,7 +66,6 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -86,31 +85,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class TableViewModel(private val repository: GameRepository, handle: SavedStateHandle) : ViewModel() {
-    private val gameId: Long = checkNotNull(handle["gameId"])
-    val game = repository.game(gameId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-
-    fun addBuyIn(playerId: Long, amount: Int) = viewModelScope.launch { repository.addBuyIn(playerId, amount) }
-
-    fun addPlayer(name: String) = viewModelScope.launch {
-        val defaultBuyIn = game.value?.game?.defaultBuyIn ?: return@launch
-        repository.addPlayer(gameId, name, defaultBuyIn)
-    }
-
-    fun editBuyIn(buyInId: Long, amount: Int) = viewModelScope.launch { repository.updateBuyIn(buyInId, amount) }
-
-    fun removeBuyIn(buyInId: Long) = viewModelScope.launch { repository.removeBuyIn(buyInId) }
-
-    fun removePlayer(playerId: Long) = viewModelScope.launch { repository.removePlayer(playerId) }
-
-    fun undo(onUndone: (name: String, amount: Int) -> Unit) = viewModelScope.launch {
-        repository.undoLastBuyIn(gameId)?.let { (name, amount) -> onUndone(name, amount) }
-    }
-}
-
 @Composable
-fun TableScreen(onBack: () -> Unit, onEndGame: () -> Unit) {
-    val vm = payUpViewModel { repo, handle -> TableViewModel(repo, handle) }
+fun TableScreen(gameId: Long, onBack: () -> Unit, onEndGame: () -> Unit) {
+    val vm = payUpViewModel { TableViewModel(it.repository, gameId) }
     val details by vm.game.collectAsStateWithLifecycle()
     val game = details ?: return
     ProvideCurrency(game.game.currency) { TableContent(vm, game, onBack, onEndGame) }

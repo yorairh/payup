@@ -64,7 +64,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -96,68 +95,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-/** Forwards the screen's events to [CashOutSession] and stores what it asks to be stored. */
-class CashOutViewModel(private val repository: GameRepository, handle: SavedStateHandle) : ViewModel() {
-    private val gameId: Long = checkNotNull(handle["gameId"])
-    private val session = MutableStateFlow<CashOutSession?>(null)
-    private var finishing = false
-
-    val state = session.map { it?.state }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-    private val _currency = MutableStateFlow<Currency?>(null)
-    val currency: StateFlow<Currency?> = _currency
-
-    init {
-        viewModelScope.launch {
-            repository.game(gameId).filterNotNull().collect { details ->
-                _currency.value = Currency.fromCode(details.game.currency)
-                val players = details.players.map {
-                    CashOutPlayer(it.player.id, it.player.name, it.totalIn, it.player.finalAmount, it.player.chips)
-                }
-                val existing = session.value
-                session.value = if (existing != null) {
-                    existing.withTable(players, details.pot)
-                } else {
-                    // First load: restore what was typed before the app was closed, and the chip settings (or the last game's).
-                    CashOutSession.start(
-                        players, details.pot, details.game.chipValue, details.game.roundToWhole, repository.lastChipSettings(),
-                    )
-                }
-            }
-        }
-    }
-
-    fun onInput(playerId: Long, text: String) = apply { it.typed(playerId, text) }
-
-    fun onChipsInput(playerId: Long, text: String) = apply { it.typedChips(playerId, text) }
-
-    fun setChipMode(enabled: Boolean) = apply { it.setChipMode(enabled) }
-
-    fun setChipValue(text: String) = apply { it.setChipValue(text) }
-
-    fun setRoundToWhole(round: Boolean) = apply { it.setRoundToWhole(round) }
-
-    fun onFieldDone(playerId: Long) = apply { it.fieldDone(playerId) }
-
-    fun payUp(voidDifference: Boolean, onDone: () -> Unit) {
-        if (finishing) return
-        finishing = true
-        viewModelScope.launch {
-            // Every field (including empty = 0) is stored as part of settling.
-            repository.finishGame(gameId, session.value?.finalWrites().orEmpty(), voidDifference)
-            onDone()
-        }
-    }
-
-    private fun apply(event: (CashOutSession) -> CashOutStep) {
-        val step = event(session.value ?: return)
-        session.value = step.session
-        if (step.writes.isNotEmpty()) viewModelScope.launch { repository.saveCashOut(gameId, step.writes) }
-    }
-}
-
 @Composable
-fun CashOutScreen(onBack: () -> Unit, onFinished: () -> Unit) {
-    val vm = payUpViewModel { repo, handle -> CashOutViewModel(repo, handle) }
+fun CashOutScreen(gameId: Long, onBack: () -> Unit, onFinished: () -> Unit) {
+    val vm = payUpViewModel { CashOutViewModel(it.repository, gameId) }
     val state by vm.state.collectAsStateWithLifecycle()
     val currency by vm.currency.collectAsStateWithLifecycle()
     val current = state ?: return

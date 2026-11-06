@@ -70,7 +70,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -90,12 +89,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlin.math.abs
 
-class ResultViewModel(repository: GameRepository, handle: SavedStateHandle) : ViewModel() {
-    private val gameId: Long = checkNotNull(handle["gameId"])
-    val celebrate: Boolean = handle["celebrate"] ?: false
-    val game = repository.game(gameId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-}
-
 private object Stage {
     const val START = 0
     const val TITLE = 1
@@ -105,8 +98,8 @@ private object Stage {
 }
 
 @Composable
-fun ResultScreen(onDone: () -> Unit) {
-    val vm = payUpViewModel { repo, handle -> ResultViewModel(repo, handle) }
+fun ResultScreen(gameId: Long, celebrate: Boolean, onDone: () -> Unit) {
+    val vm = payUpViewModel { ResultViewModel(it.repository, gameId, celebrate) }
     val details by vm.game.collectAsStateWithLifecycle()
     val game = details ?: return
     ProvideCurrency(game.game.currency) { ResultContent(vm, game, onDone) }

@@ -86,18 +86,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlin.math.roundToInt
 
-class LeaderboardViewModel(repository: GameRepository) : ViewModel() {
-    val metric = MutableStateFlow(LeaderboardMetric.PROFIT)
-    val period = MutableStateFlow(Period.ALL)
-
-    val stats = combine(repository.leaderboardResults, metric, period) { results, m, p ->
-        Leaderboard.build(results, m, p)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-}
-
 @Composable
 fun LeaderboardScreen(onBack: () -> Unit) {
-    val vm = payUpViewModel { repo, _ -> LeaderboardViewModel(repo) }
+    val vm = payUpViewModel { LeaderboardViewModel(it.repository) }
     val stats by vm.stats.collectAsStateWithLifecycle()
     val metric by vm.metric.collectAsStateWithLifecycle()
     val period by vm.period.collectAsStateWithLifecycle()

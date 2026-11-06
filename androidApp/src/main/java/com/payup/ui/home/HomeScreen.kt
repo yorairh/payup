@@ -55,11 +55,6 @@ import com.payup.ui.theme.Gold
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 
-class HomeViewModel(repository: GameRepository) : ViewModel() {
-    val activeGameId = repository.activeGameId
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-}
-
 @Composable
 fun HomeScreen(
     onNewGame: () -> Unit,
@@ -69,7 +64,7 @@ fun HomeScreen(
     onFriends: () -> Unit,
     onSettings: () -> Unit,
 ) {
-    val vm = payUpViewModel { repo, _ -> HomeViewModel(repo) }
+    val vm = payUpViewModel { HomeViewModel(it.repository) }
     val activeGameId by vm.activeGameId.collectAsStateWithLifecycle()
     var confirmDiscard by remember { mutableStateOf(false) }
 
