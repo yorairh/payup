@@ -41,7 +41,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 
   Deploy it to the preview channel, and you try it on an iPhone (and Android Chrome). Also measure first-load size and time on mobile data.
 - [x] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** Done (branch `spike-b-room3`, never merged): builds, 106 tests pass, schema identity hash identical, and the phone test passed (Room 3 opened the Room 2.6.1 database with all games). See `docs/SPIKE_B_RESULTS.md`. On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
-- [ ] **6.** **Go/no-go checkpoint (your call).** If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
+- [x] **6.** **Go/no-go checkpoint (your call).** Decided GO on 2026-11-06: both spikes passed (Compose web works on a real iPhone; Room 3 opens the existing database). If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
 
 ## Milestone 1 — code split, no visible change (release 0.3.0)
 - [ ] **7.** Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check. **Do this together with task 9:** Room 2.6.1 does not build on KSP 2 (Spike B), so the toolchain and Room 3 move in one step.
