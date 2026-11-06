@@ -33,7 +33,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 - [x] **1.** **Save this roadmap** into the repo as `docs/WEB_ROADMAP.md`, with a checkbox per task.
 - [x] **2.** **Backup / restore of games (JSON export and import)** on Android, from Settings. It protects your real games during the database upgrade and later lets you move games to the web. Done: plain JSON file (format `payup-backup`, version 1), merge-only restore with a preview, one transaction. Still to confirm on a phone.
 - [x] **3.** **Firebase project.** You create it in the Firebase console with your Google account (I can't create accounts). Then I connect Hosting with a preview channel for testing. Done: project `payup-ae6fc` (free Spark plan, Analytics off), Hosting site `payup-ae6fc.web.app` with nothing deployed live yet. `firebase.json` + `.firebaserc` + `web-placeholder/` are in the repo; a test page was deployed to a 7-day preview channel. Deploy a new preview with `firebase hosting:channel:deploy test --expires 7d`. Firestore and anonymous sign-in are set up later (task 22+). There is also an unused second project `payup-b239b` in the same account.
-- [ ] **4.** **Spike A: web on iPhone (throwaway branch).** A tiny Compose web page with:
+- [ ] **4.** **Spike A: web on iPhone (throwaway branch).** Built and deployed; waiting for the iPhone test, see `docs/SPIKE_A_RESULTS.md`. A tiny Compose web page with:
   - Hebrew, Arabic and English text fields and money input;
   - right-to-left layout;
   - Russian and Arabic plurals from Compose resources (check that `values-iw` works for browser Hebrew `he`);
