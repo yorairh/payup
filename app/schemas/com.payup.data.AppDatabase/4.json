@@ -37,8 +37,7 @@
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_friends_name` ON `${TABLE_NAME}` (`name`)"
           }
-        ],
-        "foreignKeys": []
+        ]
       },
       {
         "tableName": "games",
@@ -59,8 +58,7 @@
           {
             "fieldPath": "endedAt",
             "columnName": "endedAt",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "defaultBuyIn",
@@ -83,8 +81,7 @@
           {
             "fieldPath": "chipValue",
             "columnName": "chipValue",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "roundToWhole",
@@ -96,8 +93,7 @@
           {
             "fieldPath": "dealerPlayerId",
             "columnName": "dealerPlayerId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "currency",
@@ -112,9 +108,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "players",
@@ -141,20 +135,17 @@
           {
             "fieldPath": "finalAmount",
             "columnName": "finalAmount",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "net",
             "columnName": "net",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "chips",
             "columnName": "chips",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -315,7 +306,6 @@
         ]
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
       "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b7603b3068ff59a68591ae1cbf73a278')"

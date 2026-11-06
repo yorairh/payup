@@ -1,6 +1,6 @@
 package com.payup.data
 
-import androidx.room.withTransaction
+import androidx.room3.withWriteTransaction
 import com.payup.domain.Backup
 import com.payup.domain.BackupGame
 import com.payup.domain.BackupMerge
@@ -45,12 +45,12 @@ class GameRepository(private val db: AppDatabase) {
      * Renames a friend and carries their past games and transfers over to the new name.
      * Returns false (and changes nothing) if another friend already has that name.
      */
-    suspend fun renameFriend(id: Long, name: String): Boolean = db.withTransaction {
+    suspend fun renameFriend(id: Long, name: String): Boolean = db.withWriteTransaction {
         val trimmed = name.trim()
         val friend = dao.friendById(id)
-        if (trimmed.isEmpty() || friend == null) return@withTransaction false
-        if (friend.name == trimmed) return@withTransaction true
-        if (dao.friendByName(trimmed) != null) return@withTransaction false
+        if (trimmed.isEmpty() || friend == null) return@withWriteTransaction false
+        if (friend.name == trimmed) return@withWriteTransaction true
+        if (dao.friendByName(trimmed) != null) return@withWriteTransaction false
         dao.renameFriend(id, trimmed)
         dao.renamePlayers(friend.name, trimmed)
         dao.renameInTransfers(friend.name, trimmed)
@@ -60,7 +60,7 @@ class GameRepository(private val db: AppDatabase) {
     suspend fun deleteFriend(id: Long) = dao.deleteFriend(id)
 
     /** Starts a game where every player has already put in one buy-in. Any unfinished game is discarded. */
-    suspend fun startGame(defaultBuyIn: Int, names: List<String>, currency: Currency): Long = db.withTransaction {
+    suspend fun startGame(defaultBuyIn: Int, names: List<String>, currency: Currency): Long = db.withWriteTransaction {
         dao.activeGameIds().forEach { deleteGameRows(it) }
         val now = System.currentTimeMillis()
         val gameId = dao.insertGame(GameEntity(startedAt = now, defaultBuyIn = defaultBuyIn, currency = currency.name))
@@ -68,7 +68,7 @@ class GameRepository(private val db: AppDatabase) {
         gameId
     }
 
-    suspend fun addPlayer(gameId: Long, name: String, buyIn: Int) = db.withTransaction {
+    suspend fun addPlayer(gameId: Long, name: String, buyIn: Int) = db.withWriteTransaction {
         dao.insertFriend(FriendEntity(name = name.trim()))
         insertPlayerWithBuyIn(gameId, name.trim(), buyIn, System.currentTimeMillis())
     }
@@ -84,20 +84,20 @@ class GameRepository(private val db: AppDatabase) {
     }
 
     /** Removes a player from a running game together with all their buy-ins. */
-    suspend fun removePlayer(playerId: Long) = db.withTransaction {
+    suspend fun removePlayer(playerId: Long) = db.withWriteTransaction {
         dao.deleteBuyInsOfPlayer(playerId)
         dao.deletePlayer(playerId)
     }
 
     /** Removes the most recent buy-in of the game and returns who it belonged to and how much it was. */
-    suspend fun undoLastBuyIn(gameId: Long): Pair<String, Int>? = db.withTransaction {
-        val last = dao.lastBuyIn(gameId) ?: return@withTransaction null
+    suspend fun undoLastBuyIn(gameId: Long): Pair<String, Int>? = db.withWriteTransaction {
+        val last = dao.lastBuyIn(gameId) ?: return@withWriteTransaction null
         dao.deleteBuyIn(last.id)
         (dao.playerName(last.playerId) ?: "") to last.amount
     }
 
     /** Stores one cash-out event's changes together, so a game never holds half of them. */
-    suspend fun saveCashOut(gameId: Long, writes: List<CashOutWrite>) = db.withTransaction {
+    suspend fun saveCashOut(gameId: Long, writes: List<CashOutWrite>) = db.withWriteTransaction {
         writes.forEach { store(gameId, it) }
     }
 
@@ -117,9 +117,9 @@ class GameRepository(private val db: AppDatabase) {
      * Settles the game: stores [finalWrites], computes each player's net, voids any counting difference if
      * [voidDifference] is set, stores the transfers and moves the game to history. All of it happens or none does.
      */
-    suspend fun finishGame(gameId: Long, finalWrites: List<CashOutWrite>, voidDifference: Boolean) = db.withTransaction {
+    suspend fun finishGame(gameId: Long, finalWrites: List<CashOutWrite>, voidDifference: Boolean) = db.withWriteTransaction {
         finalWrites.forEach { store(gameId, it) }
-        val details = dao.gameOnce(gameId) ?: return@withTransaction
+        val details = dao.gameOnce(gameId) ?: return@withWriteTransaction
         val players = details.players
         val rawNets = players.map { (it.player.finalAmount ?: 0) - it.totalIn }
         val difference = rawNets.sum()
@@ -142,7 +142,7 @@ class GameRepository(private val db: AppDatabase) {
     }
 
     /** Every game and friend on this phone, ready to write to a backup file. */
-    suspend fun exportBackup(): Backup = db.withTransaction {
+    suspend fun exportBackup(): Backup = db.withWriteTransaction {
         Backup(
             exportedAt = System.currentTimeMillis(),
             friends = dao.friendsOnce().map { it.name },
@@ -151,10 +151,10 @@ class GameRepository(private val db: AppDatabase) {
     }
 
     /** What restoring [backup] would add, without changing anything. */
-    suspend fun previewImport(backup: Backup): BackupMerge.Plan = db.withTransaction { planImport(backup) }
+    suspend fun previewImport(backup: Backup): BackupMerge.Plan = db.withWriteTransaction { planImport(backup) }
 
     /** Adds the games from [backup] that are not here yet, all or nothing. Nothing on the phone is changed or deleted. */
-    suspend fun importBackup(backup: Backup): BackupMerge.Plan = db.withTransaction {
+    suspend fun importBackup(backup: Backup): BackupMerge.Plan = db.withWriteTransaction {
         val plan = planImport(backup)
         backup.friends.forEach { dao.insertFriend(FriendEntity(name = it.trim())) }
         plan.toAdd.forEach { insertBackupGame(it) }
@@ -177,7 +177,7 @@ class GameRepository(private val db: AppDatabase) {
         dao.insertTransfers(game.transfers.map { TransferEntity(gameId = gameId, fromName = it.from, toName = it.to, amount = it.amount) })
     }
 
-    suspend fun deleteGame(gameId: Long) = db.withTransaction { deleteGameRows(gameId) }
+    suspend fun deleteGame(gameId: Long) = db.withWriteTransaction { deleteGameRows(gameId) }
 
     private suspend fun deleteGameRows(gameId: Long) {
         dao.deleteBuyInsOfGame(gameId)
