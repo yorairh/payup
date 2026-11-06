@@ -1,6 +1,9 @@
 package com.payup.data
 
 import androidx.room.withTransaction
+import com.payup.domain.Backup
+import com.payup.domain.BackupGame
+import com.payup.domain.BackupMerge
 import com.payup.domain.CashOutWrite
 import com.payup.domain.Currency
 import com.payup.domain.GameResult
@@ -136,6 +139,42 @@ class GameRepository(private val db: AppDatabase) {
         dao.updateGame(
             details.game.copy(finished = true, endedAt = System.currentTimeMillis(), voidedDifference = difference)
         )
+    }
+
+    /** Every game and friend on this phone, ready to write to a backup file. */
+    suspend fun exportBackup(): Backup = db.withTransaction {
+        Backup(
+            exportedAt = System.currentTimeMillis(),
+            friends = dao.friendsOnce().map { it.name },
+            games = dao.allGames().map { it.toBackup() },
+        )
+    }
+
+    /** What restoring [backup] would add, without changing anything. */
+    suspend fun previewImport(backup: Backup): BackupMerge.Plan = db.withTransaction { planImport(backup) }
+
+    /** Adds the games from [backup] that are not here yet, all or nothing. Nothing on the phone is changed or deleted. */
+    suspend fun importBackup(backup: Backup): BackupMerge.Plan = db.withTransaction {
+        val plan = planImport(backup)
+        backup.friends.forEach { dao.insertFriend(FriendEntity(name = it.trim())) }
+        plan.toAdd.forEach { insertBackupGame(it) }
+        plan
+    }
+
+    private suspend fun planImport(backup: Backup): BackupMerge.Plan =
+        BackupMerge.plan(backup, dao.allGames().map { it.key() }, hasUnfinishedHere = dao.activeGameIds().isNotEmpty())
+
+    private suspend fun insertBackupGame(game: BackupGame) {
+        val gameId = dao.insertGame(game.toEntity())
+        val playerIds = game.players.map { p ->
+            val playerId = dao.insertPlayer(
+                PlayerEntity(gameId = gameId, name = p.name, finalAmount = p.finalAmount, net = p.net, chips = p.chips)
+            )
+            p.buyIns.forEach { dao.insertBuyIn(BuyInEntity(playerId = playerId, amount = it.amount, createdAt = it.createdAt)) }
+            playerId
+        }
+        game.dealerIndex?.let { dao.setDealer(gameId, playerIds[it]) }
+        dao.insertTransfers(game.transfers.map { TransferEntity(gameId = gameId, fromName = it.from, toName = it.to, amount = it.amount) })
     }
 
     suspend fun deleteGame(gameId: Long) = db.withTransaction { deleteGameRows(gameId) }

@@ -164,4 +164,26 @@
     <string name="stat_worst">Pire</string>
     <string name="stat_buy_ins">Buy-ins</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">Sauvegarde</string>
+    <string name="backup_summary">Enregistrez ou restaurez vos parties</string>
+    <string name="backup_save">Partager la sauvegarde</string>
+    <string name="backup_save_hint">Envoyez le fichier à vous-même par message ou e-mail, ou enregistrez-le dans Drive</string>
+    <string name="backup_download">Enregistrer la sauvegarde sur le téléphone</string>
+    <string name="backup_download_hint">Enregistre le fichier dans un dossier de votre choix, comme Téléchargements</string>
+    <string name="backup_saved">Sauvegarde enregistrée</string>
+    <string name="backup_save_failed">Impossible d\'enregistrer la sauvegarde.</string>
+    <string name="backup_restore">Restaurer les parties</string>
+    <string name="backup_restore_hint">Ajoute des parties depuis un fichier de sauvegarde. Rien n\'est supprimé sur ce téléphone</string>
+    <string name="backup_preview_body">Parties dans le fichier : %1$d\nNouvelles parties à ajouter : %2$d</string>
+    <string name="backup_all_present">Tout ce qui figure dans ce fichier est déjà sur ce téléphone.</string>
+    <string name="backup_skipped_unfinished">Parties non terminées ignorées : %1$d (une seule partie peut être en cours à la fois)</string>
+    <string name="backup_add_games">Ajouter les parties</string>
+    <string name="backup_done_body">Parties ajoutées : %1$d</string>
+    <string name="backup_failed_title">Échec de la restauration</string>
+    <string name="backup_error_not_backup">Ce fichier n\'est pas une sauvegarde PayUp.</string>
+    <string name="backup_error_too_new">Cette sauvegarde provient d\'une version plus récente de PayUp. Mettez l\'application à jour et réessayez.</string>
+    <string name="backup_error_invalid">Le fichier de sauvegarde est endommagé ou contient des données non valides.</string>
+    <string name="backup_error_read">Impossible de lire le fichier.</string>
+    <string name="close">Fermer</string>
 </resources>

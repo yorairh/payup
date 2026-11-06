@@ -164,4 +164,26 @@
     <string name="stat_worst">Pior</string>
     <string name="stat_buy_ins">Entradas</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">Backup</string>
+    <string name="backup_summary">Salve ou restaure seus jogos</string>
+    <string name="backup_save">Compartilhar backup</string>
+    <string name="backup_save_hint">Envie o arquivo de backup para si mesmo por mensagem ou e-mail, ou salve no Drive</string>
+    <string name="backup_download">Salvar backup no telefone</string>
+    <string name="backup_download_hint">Salva o arquivo em uma pasta que você escolher, como Downloads</string>
+    <string name="backup_saved">Backup salvo</string>
+    <string name="backup_save_failed">Não foi possível salvar o backup.</string>
+    <string name="backup_restore">Restaurar jogos</string>
+    <string name="backup_restore_hint">Adiciona jogos de um arquivo de backup. Nada neste telefone é apagado</string>
+    <string name="backup_preview_body">Jogos no arquivo: %1$d\nJogos novos a adicionar: %2$d</string>
+    <string name="backup_all_present">Tudo neste arquivo já está neste telefone.</string>
+    <string name="backup_skipped_unfinished">Jogos não terminados ignorados: %1$d (só pode haver um jogo em andamento por vez)</string>
+    <string name="backup_add_games">Adicionar jogos</string>
+    <string name="backup_done_body">Jogos adicionados: %1$d</string>
+    <string name="backup_failed_title">Falha ao restaurar</string>
+    <string name="backup_error_not_backup">Este arquivo não é um backup do PayUp.</string>
+    <string name="backup_error_too_new">Este backup foi criado por uma versão mais recente do PayUp. Atualize o app e tente novamente.</string>
+    <string name="backup_error_invalid">O arquivo de backup está corrompido ou contém dados inválidos.</string>
+    <string name="backup_error_read">Não foi possível ler o arquivo.</string>
+    <string name="close">Fechar</string>
 </resources>

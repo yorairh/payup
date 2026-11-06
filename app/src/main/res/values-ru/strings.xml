@@ -167,4 +167,26 @@
     <string name="stat_worst">Худшая</string>
     <string name="stat_buy_ins">Бай-ины</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">Резервная копия</string>
+    <string name="backup_summary">Сохранение и восстановление игр</string>
+    <string name="backup_save">Поделиться копией</string>
+    <string name="backup_save_hint">Отправьте файл копии себе в сообщении или на почту либо сохраните на Диск</string>
+    <string name="backup_download">Сохранить копию на телефон</string>
+    <string name="backup_download_hint">Сохраняет файл в выбранную папку, например «Загрузки»</string>
+    <string name="backup_saved">Копия сохранена</string>
+    <string name="backup_save_failed">Не удалось сохранить копию.</string>
+    <string name="backup_restore">Восстановить игры</string>
+    <string name="backup_restore_hint">Добавляет игры из файла резервной копии. Ничего на этом телефоне не удаляется</string>
+    <string name="backup_preview_body">Игр в файле: %1$d\nНовых игр для добавления: %2$d</string>
+    <string name="backup_all_present">Всё из этого файла уже есть на этом телефоне.</string>
+    <string name="backup_skipped_unfinished">Пропущено незавершённых игр: %1$d (одновременно может идти только одна игра)</string>
+    <string name="backup_add_games">Добавить игры</string>
+    <string name="backup_done_body">Добавлено игр: %1$d</string>
+    <string name="backup_failed_title">Не удалось восстановить</string>
+    <string name="backup_error_not_backup">Этот файл не является резервной копией PayUp.</string>
+    <string name="backup_error_too_new">Копия создана в более новой версии PayUp. Обновите приложение и попробуйте снова.</string>
+    <string name="backup_error_invalid">Файл резервной копии повреждён или содержит недопустимые данные.</string>
+    <string name="backup_error_read">Не удалось прочитать файл.</string>
+    <string name="close">Закрыть</string>
 </resources>
