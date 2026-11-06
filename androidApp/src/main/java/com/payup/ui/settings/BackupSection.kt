@@ -65,83 +65,36 @@ import java.io.File
 import java.io.IOException
 import java.time.LocalDate
 
-enum class BackupFailure { NOT_BACKUP, TOO_NEW, INVALID, UNREADABLE }
-
-sealed interface BackupUi {
-    data object Idle : BackupUi
-    data class Preview(val backup: Backup, val plan: BackupMerge.Plan) : BackupUi
-    data class Done(val plan: BackupMerge.Plan) : BackupUi
-    data class Failed(val reason: BackupFailure) : BackupUi
-}
-
-class BackupViewModel(private val repository: GameRepository) : ViewModel() {
-    private val _ui = MutableStateFlow<BackupUi>(BackupUi.Idle)
-    val ui: StateFlow<BackupUi> = _ui
-
-    /** The backup file's text for every game on this phone. */
-    suspend fun backupText(): String {
-        val backup = repository.exportBackup()
-        return withContext(Dispatchers.Default) { BackupFile.write(backup) }
-    }
-
-    /** Reads a chosen file and shows what restoring it would add; nothing is changed yet. */
-    fun readFile(resolver: ContentResolver, uri: Uri) {
-        viewModelScope.launch {
-            val text = withContext(Dispatchers.IO) { readLimited(resolver, uri) }
-            if (text == null) {
-                _ui.value = BackupUi.Failed(BackupFailure.UNREADABLE)
-                return@launch
+private fun readLimited(resolver: ContentResolver, uri: Uri): String? {
+    try {
+        resolver.openInputStream(uri)?.use { input ->
+            val out = ByteArrayOutputStream()
+            val buffer = ByteArray(64 * 1024)
+            while (true) {
+                val n = input.read(buffer)
+                if (n < 0) break
+                if (out.size() + n > BackupFile.MAX_BYTES) return null
+                out.write(buffer, 0, n)
             }
-            _ui.value = when (val result = withContext(Dispatchers.Default) { BackupFile.read(text) }) {
-                is BackupReadResult.Ok -> BackupUi.Preview(result.backup, repository.previewImport(result.backup))
-                BackupReadResult.NotBackup -> BackupUi.Failed(BackupFailure.NOT_BACKUP)
-                is BackupReadResult.TooNew -> BackupUi.Failed(BackupFailure.TOO_NEW)
-                BackupReadResult.Invalid -> BackupUi.Failed(BackupFailure.INVALID)
-            }
+            return String(out.toByteArray(), Charsets.UTF_8)
         }
-    }
-
-    fun restore() {
-        val preview = _ui.value as? BackupUi.Preview ?: return
-        _ui.value = BackupUi.Idle
-        viewModelScope.launch { _ui.value = BackupUi.Done(repository.importBackup(preview.backup)) }
-    }
-
-    fun dismiss() {
-        _ui.value = BackupUi.Idle
-    }
-
-    private fun readLimited(resolver: ContentResolver, uri: Uri): String? {
-        try {
-            resolver.openInputStream(uri)?.use { input ->
-                val out = ByteArrayOutputStream()
-                val buffer = ByteArray(64 * 1024)
-                while (true) {
-                    val n = input.read(buffer)
-                    if (n < 0) break
-                    if (out.size() + n > BackupFile.MAX_BYTES) return null
-                    out.write(buffer, 0, n)
-                }
-                return String(out.toByteArray(), Charsets.UTF_8)
-            }
-        } catch (e: IOException) {
-            return null
-        } catch (e: SecurityException) {
-            return null
-        }
+    } catch (e: IOException) {
+        return null
+    } catch (e: SecurityException) {
         return null
     }
+    return null
 }
 
 /** The two backup buttons for Settings, and the dialogs that go with restoring. */
 @Composable
 fun BackupActions() {
     val context = LocalContext.current
-    val vm = payUpViewModel { repo, _ -> BackupViewModel(repo) }
+    val vm = payUpViewModel { BackupViewModel(it.repository) }
     val ui by vm.ui.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) vm.readFile(context.contentResolver, uri)
+        if (uri != null) vm.readFile { withContext(Dispatchers.IO) { readLimited(context.contentResolver, uri) } }
     }
 
     // The user picks the folder (Downloads, Drive...) in the system file dialog, so no storage permission is needed.

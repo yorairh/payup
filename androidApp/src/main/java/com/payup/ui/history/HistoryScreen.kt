@@ -59,14 +59,9 @@ import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.Date
 
-class HistoryViewModel(private val repository: GameRepository) : ViewModel() {
-    val games = repository.history.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-    fun delete(gameId: Long) = viewModelScope.launch { repository.deleteGame(gameId) }
-}
-
 @Composable
 fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
-    val vm = payUpViewModel { repo, _ -> HistoryViewModel(repo) }
+    val vm = payUpViewModel { HistoryViewModel(it.repository) }
     val games by vm.games.collectAsStateWithLifecycle()
     var toDelete by remember { mutableStateOf<Long?>(null) }
 

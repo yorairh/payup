@@ -50,7 +50,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -67,38 +66,9 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-data class DealState(
-    val names: List<String>,
-    /** The cards in dealing order; empty when the dealer was already picked earlier (app restarted). */
-    val dealt: List<DealtCard>,
-    val dealerIndex: Int,
-)
-
-class DealViewModel(private val repository: GameRepository, handle: SavedStateHandle) : ViewModel() {
-    private val gameId: Long = checkNotNull(handle["gameId"])
-    val state = MutableStateFlow<DealState?>(null)
-
-    init {
-        viewModelScope.launch {
-            val details = repository.game(gameId).filterNotNull().first()
-            val players = details.players
-            val names = players.map { it.player.name }
-            val existing = players.indexOfFirst { it.player.id == details.game.dealerPlayerId }
-            if (existing >= 0) {
-                state.value = DealState(names, emptyList(), existing)
-            } else {
-                val dealt = Dealer.deal(players.size)
-                val dealerIndex = dealt.last().playerIndex
-                repository.setDealer(gameId, players[dealerIndex].player.id)
-                state.value = DealState(names, dealt, dealerIndex)
-            }
-        }
-    }
-}
-
 @Composable
-fun DealScreen(onContinue: () -> Unit) {
-    val vm = payUpViewModel { repo, handle -> DealViewModel(repo, handle) }
+fun DealScreen(gameId: Long, onContinue: () -> Unit) {
+    val vm = payUpViewModel { DealViewModel(it.repository, gameId) }
     val state by vm.state.collectAsStateWithLifecycle()
     val deal = state ?: return
 

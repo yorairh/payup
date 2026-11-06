@@ -59,7 +59,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.FilterChip
 import androidx.compose.ui.platform.LocalContext
-import com.payup.PayUpApp
 import com.payup.data.CurrencyStore
 import com.payup.data.GameRepository
 import com.payup.domain.Currency
@@ -73,47 +72,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SetupViewModel(private val repository: GameRepository, private val currencyStore: CurrencyStore) : ViewModel() {
-    /** Starts as the currency of the last game played. */
-    val currency = MutableStateFlow(currencyStore.lastUsed)
-    val friends = repository.friends.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
-    val buyIn = MutableStateFlow("50")
-    /** Selected player names, in the order they were picked (that's the seating order at the table). */
-    val selected = MutableStateFlow<List<String>>(emptyList())
-    /** Off by default: when on, a card deal picks the dealer before the table opens. */
-    val randomDealer = MutableStateFlow(false)
-    private var starting = false
-
-    init {
-        viewModelScope.launch { repository.lastDefaultBuyIn()?.let { buyIn.value = Money.format(it) } }
-    }
-
-    fun setBuyIn(text: String) { buyIn.value = Money.sanitizeInput(text) }
-
-    fun toggle(name: String) = selected.update { if (name in it) it - name else it + name }
-
-    fun addNew(name: String) {
-        val trimmed = name.trim()
-        if (trimmed.isEmpty()) return
-        viewModelScope.launch { repository.addFriend(trimmed) }
-        selected.update { if (trimmed in it) it else it + trimmed }
-    }
-
-    fun start(onStarted: (gameId: Long, deal: Boolean) -> Unit) {
-        val amount = Money.parseAgorot(buyIn.value)?.takeIf { it > 0 } ?: return
-        if (starting || selected.value.size < 2) return
-        starting = true
-        val deal = randomDealer.value
-        val chosen = currency.value
-        currencyStore.lastUsed = chosen
-        viewModelScope.launch { onStarted(repository.startGame(amount, selected.value, chosen), deal) }
-    }
-}
-
 @Composable
 fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> Unit) {
-    val currencyStore = (LocalContext.current.applicationContext as PayUpApp).currencyStore
-    val vm = payUpViewModel { repo, _ -> SetupViewModel(repo, currencyStore) }
+    val vm = payUpViewModel { SetupViewModel(it.repository, it.currencyStore) }
     val currency by vm.currency.collectAsStateWithLifecycle()
     val friends by vm.friends.collectAsStateWithLifecycle()
     val buyIn by vm.buyIn.collectAsStateWithLifecycle()

@@ -59,18 +59,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class FriendsViewModel(private val repository: GameRepository) : ViewModel() {
-    val friends = repository.friends.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-    fun add(name: String) = viewModelScope.launch { repository.addFriend(name) }
-    fun rename(id: Long, name: String, onTaken: () -> Unit) = viewModelScope.launch {
-        if (!repository.renameFriend(id, name)) onTaken()
-    }
-    fun delete(id: Long) = viewModelScope.launch { repository.deleteFriend(id) }
-}
-
 @Composable
 fun FriendsScreen(onBack: () -> Unit) {
-    val vm = payUpViewModel { repo, _ -> FriendsViewModel(repo) }
+    val vm = payUpViewModel { FriendsViewModel(it.repository) }
     val friends by vm.friends.collectAsStateWithLifecycle()
     var adding by remember { mutableStateOf(false) }
     var renaming by remember { mutableStateOf<FriendEntity?>(null) }

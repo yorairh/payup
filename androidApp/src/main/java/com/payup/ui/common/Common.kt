@@ -37,26 +37,22 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
+import com.payup.AppDependencies
+import com.payup.LocalAppDependencies
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.payup.PayUpApp
-import com.payup.data.GameRepository
 import com.payup.domain.Money
 import com.payup.domain.MoneyFormat
 import kotlinx.coroutines.delay
 
-/** Creates a screen ViewModel wired to the app's repository and the screen's navigation arguments. */
+/** Creates a screen ViewModel with the app's dependencies; it lives as long as the screen is on the back stack. */
 @Composable
-inline fun <reified VM : ViewModel> payUpViewModel(
-    crossinline create: (GameRepository, SavedStateHandle) -> VM,
-): VM = viewModel(factory = viewModelFactory {
-    initializer { create((this[APPLICATION_KEY] as PayUpApp).repository, createSavedStateHandle()) }
-})
+inline fun <reified VM : ViewModel> payUpViewModel(crossinline create: (AppDependencies) -> VM): VM {
+    val dependencies = LocalAppDependencies.current
+    return viewModel(factory = viewModelFactory { initializer { create(dependencies) } })
+}
 
 /**
  * The currency of the game (or screen) being shown; set once per screen with [ProvideCurrency] so every amount
@@ -92,7 +88,7 @@ fun android.content.Context.isRtl(): Boolean =
 /** Leaderboard amounts are summed across games without converting, so they show the latest game's currency. */
 @Composable
 fun WithLatestCurrency(content: @Composable () -> Unit) {
-    val repository = (LocalContext.current.applicationContext as PayUpApp).repository
+    val repository = LocalAppDependencies.current.repository
     val currency by repository.latestCurrency.collectAsStateWithLifecycle(null)
     currency?.let { ProvideCurrency(it, content) }
 }

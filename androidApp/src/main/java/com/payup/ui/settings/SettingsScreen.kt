@@ -52,7 +52,7 @@ import androidx.compose.ui.platform.LocalContext
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.payup.PayUpApp
+import com.payup.LocalAppDependencies
 import com.payup.ui.common.PayUpTopBar
 import com.payup.domain.AppLanguage
 import com.payup.domain.AppTheme
@@ -69,7 +69,7 @@ private fun AppTheme.label(): StringResource = when (this) {
 
 @Composable
 fun SettingsScreen(onBack: () -> Unit) {
-    val store = (LocalContext.current.applicationContext as PayUpApp).themeStore
+    val store = LocalAppDependencies.current.themeStore
     val selected by store.theme.collectAsStateWithLifecycle()
 
     Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.settings), onBack) }) { padding ->
@@ -86,7 +86,7 @@ fun SettingsScreen(onBack: () -> Unit) {
                     ThemeCard(theme, selected = theme == selected, onClick = { store.set(theme) })
                 }
             }
-            val language = (LocalContext.current.applicationContext as PayUpApp).appLanguage
+            val language = LocalAppDependencies.current.appLanguage
             var tag by remember { mutableStateOf(language.current()) }
             val systemDefault = stringResource(Res.string.system_default)
             CollapsibleSection(
