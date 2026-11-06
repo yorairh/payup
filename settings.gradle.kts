@@ -14,4 +14,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "PayUp"
-include(":app")
+include(":shared")
+include(":androidApp")
