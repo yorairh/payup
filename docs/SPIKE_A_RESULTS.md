@@ -36,6 +36,8 @@ Roadmap task 4. A throwaway test page to answer one question before the big refa
 4. **Strings appear a moment after the first screen** (they load asynchronously), so labels flash empty for a moment. Fixable by waiting for resources before showing the screen.
 5. **Compose draws everything on a canvas.** The page has no real text in the page, so browser translation, find-in-page and some screen readers don't see it. Acceptable for a game app, but worth knowing.
 
+6. **An amount placed after an English label in a right-to-left layout splits apart.** On the test page, `Current layout (RTL): 18.5 ₪` shows the `₪` at the far left and the `18.5` right after the label. This is not a Compose bug: plain HTML in the same browser draws it identically, because it is the standard Unicode bidirectional algorithm. With a Hebrew label (`קופה: 18.5 ₪`) it looks right, and wrapping the amount in an isolate keeps it together. In the app this only matters where a Latin-script name or label and an amount sit in one string inside a right-to-left screen, for example the shared text lines (`name ₪50`). Screens that draw the name and the amount as separate texts are not affected. Worth a check when the screens move over (task 13).
+
 ## Download size (measured from Firebase Hosting, Brotli)
 
 | File | Size |
