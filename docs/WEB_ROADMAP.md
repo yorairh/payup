@@ -40,11 +40,11 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
   - bundled Hebrew, Arabic and Chinese fonts.
 
   Deploy it to the preview channel, and you try it on an iPhone (and Android Chrome). Also measure first-load size and time on mobile data.
-- [ ] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
+- [ ] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** Built (branch `spike-b-room3`); builds, 106 tests pass, schema identity hash identical. Waiting for the phone test, see `docs/SPIKE_B_RESULTS.md`. On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
 - [ ] **6.** **Go/no-go checkpoint (your call).** If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
 
 ## Milestone 1 — code split, no visible change (release 0.3.0)
-- [ ] **7.** Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check.
+- [ ] **7.** Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check. **Do this together with task 9:** Room 2.6.1 does not build on KSP 2 (Spike B), so the toolchain and Room 3 move in one step.
 - [ ] **8.** Create `:shared` (KMP, Android target only for now) and `:androidApp`. Move `domain/` and its tests to commonMain/commonTest. Replace `java.time` in `Leaderboard.kt` with kotlinx-datetime.
 - [ ] **9.** Move the database to Room 3 in `:shared`. DAOs become suspend/Flow, migrations are ported, and the database name, version and schemas stay the same.
 - [ ] **10.** Replace `ThemeStore` and `CurrencyStore` (SharedPreferences) with multiplatform settings, migrating the existing values.
