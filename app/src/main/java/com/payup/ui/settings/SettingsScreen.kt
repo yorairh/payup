@@ -93,6 +93,9 @@ fun SettingsScreen(onBack: () -> Unit) {
                     }
                 }
             }
+            CollapsibleSection(stringResource(R.string.backup_title), stringResource(R.string.backup_summary)) {
+                BackupActions()
+            }
             Spacer(Modifier.padding(8.dp))
         }
     }

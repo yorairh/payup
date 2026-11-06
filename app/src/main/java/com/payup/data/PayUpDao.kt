@@ -16,6 +16,9 @@ interface PayUpDao {
     @Query("SELECT * FROM friends ORDER BY name COLLATE NOCASE")
     fun friends(): Flow<List<FriendEntity>>
 
+    @Query("SELECT * FROM friends ORDER BY name COLLATE NOCASE")
+    suspend fun friendsOnce(): List<FriendEntity>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFriend(friend: FriendEntity): Long
 
@@ -61,6 +64,11 @@ interface PayUpDao {
     /** Just the currency column, so the leaderboard never loads every game's players and buy-ins. */
     @Query("SELECT currency FROM games WHERE finished = 1 ORDER BY COALESCE(endedAt, startedAt) DESC LIMIT 1")
     fun latestFinishedCurrencyCode(): Flow<String?>
+
+    /** Every game with its players, for backups. */
+    @Transaction
+    @Query("SELECT * FROM games ORDER BY startedAt, id")
+    suspend fun allGames(): List<GameWithDetails>
 
     @Query("SELECT id FROM games WHERE finished = 0 ORDER BY startedAt DESC LIMIT 1")
     fun activeGameId(): Flow<Long?>

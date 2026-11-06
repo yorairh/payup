@@ -161,4 +161,26 @@
     <string name="stat_worst">Schlechtester</string>
     <string name="stat_buy_ins">Buy-ins</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">Sicherung</string>
+    <string name="backup_summary">Spiele sichern oder wiederherstellen</string>
+    <string name="backup_save">Sicherung teilen</string>
+    <string name="backup_save_hint">Die Sicherungsdatei per Nachricht oder E-Mail an sich selbst schicken oder in Drive speichern</string>
+    <string name="backup_download">Sicherung auf dem Handy speichern</string>
+    <string name="backup_download_hint">Speichert die Datei in einem frei wählbaren Ordner, z. B. Downloads</string>
+    <string name="backup_saved">Sicherung gespeichert</string>
+    <string name="backup_save_failed">Die Sicherung konnte nicht gespeichert werden.</string>
+    <string name="backup_restore">Spiele wiederherstellen</string>
+    <string name="backup_restore_hint">Fügt Spiele aus einer Sicherungsdatei hinzu. Auf diesem Handy wird nichts gelöscht</string>
+    <string name="backup_preview_body">Spiele in der Datei: %1$d\nNeue Spiele zum Hinzufügen: %2$d</string>
+    <string name="backup_all_present">Alles in dieser Datei ist bereits auf diesem Handy.</string>
+    <string name="backup_skipped_unfinished">Übersprungene unbeendete Spiele: %1$d (es kann immer nur ein Spiel laufen)</string>
+    <string name="backup_add_games">Spiele hinzufügen</string>
+    <string name="backup_done_body">Hinzugefügte Spiele: %1$d</string>
+    <string name="backup_failed_title">Wiederherstellung fehlgeschlagen</string>
+    <string name="backup_error_not_backup">Diese Datei ist keine PayUp-Sicherung.</string>
+    <string name="backup_error_too_new">Diese Sicherung stammt von einer neueren PayUp-Version. Bitte die App aktualisieren und es erneut versuchen.</string>
+    <string name="backup_error_invalid">Die Sicherungsdatei ist beschädigt oder enthält ungültige Daten.</string>
+    <string name="backup_error_read">Die Datei konnte nicht gelesen werden.</string>
+    <string name="close">Schließen</string>
 </resources>

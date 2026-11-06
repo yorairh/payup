@@ -167,4 +167,26 @@
     <string name="stat_worst">הכי גרוע</string>
     <string name="stat_buy_ins">כניסות</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">גיבוי</string>
+    <string name="backup_summary">שמירה או שחזור של המשחקים</string>
+    <string name="backup_save">שיתוף גיבוי</string>
+    <string name="backup_save_hint">שליחת קובץ הגיבוי לעצמך בהודעה או במייל, או שמירה ב-Drive</string>
+    <string name="backup_download">שמירת גיבוי בטלפון</string>
+    <string name="backup_download_hint">שומר את הקובץ בתיקייה שתבחרו, למשל הורדות</string>
+    <string name="backup_saved">הגיבוי נשמר</string>
+    <string name="backup_save_failed">לא ניתן היה לשמור את הגיבוי.</string>
+    <string name="backup_restore">שחזור משחקים</string>
+    <string name="backup_restore_hint">מוסיף משחקים מקובץ גיבוי. שום דבר בטלפון הזה לא נמחק</string>
+    <string name="backup_preview_body">משחקים בקובץ: %1$d\nמשחקים חדשים להוספה: %2$d</string>
+    <string name="backup_all_present">כל מה שבקובץ כבר נמצא בטלפון הזה.</string>
+    <string name="backup_skipped_unfinished">משחקים לא גמורים שדולגו: %1$d (אפשר להחזיק רק משחק אחד פתוח בכל פעם)</string>
+    <string name="backup_add_games">הוספת משחקים</string>
+    <string name="backup_done_body">משחקים שנוספו: %1$d</string>
+    <string name="backup_failed_title">השחזור נכשל</string>
+    <string name="backup_error_not_backup">הקובץ הזה אינו גיבוי של PayUp.</string>
+    <string name="backup_error_too_new">הגיבוי נוצר בגרסה חדשה יותר של PayUp. עדכנו את האפליקציה ונסו שוב.</string>
+    <string name="backup_error_invalid">קובץ הגיבוי פגום או מכיל נתונים לא תקינים.</string>
+    <string name="backup_error_read">לא ניתן היה לקרוא את הקובץ.</string>
+    <string name="close">סגירה</string>
 </resources>

@@ -161,4 +161,26 @@
     <string name="stat_worst">Worst</string>
     <string name="stat_buy_ins">Buy-ins</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">Backup</string>
+    <string name="backup_summary">Save or restore your games</string>
+    <string name="backup_save">Share backup</string>
+    <string name="backup_save_hint">Send the backup file to yourself in a message or e-mail, or save it to Drive</string>
+    <string name="backup_download">Save backup to phone</string>
+    <string name="backup_download_hint">Saves the file in a folder you choose, such as Downloads</string>
+    <string name="backup_saved">Backup saved</string>
+    <string name="backup_save_failed">The backup could not be saved.</string>
+    <string name="backup_restore">Restore games</string>
+    <string name="backup_restore_hint">Adds games from a backup file. Nothing on this phone is deleted</string>
+    <string name="backup_preview_body">Games in the file: %1$d\nNew games to add: %2$d</string>
+    <string name="backup_all_present">Everything in this file is already on this phone.</string>
+    <string name="backup_skipped_unfinished">Unfinished games skipped: %1$d (only one game can be running at a time)</string>
+    <string name="backup_add_games">Add games</string>
+    <string name="backup_done_body">Games added: %1$d</string>
+    <string name="backup_failed_title">Restore failed</string>
+    <string name="backup_error_not_backup">This file is not a PayUp backup.</string>
+    <string name="backup_error_too_new">This backup was made by a newer version of PayUp. Update the app and try again.</string>
+    <string name="backup_error_invalid">This backup file is damaged or contains invalid data.</string>
+    <string name="backup_error_read">The file could not be read.</string>
+    <string name="close">Close</string>
 </resources>

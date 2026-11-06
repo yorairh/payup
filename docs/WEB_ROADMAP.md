@@ -31,7 +31,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 
 ## Milestone 0 — prepare (before touching the code layout)
 - [x] **1.** **Save this roadmap** into the repo as `docs/WEB_ROADMAP.md`, with a checkbox per task.
-- [ ] **2.** **Backup / restore of games (JSON export and import)** on Android, from Settings. It protects your real games during the database upgrade and later lets you move games to the web. *(Proposed: confirm it in its own questions.)*
+- [x] **2.** **Backup / restore of games (JSON export and import)** on Android, from Settings. It protects your real games during the database upgrade and later lets you move games to the web. Done: plain JSON file (format `payup-backup`, version 1), merge-only restore with a preview, one transaction. Still to confirm on a phone.
 - [ ] **3.** **Firebase project.** You create it in the Firebase console with your Google account (I can't create accounts). Then I connect Hosting with a preview channel for testing.
 - [ ] **4.** **Spike A: web on iPhone (throwaway branch).** A tiny Compose web page with:
   - Hebrew, Arabic and English text fields and money input;

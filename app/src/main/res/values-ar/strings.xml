@@ -173,4 +173,26 @@
     <string name="stat_worst">الأسوأ</string>
     <string name="stat_buy_ins">الدخولات</string>
     <string name="percent">%1$d%%</string>
+    <!-- backup -->
+    <string name="backup_title">النسخ الاحتياطي</string>
+    <string name="backup_summary">احفظ ألعابك أو استعدها</string>
+    <string name="backup_save">مشاركة النسخة الاحتياطية</string>
+    <string name="backup_save_hint">أرسل ملف النسخة لنفسك في رسالة أو بريد إلكتروني، أو احفظه في Drive</string>
+    <string name="backup_download">حفظ النسخة على الهاتف</string>
+    <string name="backup_download_hint">يحفظ الملف في مجلد تختاره، مثل التنزيلات</string>
+    <string name="backup_saved">تم حفظ النسخة الاحتياطية</string>
+    <string name="backup_save_failed">تعذّر حفظ النسخة الاحتياطية.</string>
+    <string name="backup_restore">استعادة الألعاب</string>
+    <string name="backup_restore_hint">يضيف ألعابًا من ملف نسخة احتياطية. لا يُحذف أي شيء من هذا الهاتف</string>
+    <string name="backup_preview_body">الألعاب في الملف: %1$d\nالألعاب الجديدة للإضافة: %2$d</string>
+    <string name="backup_all_present">كل ما في هذا الملف موجود بالفعل على هذا الهاتف.</string>
+    <string name="backup_skipped_unfinished">الألعاب غير المكتملة التي تم تخطيها: %1$d (لا يمكن أن تكون هناك إلا لعبة واحدة جارية في كل مرة)</string>
+    <string name="backup_add_games">إضافة الألعاب</string>
+    <string name="backup_done_body">الألعاب المضافة: %1$d</string>
+    <string name="backup_failed_title">فشلت الاستعادة</string>
+    <string name="backup_error_not_backup">هذا الملف ليس نسخة احتياطية من PayUp.</string>
+    <string name="backup_error_too_new">أُنشئت هذه النسخة بإصدار أحدث من PayUp. حدّث التطبيق وحاول مرة أخرى.</string>
+    <string name="backup_error_invalid">ملف النسخة الاحتياطية تالف أو يحتوي على بيانات غير صالحة.</string>
+    <string name="backup_error_read">تعذّرت قراءة الملف.</string>
+    <string name="close">إغلاق</string>
 </resources>
