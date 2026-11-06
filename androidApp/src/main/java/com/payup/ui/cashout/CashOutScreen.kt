@@ -1,5 +1,27 @@
 package com.payup.ui.cashout
 
+import com.payup.resources.Res
+import com.payup.resources.auto_filled
+import com.payup.resources.cashout_hint
+import com.payup.resources.cashout_title
+import com.payup.resources.chip_value
+import com.payup.resources.chips
+import com.payup.resources.count_in_chips
+import com.payup.resources.counted_of_pot
+import com.payup.resources.exact_hint
+import com.payup.resources.extra
+import com.payup.resources.final_amount
+import com.payup.resources.mismatch_hint
+import com.payup.resources.missing
+import com.payup.resources.payup
+import com.payup.resources.put_in
+import com.payup.resources.round_hint
+import com.payup.resources.round_to_whole
+import com.payup.resources.void_amount
+import com.payup.resources.void_extra_message
+import com.payup.resources.void_missing_message
+import com.payup.resources.void_title
+import com.payup.resources.worth
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,7 +68,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.GameRepository
 import com.payup.domain.CashOutPlayer
 import com.payup.domain.CashOutRow
@@ -150,7 +171,7 @@ private fun CashOutContent(vm: CashOutViewModel, current: CashOutState, onBack: 
     val chipMode = current.chips.enabled
 
     Scaffold(
-        topBar = { PayUpTopBar(stringResource(R.string.cashout_title), onBack) },
+        topBar = { PayUpTopBar(stringResource(Res.string.cashout_title), onBack) },
         bottomBar = {
             Column(
                 Modifier
@@ -166,7 +187,7 @@ private fun CashOutContent(vm: CashOutViewModel, current: CashOutState, onBack: 
                     enabled = difference == 0 && current.pot > 0,
                     modifier = Modifier.fillMaxWidth().height(64.dp),
                 ) {
-                    Text(stringResource(R.string.payup), fontSize = 24.sp, fontWeight = FontWeight.Black)
+                    Text(stringResource(Res.string.payup), fontSize = 24.sp, fontWeight = FontWeight.Black)
                 }
             }
         },
@@ -201,13 +222,13 @@ private fun CashOutContent(vm: CashOutViewModel, current: CashOutState, onBack: 
     if (confirmVoid) {
         val amount = money(abs(difference))
         ConfirmDialog(
-            title = stringResource(R.string.void_title, amount),
+            title = stringResource(Res.string.void_title, amount),
             message = if (difference < 0) {
-                stringResource(R.string.void_missing_message, amount)
+                stringResource(Res.string.void_missing_message, amount)
             } else {
-                stringResource(R.string.void_extra_message, amount)
+                stringResource(Res.string.void_extra_message, amount)
             },
-            confirmLabel = stringResource(R.string.payup),
+            confirmLabel = stringResource(Res.string.payup),
             onConfirm = {
                 confirmVoid = false
                 vm.payUp(voidDifference = true, onDone = onFinished)
@@ -228,10 +249,10 @@ private fun CountHeader(state: CashOutState) {
         label = "countColor",
     )
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(stringResource(R.string.cashout_hint), style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(Res.string.cashout_hint), style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(8.dp))
         Text(
-            stringResource(R.string.counted_of_pot, money(state.counted), money(state.pot)),
+            stringResource(Res.string.counted_of_pot, money(state.counted), money(state.pot)),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = color,
@@ -258,7 +279,7 @@ private fun ChipCard(
                 Text("🪙", fontSize = 22.sp)
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    stringResource(R.string.count_in_chips),
+                    stringResource(Res.string.count_in_chips),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
@@ -270,7 +291,7 @@ private fun ChipCard(
                     OutlinedTextField(
                         value = settings.valueText,
                         onValueChange = onValue,
-                        label = { Text(stringResource(R.string.chip_value)) },
+                        label = { Text(stringResource(Res.string.chip_value)) },
                         prefix = { Text(LocalCurrency.current.symbol + " ") },
                         singleLine = true,
                         isError = settings.value == null,
@@ -279,9 +300,9 @@ private fun ChipCard(
                     )
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp)) {
                         Column(Modifier.weight(1f)) {
-                            Text(stringResource(R.string.round_to_whole), style = MaterialTheme.typography.bodyLarge)
+                            Text(stringResource(Res.string.round_to_whole), style = MaterialTheme.typography.bodyLarge)
                             Text(
-                                stringResource(if (settings.roundToWhole) R.string.round_hint else R.string.exact_hint),
+                                stringResource(if (settings.roundToWhole) Res.string.round_hint else Res.string.exact_hint),
                                 style = MaterialTheme.typography.bodySmall,
                             )
                         }
@@ -307,12 +328,12 @@ private fun PlayerFinalRow(
         OutlinedTextField(
             value = row.input,
             onValueChange = onInput,
-            label = { Text(stringResource(R.string.final_amount)) },
+            label = { Text(stringResource(Res.string.final_amount)) },
             placeholder = { Text("0") },
             prefix = { Text(LocalCurrency.current.symbol + " ") },
             singleLine = true,
             supportingText = if (row.autoFilled) {
-                { Text(stringResource(R.string.auto_filled), color = Gold) }
+                { Text(stringResource(Res.string.auto_filled), color = Gold) }
             } else null,
             keyboardOptions = MoneyKeyboard.copy(imeAction = if (isLast) ImeAction.Done else ImeAction.Next),
             // Done only hides the keyboard by default; clearing focus makes it count as "finished with this field".
@@ -336,12 +357,12 @@ private fun PlayerFinalRow(
                     OutlinedTextField(
                         value = row.chipsInput,
                         onValueChange = onChipsInput,
-                        label = { Text(stringResource(R.string.chips)) },
+                        label = { Text(stringResource(Res.string.chips)) },
                         placeholder = { Text("0") },
                         suffix = { Text("🪙") },
                         singleLine = true,
                         supportingText = if (row.autoFilled) {
-                            { Text(stringResource(R.string.auto_filled), color = Gold) }
+                            { Text(stringResource(Res.string.auto_filled), color = Gold) }
                         } else null,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -352,7 +373,7 @@ private fun PlayerFinalRow(
                     )
                     // The money is only shown: it always follows from the chips.
                     Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                        Text(stringResource(R.string.worth), style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(Res.string.worth), style = MaterialTheme.typography.bodySmall)
                         Text(
                             money(row.amount ?: 0),
                             color = Gold,
@@ -380,7 +401,7 @@ private fun Modifier.doneOnBlur(onDone: () -> Unit): Modifier {
 private fun PlayerName(row: CashOutRow, modifier: Modifier) {
     Column(modifier) {
         Text(row.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-        Text(stringResource(R.string.put_in, money(row.totalIn)), style = MaterialTheme.typography.bodyMedium)
+        Text(stringResource(Res.string.put_in, money(row.totalIn)), style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -394,14 +415,14 @@ private fun MismatchBanner(difference: Int, onVoid: () -> Unit) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(12.dp)) {
             Column(Modifier.weight(1f)) {
                 Text(
-                    if (difference < 0) stringResource(R.string.missing, amount) else stringResource(R.string.extra, amount),
+                    if (difference < 0) stringResource(Res.string.missing, amount) else stringResource(Res.string.extra, amount),
                     color = LoseRed,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleMedium,
                 )
-                Text(stringResource(R.string.mismatch_hint), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(Res.string.mismatch_hint), style = MaterialTheme.typography.bodySmall)
             }
-            OutlinedButton(onClick = onVoid) { Text(stringResource(R.string.void_amount, amount)) }
+            OutlinedButton(onClick = onVoid) { Text(stringResource(Res.string.void_amount, amount)) }
         }
     }
 }

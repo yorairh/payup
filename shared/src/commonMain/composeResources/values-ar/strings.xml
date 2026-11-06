@@ -42,12 +42,12 @@
     <string name="setup_hint">يبدأ كل لاعب بدخول واحد.</string>
     <string name="no_friends_yet">اكتب اسمًا في الأعلى لإضافة أول لاعب.</string>
     <plurals name="start_game">
-        <item quantity="zero">بدء اللعبة · %d لاعب</item>
+        <item quantity="zero">بدء اللعبة · %1$d لاعب</item>
         <item quantity="one">بدء اللعبة · لاعب واحد</item>
         <item quantity="two">بدء اللعبة · لاعبان</item>
-        <item quantity="few">بدء اللعبة · %d لاعبين</item>
-        <item quantity="many">بدء اللعبة · %d لاعبًا</item>
-        <item quantity="other">بدء اللعبة · %d لاعب</item>
+        <item quantity="few">بدء اللعبة · %1$d لاعبين</item>
+        <item quantity="many">بدء اللعبة · %1$d لاعبًا</item>
+        <item quantity="other">بدء اللعبة · %1$d لاعب</item>
     </plurals>
     <string name="random_dealer">موزّع عشوائي</string>
     <string name="random_dealer_hint">يتم توزيع الورق قبل اللعبة؛ أول آص هو الموزّع.</string>
@@ -62,12 +62,12 @@
     <string name="table_title">الطاولة</string>
     <string name="pot">الوعاء</string>
     <plurals name="buy_ins_count">
-        <item quantity="zero">%d دخول</item>
+        <item quantity="zero">%1$d دخول</item>
         <item quantity="one">دخول واحد</item>
         <item quantity="two">دخولان</item>
-        <item quantity="few">%d دخولات</item>
-        <item quantity="many">%d دخولًا</item>
-        <item quantity="other">%d دخول</item>
+        <item quantity="few">%1$d دخولات</item>
+        <item quantity="many">%1$d دخولًا</item>
+        <item quantity="other">%1$d دخول</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">مخصص</string>
@@ -138,12 +138,12 @@
     <!-- history -->
     <string name="history_empty">لا توجد ألعاب بعد. ستظهر الألعاب المنتهية هنا.</string>
     <plurals name="players_count">
-        <item quantity="zero">%d لاعب</item>
+        <item quantity="zero">%1$d لاعب</item>
         <item quantity="one">لاعب واحد</item>
         <item quantity="two">لاعبان</item>
-        <item quantity="few">%d لاعبين</item>
-        <item quantity="many">%d لاعبًا</item>
-        <item quantity="other">%d لاعب</item>
+        <item quantity="few">%1$d لاعبين</item>
+        <item quantity="many">%1$d لاعبًا</item>
+        <item quantity="other">%1$d لاعب</item>
     </plurals>
     <string name="pot_value">الوعاء %1$s</string>
     <string name="delete_game_title">حذف هذه اللعبة؟</string>
@@ -172,7 +172,7 @@
     <string name="stat_best">الأفضل</string>
     <string name="stat_worst">الأسوأ</string>
     <string name="stat_buy_ins">الدخولات</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">النسخ الاحتياطي</string>
     <string name="backup_summary">احفظ ألعابك أو استعدها</string>

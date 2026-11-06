@@ -42,10 +42,10 @@
     <string name="setup_hint">Каждый игрок начинает с одним бай-ином.</string>
     <string name="no_friends_yet">Введите имя выше, чтобы добавить первого игрока.</string>
     <plurals name="start_game">
-        <item quantity="one">Начать игру · %d игрок</item>
-        <item quantity="few">Начать игру · %d игрока</item>
-        <item quantity="many">Начать игру · %d игроков</item>
-        <item quantity="other">Начать игру · %d игрока</item>
+        <item quantity="one">Начать игру · %1$d игрок</item>
+        <item quantity="few">Начать игру · %1$d игрока</item>
+        <item quantity="many">Начать игру · %1$d игроков</item>
+        <item quantity="other">Начать игру · %1$d игрока</item>
     </plurals>
     <string name="random_dealer">Случайный сдающий</string>
     <string name="random_dealer_hint">Перед игрой раздаются карты; первый туз — сдающий.</string>
@@ -60,10 +60,10 @@
     <string name="table_title">Стол</string>
     <string name="pot">Банк</string>
     <plurals name="buy_ins_count">
-        <item quantity="one">%d бай-ин</item>
-        <item quantity="few">%d бай-ина</item>
-        <item quantity="many">%d бай-инов</item>
-        <item quantity="other">%d бай-ина</item>
+        <item quantity="one">%1$d бай-ин</item>
+        <item quantity="few">%1$d бай-ина</item>
+        <item quantity="many">%1$d бай-инов</item>
+        <item quantity="other">%1$d бай-ина</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">Своя сумма</string>
@@ -134,10 +134,10 @@
     <!-- history -->
     <string name="history_empty">Игр пока нет. Здесь появятся завершённые игры.</string>
     <plurals name="players_count">
-        <item quantity="one">%d игрок</item>
-        <item quantity="few">%d игрока</item>
-        <item quantity="many">%d игроков</item>
-        <item quantity="other">%d игрока</item>
+        <item quantity="one">%1$d игрок</item>
+        <item quantity="few">%1$d игрока</item>
+        <item quantity="many">%1$d игроков</item>
+        <item quantity="other">%1$d игрока</item>
     </plurals>
     <string name="pot_value">Банк %1$s</string>
     <string name="delete_game_title">Удалить эту игру?</string>
@@ -166,7 +166,7 @@
     <string name="stat_best">Лучшая</string>
     <string name="stat_worst">Худшая</string>
     <string name="stat_buy_ins">Бай-ины</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">Резервная копия</string>
     <string name="backup_summary">Сохранение и восстановление игр</string>

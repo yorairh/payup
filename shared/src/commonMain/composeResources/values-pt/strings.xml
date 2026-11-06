@@ -42,9 +42,9 @@
     <string name="setup_hint">Cada jogador começa com uma entrada.</string>
     <string name="no_friends_yet">Digite um nome acima para adicionar o primeiro jogador.</string>
     <plurals name="start_game">
-        <item quantity="one">Iniciar jogo · %d jogador</item>
-        <item quantity="many">Iniciar jogo · %d jogadores</item>
-        <item quantity="other">Iniciar jogo · %d jogadores</item>
+        <item quantity="one">Iniciar jogo · %1$d jogador</item>
+        <item quantity="many">Iniciar jogo · %1$d jogadores</item>
+        <item quantity="other">Iniciar jogo · %1$d jogadores</item>
     </plurals>
     <string name="random_dealer">Carteador aleatório</string>
     <string name="random_dealer_hint">As cartas são distribuídas antes do jogo; o primeiro ás é o carteador.</string>
@@ -59,9 +59,9 @@
     <string name="table_title">A mesa</string>
     <string name="pot">Pote</string>
     <plurals name="buy_ins_count">
-        <item quantity="one">%d entrada</item>
-        <item quantity="many">%d entradas</item>
-        <item quantity="other">%d entradas</item>
+        <item quantity="one">%1$d entrada</item>
+        <item quantity="many">%1$d entradas</item>
+        <item quantity="other">%1$d entradas</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">Outro valor</string>
@@ -132,9 +132,9 @@
     <!-- history -->
     <string name="history_empty">Nenhum jogo ainda. Os jogos concluídos aparecem aqui.</string>
     <plurals name="players_count">
-        <item quantity="one">%d jogador</item>
-        <item quantity="many">%d jogadores</item>
-        <item quantity="other">%d jogadores</item>
+        <item quantity="one">%1$d jogador</item>
+        <item quantity="many">%1$d jogadores</item>
+        <item quantity="other">%1$d jogadores</item>
     </plurals>
     <string name="pot_value">Pote %1$s</string>
     <string name="delete_game_title">Excluir este jogo?</string>
@@ -163,7 +163,7 @@
     <string name="stat_best">Melhor</string>
     <string name="stat_worst">Pior</string>
     <string name="stat_buy_ins">Entradas</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">Backup</string>
     <string name="backup_summary">Salve ou restaure seus jogos</string>

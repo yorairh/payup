@@ -1,5 +1,22 @@
 package com.payup.ui.result
 
+import com.payup.resources.Res
+import com.payup.resources.broke_even
+import com.payup.resources.done
+import com.payup.resources.losers
+import com.payup.resources.nobody_pays
+import com.payup.resources.pays
+import com.payup.resources.payup
+import com.payup.resources.pot_value
+import com.payup.resources.results
+import com.payup.resources.share
+import com.payup.resources.share_image
+import com.payup.resources.share_text
+import com.payup.resources.skip
+import com.payup.resources.voided_extra
+import com.payup.resources.voided_missing
+import com.payup.resources.who_pays_whom
+import com.payup.resources.winners
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -48,7 +65,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,7 +74,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.GameWithDetails
 import com.payup.data.GameRepository
 import com.payup.data.TransferEntity
@@ -69,6 +85,7 @@ import com.payup.ui.common.payUpViewModel
 import com.payup.ui.theme.Gold
 import com.payup.ui.theme.LocalPayUp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlin.math.abs
@@ -98,6 +115,7 @@ fun ResultScreen(onDone: () -> Unit) {
 @Composable
 private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: () -> Unit) {
     val context = LocalContext.current
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
     val palette = LocalPayUp.current
     var detailsOf by remember { mutableStateOf<String?>(null) }
     val results = remember(game) { game.results() }
@@ -131,16 +149,16 @@ private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: ()
                         actions = {
                             var menuOpen by remember { mutableStateOf(false) }
                             IconButton(onClick = { menuOpen = true }) {
-                                Icon(Icons.Default.Share, contentDescription = stringResource(R.string.share))
+                                Icon(Icons.Default.Share, contentDescription = stringResource(Res.string.share))
                             }
                             DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.share_text)) },
-                                    onClick = { menuOpen = false; shareText(context, game) },
+                                    text = { Text(stringResource(Res.string.share_text)) },
+                                    onClick = { menuOpen = false; scope.launch { shareText(context, game) } },
                                 )
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.share_image)) },
-                                    onClick = { menuOpen = false; shareImage(context, game, palette) },
+                                    text = { Text(stringResource(Res.string.share_image)) },
+                                    onClick = { menuOpen = false; scope.launch { shareImage(context, game, palette) } },
                                 )
                             }
                         },
@@ -155,7 +173,7 @@ private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: ()
                         .padding(16.dp)
                         .fillMaxWidth()
                         .height(56.dp),
-                ) { Text(stringResource(R.string.done), fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                ) { Text(stringResource(Res.string.done), fontSize = 18.sp, fontWeight = FontWeight.Bold) }
             },
         ) { padding ->
             LazyColumn(
@@ -165,19 +183,19 @@ private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: ()
             ) {
                 item { Title(game, celebrate = vm.celebrate, show = stage >= Stage.TITLE) }
 
-                if (winners.isNotEmpty()) item { SectionLabel(stringResource(R.string.winners)) }
+                if (winners.isNotEmpty()) item { SectionLabel(stringResource(Res.string.winners)) }
                 winners.forEachIndexed { i, r ->
                     item(key = "w-${r.name}") {
                         ResultRow(r.name, r.net, r.outcome, stage >= Stage.WINNERS, animate, i, onClick = { detailsOf = r.name })
                     }
                 }
-                if (losers.isNotEmpty()) item { SectionLabel(stringResource(R.string.losers)) }
+                if (losers.isNotEmpty()) item { SectionLabel(stringResource(Res.string.losers)) }
                 losers.forEachIndexed { i, r ->
                     item(key = "l-${r.name}") {
                         ResultRow(r.name, r.net, r.outcome, stage >= Stage.LOSERS, animate, i, onClick = { detailsOf = r.name })
                     }
                 }
-                if (even.isNotEmpty()) item { SectionLabel(stringResource(R.string.broke_even)) }
+                if (even.isNotEmpty()) item { SectionLabel(stringResource(Res.string.broke_even)) }
                 even.forEachIndexed { i, r ->
                     item(key = "e-${r.name}") {
                         ResultRow(r.name, r.net, r.outcome, stage >= Stage.LOSERS, animate, i, onClick = { detailsOf = r.name })
@@ -206,7 +224,7 @@ private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: ()
                     .align(Alignment.TopEnd)
                     .statusBarsPadding()
                     .padding(8.dp),
-            ) { Text(stringResource(R.string.skip)) }
+            ) { Text(stringResource(Res.string.skip)) }
         }
     }
 }
@@ -225,14 +243,14 @@ private fun Title(game: GameWithDetails, celebrate: Boolean, show: Boolean) {
             .padding(top = 24.dp, bottom = 8.dp),
     ) {
         Text(
-            if (celebrate) stringResource(R.string.payup) else stringResource(R.string.results),
+            if (celebrate) stringResource(Res.string.payup) else stringResource(Res.string.results),
             fontSize = 52.sp,
             fontWeight = FontWeight.Black,
             color = Gold,
             modifier = Modifier.graphicsLayer { scaleX = scale.value; scaleY = scale.value },
         )
         Text(
-            "$date · " + stringResource(R.string.pot_value, money(game.pot)),
+            "$date · " + stringResource(Res.string.pot_value, money(game.pot)),
             style = MaterialTheme.typography.bodyLarge,
         )
     }
@@ -251,16 +269,16 @@ private fun SectionLabel(text: String) {
 @Composable
 private fun TransfersSection(transfers: List<TransferEntity>, voidedDifference: Int) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(top = 12.dp)) {
-        Text(stringResource(R.string.who_pays_whom), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(stringResource(Res.string.who_pays_whom), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         if (transfers.isEmpty()) {
-            Text(stringResource(R.string.nobody_pays), style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
+            Text(stringResource(Res.string.nobody_pays), style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
         }
         transfers.forEach { TransferRow(it) }
         if (voidedDifference != 0) {
             val amount = money(abs(voidedDifference))
             Text(
-                if (voidedDifference < 0) stringResource(R.string.voided_missing, amount)
-                else stringResource(R.string.voided_extra, amount),
+                if (voidedDifference < 0) stringResource(Res.string.voided_missing, amount)
+                else stringResource(Res.string.voided_extra, amount),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -276,7 +294,7 @@ private fun TransferRow(transfer: TransferEntity) {
             Spacer(Modifier.width(8.dp))
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = stringResource(R.string.pays),
+                contentDescription = stringResource(Res.string.pays),
                 tint = Gold,
             )
             Spacer(Modifier.width(8.dp))

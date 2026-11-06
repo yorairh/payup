@@ -1,5 +1,11 @@
 package com.payup.ui.deal
 
+import com.payup.resources.Res
+import com.payup.resources.dealer_is
+import com.payup.resources.dealing_hint
+import com.payup.resources.dealing_title
+import com.payup.resources.skip
+import com.payup.resources.to_the_table
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -39,7 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,7 +54,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.GameRepository
 import com.payup.domain.Dealer
 import com.payup.domain.DealtCard
@@ -120,7 +125,7 @@ fun DealScreen(onContinue: () -> Unit) {
                             .padding(16.dp)
                             .fillMaxWidth()
                             .height(56.dp),
-                    ) { Text(stringResource(R.string.to_the_table), fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                    ) { Text(stringResource(Res.string.to_the_table), fontSize = 18.sp, fontWeight = FontWeight.Bold) }
                 }
             },
         ) { padding ->
@@ -132,7 +137,7 @@ fun DealScreen(onContinue: () -> Unit) {
                     .verticalScroll(rememberScrollState()),
             ) {
                 Text(
-                    stringResource(R.string.dealing_title),
+                    stringResource(Res.string.dealing_title),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Black,
                     color = Gold,
@@ -140,7 +145,7 @@ fun DealScreen(onContinue: () -> Unit) {
                     modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
                 )
                 Text(
-                    if (finished) stringResource(R.string.dealer_is, deal.names[deal.dealerIndex]) else stringResource(R.string.dealing_hint),
+                    if (finished) stringResource(Res.string.dealer_is, deal.names[deal.dealerIndex]) else stringResource(Res.string.dealing_hint),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -164,7 +169,7 @@ fun DealScreen(onContinue: () -> Unit) {
                     .align(Alignment.TopEnd)
                     .statusBarsPadding()
                     .padding(8.dp),
-            ) { Text(stringResource(R.string.skip)) }
+            ) { Text(stringResource(Res.string.skip)) }
         }
     }
 }

@@ -42,9 +42,9 @@
     <string name="setup_hint">Chaque joueur commence avec un buy-in.</string>
     <string name="no_friends_yet">Saisissez un nom ci-dessus pour ajouter le premier joueur.</string>
     <plurals name="start_game">
-        <item quantity="one">Lancer la partie · %d joueur</item>
-        <item quantity="many">Lancer la partie · %d joueurs</item>
-        <item quantity="other">Lancer la partie · %d joueurs</item>
+        <item quantity="one">Lancer la partie · %1$d joueur</item>
+        <item quantity="many">Lancer la partie · %1$d joueurs</item>
+        <item quantity="other">Lancer la partie · %1$d joueurs</item>
     </plurals>
     <string name="random_dealer">Donneur aléatoire</string>
     <string name="random_dealer_hint">Les cartes sont distribuées avant la partie ; le premier as est le donneur.</string>
@@ -59,9 +59,9 @@
     <string name="table_title">La table</string>
     <string name="pot">Pot</string>
     <plurals name="buy_ins_count">
-        <item quantity="one">%d buy-in</item>
-        <item quantity="many">%d buy-ins</item>
-        <item quantity="other">%d buy-ins</item>
+        <item quantity="one">%1$d buy-in</item>
+        <item quantity="many">%1$d buy-ins</item>
+        <item quantity="other">%1$d buy-ins</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">Autre</string>
@@ -132,9 +132,9 @@
     <!-- history -->
     <string name="history_empty">Aucune partie pour l’instant. Les parties terminées apparaîtront ici.</string>
     <plurals name="players_count">
-        <item quantity="one">%d joueur</item>
-        <item quantity="many">%d joueurs</item>
-        <item quantity="other">%d joueurs</item>
+        <item quantity="one">%1$d joueur</item>
+        <item quantity="many">%1$d joueurs</item>
+        <item quantity="other">%1$d joueurs</item>
     </plurals>
     <string name="pot_value">Pot %1$s</string>
     <string name="delete_game_title">Supprimer cette partie ?</string>
@@ -163,7 +163,7 @@
     <string name="stat_best">Meilleur</string>
     <string name="stat_worst">Pire</string>
     <string name="stat_buy_ins">Buy-ins</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">Sauvegarde</string>
     <string name="backup_summary">Enregistrez ou restaurez vos parties</string>
@@ -172,17 +172,17 @@
     <string name="backup_download">Enregistrer la sauvegarde sur le téléphone</string>
     <string name="backup_download_hint">Enregistre le fichier dans un dossier de votre choix, comme Téléchargements</string>
     <string name="backup_saved">Sauvegarde enregistrée</string>
-    <string name="backup_save_failed">Impossible d\'enregistrer la sauvegarde.</string>
+    <string name="backup_save_failed">Impossible d'enregistrer la sauvegarde.</string>
     <string name="backup_restore">Restaurer les parties</string>
-    <string name="backup_restore_hint">Ajoute des parties depuis un fichier de sauvegarde. Rien n\'est supprimé sur ce téléphone</string>
+    <string name="backup_restore_hint">Ajoute des parties depuis un fichier de sauvegarde. Rien n'est supprimé sur ce téléphone</string>
     <string name="backup_preview_body">Parties dans le fichier : %1$d\nNouvelles parties à ajouter : %2$d</string>
     <string name="backup_all_present">Tout ce qui figure dans ce fichier est déjà sur ce téléphone.</string>
     <string name="backup_skipped_unfinished">Parties non terminées ignorées : %1$d (une seule partie peut être en cours à la fois)</string>
     <string name="backup_add_games">Ajouter les parties</string>
     <string name="backup_done_body">Parties ajoutées : %1$d</string>
     <string name="backup_failed_title">Échec de la restauration</string>
-    <string name="backup_error_not_backup">Ce fichier n\'est pas une sauvegarde PayUp.</string>
-    <string name="backup_error_too_new">Cette sauvegarde provient d\'une version plus récente de PayUp. Mettez l\'application à jour et réessayez.</string>
+    <string name="backup_error_not_backup">Ce fichier n'est pas une sauvegarde PayUp.</string>
+    <string name="backup_error_too_new">Cette sauvegarde provient d'une version plus récente de PayUp. Mettez l'application à jour et réessayez.</string>
     <string name="backup_error_invalid">Le fichier de sauvegarde est endommagé ou contient des données non valides.</string>
     <string name="backup_error_read">Impossible de lire le fichier.</string>
     <string name="close">Fermer</string>

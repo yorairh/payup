@@ -52,9 +52,12 @@ Game flow: `setup` → optional `deal` → `table` → `cashout` → `result`. A
 
 ### Translations
 
-There are 9 languages: `values` (English), `values-iw` (Hebrew), `-es`, `-ru`, `-ar`, `-fr`, `-de`, `-pt`, `-zh-rCN`. Hebrew and Arabic are right to left.
+There are 9 languages, as Compose Multiplatform resources in `shared/src/commonMain/composeResources/`: `values` (English), `values-he` (Hebrew) and `values-iw` (an exact copy, because Android may report Hebrew as the old code `iw` while the web says `he`; the test enforces the copy), `-es`, `-ru`, `-ar`, `-fr`, `-de`, `-pt`, `-zh-rCN`. Hebrew and Arabic are right to left. The only Android string left is the launcher label `app_name` in `androidApp/src/main/res/values/strings.xml`.
 
-- Every string and plural must exist in all 9 files, and Russian and Arabic need their extra plural forms.
+- Use `stringResource(Res.string.key, args)` / `pluralStringResource(Res.plurals.key, n, n)` (`com.payup.resources.Res`, plus one import per key). Outside composables use the `suspend` `getString(...)` / `getPluralString(...)`.
+- Placeholders must be positional (`%1$s`, `%1$d`), a percent sign is a single `%`, and quotes need no backslash. Compose resources do not support `%d`, `%%`, or a backslash before a quote.
+- `StringParityTest` (in `:shared`, runs with the unit tests) fails the build if any language is missing a key, has different placeholders, lacks the plural forms its language needs (Russian and Arabic need extra ones), or if the language list, the folders and `locales_config.xml` disagree. When adding a language, update `AppLanguage.OPTIONS`, the folder, `locales_config.xml` and the test.
+- The language picker goes through the `AppLanguage` interface (`AndroidAppLanguage` uses the system per-app language).
 - Check layout direction with `Context.isRtl()`, never by testing for a specific language.
 - The share image in `ShareResult.kt` draws on a bitmap by hand, so it handles right-to-left layout itself.
 

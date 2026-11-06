@@ -1,5 +1,10 @@
 package com.payup.ui.common
 
+import com.payup.resources.Res
+import com.payup.resources.amount
+import com.payup.resources.back
+import com.payup.resources.cancel
+import com.payup.resources.player_name
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -28,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,7 +45,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.payup.PayUpApp
-import com.payup.R
 import com.payup.data.GameRepository
 import com.payup.domain.Money
 import com.payup.domain.MoneyFormat
@@ -108,7 +112,7 @@ fun PayUpTopBar(
         navigationIcon = {
             if (onBack != null) {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.back))
                 }
             }
         },
@@ -131,7 +135,7 @@ fun AmountDialog(
         title = title,
         value = text,
         onValueChange = { text = Money.sanitizeInput(it) },
-        label = stringResource(R.string.amount),
+        label = stringResource(Res.string.amount),
         keyboardOptions = MoneyKeyboard,
         confirmLabel = confirmLabel,
         confirmEnabled = amount > 0,
@@ -153,7 +157,7 @@ fun NameDialog(
         title = title,
         value = text,
         onValueChange = { text = it.take(30) },
-        label = stringResource(R.string.player_name),
+        label = stringResource(Res.string.player_name),
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
         confirmLabel = confirmLabel,
         confirmEnabled = text.isNotBlank(),
@@ -192,7 +196,7 @@ private fun TextInputDialog(
             TextButton(onClick = onConfirm, enabled = confirmEnabled) { Text(confirmLabel) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel)) }
         },
     )
     LaunchedEffect(Unit) {
@@ -214,6 +218,6 @@ fun ConfirmDialog(
         title = { Text(title) },
         text = { Text(message) },
         confirmButton = { TextButton(onClick = onConfirm) { Text(confirmLabel) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel)) } },
     )
 }

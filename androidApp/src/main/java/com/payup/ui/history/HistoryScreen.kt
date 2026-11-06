@@ -1,5 +1,13 @@
 package com.payup.ui.history
 
+import com.payup.resources.Res
+import com.payup.resources.delete
+import com.payup.resources.delete_game_message
+import com.payup.resources.delete_game_title
+import com.payup.resources.history
+import com.payup.resources.history_empty
+import com.payup.resources.players_count
+import com.payup.resources.pot_value
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,15 +34,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.GameRepository
 import com.payup.data.GameWithDetails
 import com.payup.ui.common.ConfirmDialog
@@ -63,11 +70,11 @@ fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
     val games by vm.games.collectAsStateWithLifecycle()
     var toDelete by remember { mutableStateOf<Long?>(null) }
 
-    Scaffold(topBar = { PayUpTopBar(stringResource(R.string.history), onBack) }) { padding ->
+    Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.history), onBack) }) { padding ->
         val list = games ?: return@Scaffold
         if (list.isEmpty()) {
             Box(Modifier.fillMaxSize().padding(padding).padding(32.dp), contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.history_empty), textAlign = TextAlign.Center)
+                Text(stringResource(Res.string.history_empty), textAlign = TextAlign.Center)
             }
             return@Scaffold
         }
@@ -84,9 +91,9 @@ fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
 
     toDelete?.let { id ->
         ConfirmDialog(
-            title = stringResource(R.string.delete_game_title),
-            message = stringResource(R.string.delete_game_message),
-            confirmLabel = stringResource(R.string.delete),
+            title = stringResource(Res.string.delete_game_title),
+            message = stringResource(Res.string.delete_game_message),
+            confirmLabel = stringResource(Res.string.delete),
             onConfirm = { vm.delete(id); toDelete = null },
             onDismiss = { toDelete = null },
         )
@@ -110,8 +117,8 @@ private fun HistoryCard(game: GameWithDetails, onClick: () -> Unit, onDelete: ()
                 Column(Modifier.weight(1f)) {
                     Text(date, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     Text(
-                        pluralStringResource(R.plurals.players_count, game.players.size, game.players.size) +
-                            " · " + stringResource(R.string.pot_value, money(game.pot)),
+                        pluralStringResource(Res.plurals.players_count, game.players.size, game.players.size) +
+                            " · " + stringResource(Res.string.pot_value, money(game.pot)),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     topWinner?.let {
@@ -123,7 +130,7 @@ private fun HistoryCard(game: GameWithDetails, onClick: () -> Unit, onDelete: ()
                     }
                 }
                 IconButton(onClick = onDelete) {
-                    Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete))
+                    Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.delete))
                 }
             }
         }
