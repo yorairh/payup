@@ -40,7 +40,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
   - bundled Hebrew, Arabic and Chinese fonts.
 
   Deploy it to the preview channel, and you try it on an iPhone (and Android Chrome). Also measure first-load size and time on mobile data.
-- [ ] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** Built (branch `spike-b-room3`); builds, 106 tests pass, schema identity hash identical. Waiting for the phone test, see `docs/SPIKE_B_RESULTS.md`. On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
+- [x] **5.** **Spike B: Room 2.6 → Room 3 upgrade.** Done (branch `spike-b-room3`, never merged): builds, 106 tests pass, schema identity hash identical, and the phone test passed (Room 3 opened the Room 2.6.1 database with all games). See `docs/SPIKE_B_RESULTS.md`. On a branch, port the database and its 4 migrations, then install a release-signed build over 0.2.0 on your phone with real games. Do a backup first (task 2).
 - [ ] **6.** **Go/no-go checkpoint (your call).** If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
 
 ## Milestone 1 — code split, no visible change (release 0.3.0)
