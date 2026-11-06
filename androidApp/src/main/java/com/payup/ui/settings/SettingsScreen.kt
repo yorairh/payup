@@ -44,7 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.payup.PayUpApp
 import com.payup.R
 import com.payup.ui.common.PayUpTopBar
-import com.payup.ui.theme.AppTheme
+import com.payup.domain.AppTheme
 import com.payup.ui.theme.Gold
 import com.payup.ui.theme.palette
 

@@ -30,9 +30,11 @@ kotlin {
             api(libs.kotlinx.coroutines.core)
             api(libs.androidx.room.runtime)
             api(libs.androidx.sqlite)
+            api(libs.multiplatform.settings)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
+            implementation(libs.multiplatform.settings.test)
         }
     }
 }
