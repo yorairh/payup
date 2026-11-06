@@ -13,7 +13,7 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 ```
 
 ```powershell
-.\gradlew.bat assembleDebug :shared:testAndroidHostTest :androidApp:testDebugUnitTest :shared:compileKotlinWasmJs --console=plain -q     # build the app, run all unit tests, check the shared code still compiles for the web
+.\gradlew.bat assembleDebug :shared:testAndroidHostTest :shared:compileKotlinWasmJs --console=plain -q     # build the app, run all unit tests, check the shared code still compiles for the web
 .\gradlew.bat :shared:testAndroidHostTest --tests "com.payup.domain.MoneyFormatTest"     # one test class
 .\gradlew.bat assembleRelease     # signed release APK
 .\gradlew.bat lintDebug     # lint
@@ -23,7 +23,7 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 - Build output goes to `%USERPROFILE%\.payup-build\androidApp\` (and `\shared\`), not `build/`, because the Hebrew project path breaks the unit-test JVM's classpath on Windows (see the root `build.gradle.kts`). APKs are under `outputs\apk\`, reports under `reports\`, test XML under `test-results\`.
 - The same Hebrew path can corrupt paths inside scripts, so run scripts from the project directory rather than passing the full path.
 - `gh` is at `C:\Program Files\GitHub CLI\gh.exe` and is not on PATH.
-- Only JVM unit tests exist (`shared/src/commonTest` with `kotlin.test` for `domain/`, run with `:shared:testAndroidHostTest`; plus `BackupMappingTest` under `androidApp/src/test`, JUnit 4, run with `:androidApp:testDebugUnitTest`). There is no Robolectric or `androidTest`, so `data/` and `ui/` code is only checked on a real phone. There is no emulator on this machine.
+- Only JVM unit tests exist (`shared/src/commonTest` with `kotlin.test` for `domain/`, run with `:shared:testAndroidHostTest`). There is no Robolectric or `androidTest`, so `data/` and `ui/` code is only checked on a real phone. There is no emulator on this machine.
 
 ## Releases
 
@@ -34,10 +34,10 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 
 ## Architecture
 
-Two Gradle modules: `:shared` (Kotlin Multiplatform: Android plus a compile-only web target; `domain/` lives here in `commonMain`) and `:androidApp` (everything else for now, including `data/` and `ui/`). More code moves into `:shared` as the web roadmap progresses. Three layers, with dependencies pointing inward: `ui/` → `data/` → `domain/`.
+Two Gradle modules: `:shared` (Kotlin Multiplatform: Android plus a compile-only web target; `domain/` and `data/` live here in `commonMain`: Room entities, DAO, `GameRepository` and the schema JSON in `shared/schemas/`) and `:androidApp` (the Android-only rest: `ui/`, the activity, the database builder with the Android SQLite driver, the settings stores). More code moves into `:shared` as the web roadmap progresses. Three layers, with dependencies pointing inward: `ui/` → `data/` → `domain/`.
 
 - **`domain/`** (in `shared/src/commonMain`) is pure Kotlin with no Android, Compose or JVM-only imports (it also compiles for the web, so no `java.*`), and it is where the unit tests are. Put game rules here: settlement, chip conversion, auto-fill, outcomes, money parsing and formatting.
-- **`data/`** holds Room entities, `PayUpDao` and `GameRepository`. `GameRepository` is the only way to the database. `PayUpApp` creates it, and `payUpViewModel { repo, handle -> ... }` in `ui/common/Common.kt` injects it, along with navigation arguments through `SavedStateHandle`. There is no DI framework.
+- **`data/`** (in `:shared`, except the Android builder `AndroidDatabase.kt`) holds Room entities, `PayUpDao` and `GameRepository`. `GameRepository` is the only way to the database. `PayUpApp` creates it, and `payUpViewModel { repo, handle -> ... }` in `ui/common/Common.kt` injects it, along with navigation arguments through `SavedStateHandle`. There is no DI framework.
 - **`ui/`** has one package per screen, with the ViewModel usually in the same file as the screen. Navigation uses string routes, all in `MainActivity.kt`.
 
 Game flow: `setup` → optional `deal` → `table` → `cashout` → `result`. A game counts as active until `finished = true`, and starting a new game discards any unfinished one.
@@ -48,7 +48,7 @@ Game flow: `setup` → optional `deal` → `table` → `cashout` → `result`. A
 - **Currency** is stored per game, with symbol only and no conversion. `LocalCurrency` deliberately has no default, so a screen that shows money must wrap its content in `ProvideCurrency(game.game.currency)` or it crashes. The screen's outer composable loads the game, then provides the currency to a private `*Content` composable. The leaderboard sums across games without converting and shows the latest finished game's currency (`WithLatestCurrency`). This is an agreed product decision.
 - **Cash-out** is an immutable `CashOutSession`. Each event returns a `CashOutStep` containing the new session and a list of `CashOutWrite`s, and `CashOutViewModel` stays thin and passes those writes to `GameRepository.saveCashOut`, which stores them in one transaction. Add cash-out behaviour to the session, with a test in `CashOutSessionTest`.
 - **Outcomes** come from `GameOutcomes.rank`, reached through `GameWithDetails.results()`. The result screen, share text, share image and history card all use it. On a tie for first, whoever is listed first gets the crown.
-- **Database schema:** bump the version in `AppDatabase`, add a `Migration`, register it in `build()`, and commit the new JSON that KSP exports to `androidApp/schemas/`. Migrations have no automated test.
+- **Database schema:** bump the version in `AppDatabase`, add a `Migration`, register it in `build()`, and commit the new JSON that KSP exports to `shared/schemas/`. Migrations have no automated test.
 
 ### Translations
 

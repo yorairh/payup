@@ -11,6 +11,7 @@ import com.payup.domain.Settlement
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlin.time.Clock
 
 class GameRepository(private val db: AppDatabase) {
     private val dao = db.dao()
@@ -62,7 +63,7 @@ class GameRepository(private val db: AppDatabase) {
     /** Starts a game where every player has already put in one buy-in. Any unfinished game is discarded. */
     suspend fun startGame(defaultBuyIn: Int, names: List<String>, currency: Currency): Long = db.withWriteTransaction {
         dao.activeGameIds().forEach { deleteGameRows(it) }
-        val now = System.currentTimeMillis()
+        val now = nowMillis()
         val gameId = dao.insertGame(GameEntity(startedAt = now, defaultBuyIn = defaultBuyIn, currency = currency.name))
         names.forEach { insertPlayerWithBuyIn(gameId, it, defaultBuyIn, now) }
         gameId
@@ -70,11 +71,11 @@ class GameRepository(private val db: AppDatabase) {
 
     suspend fun addPlayer(gameId: Long, name: String, buyIn: Int) = db.withWriteTransaction {
         dao.insertFriend(FriendEntity(name = name.trim()))
-        insertPlayerWithBuyIn(gameId, name.trim(), buyIn, System.currentTimeMillis())
+        insertPlayerWithBuyIn(gameId, name.trim(), buyIn, nowMillis())
     }
 
     suspend fun addBuyIn(playerId: Long, amount: Int) {
-        dao.insertBuyIn(BuyInEntity(playerId = playerId, amount = amount, createdAt = System.currentTimeMillis()))
+        dao.insertBuyIn(BuyInEntity(playerId = playerId, amount = amount, createdAt = nowMillis()))
     }
 
     suspend fun removeBuyIn(buyInId: Long) = dao.deleteBuyIn(buyInId)
@@ -137,14 +138,14 @@ class GameRepository(private val db: AppDatabase) {
             )
         })
         dao.updateGame(
-            details.game.copy(finished = true, endedAt = System.currentTimeMillis(), voidedDifference = difference)
+            details.game.copy(finished = true, endedAt = nowMillis(), voidedDifference = difference)
         )
     }
 
     /** Every game and friend on this phone, ready to write to a backup file. */
     suspend fun exportBackup(): Backup = db.withWriteTransaction {
         Backup(
-            exportedAt = System.currentTimeMillis(),
+            exportedAt = nowMillis(),
             friends = dao.friendsOnce().map { it.name },
             games = dao.allGames().map { it.toBackup() },
         )
@@ -191,3 +192,5 @@ class GameRepository(private val db: AppDatabase) {
         dao.insertBuyIn(BuyInEntity(playerId = playerId, amount = buyIn, createdAt = now))
     }
 }
+
+private fun nowMillis(): Long = Clock.System.now().toEpochMilliseconds()

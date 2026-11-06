@@ -4,6 +4,7 @@ import android.app.Application
 import com.payup.data.AppDatabase
 import com.payup.data.CurrencyStore
 import com.payup.data.GameRepository
+import com.payup.data.build
 import com.payup.data.ThemeStore
 
 class PayUpApp : Application() {

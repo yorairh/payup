@@ -1,12 +1,11 @@
 package com.payup.data
 
-import android.content.Context
 import androidx.room3.Database
-import androidx.room3.Room
+import androidx.room3.ConstructedBy
 import androidx.room3.RoomDatabase
+import androidx.room3.RoomDatabaseConstructor
 import androidx.room3.migration.Migration
 import androidx.sqlite.SQLiteConnection
-import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.sqlite.execSQL
 
 @Database(
@@ -14,16 +13,13 @@ import androidx.sqlite.execSQL
     version = 4,
     exportSchema = true,
 )
+@ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun dao(): PayUpDao
 
     companion object {
-        // The phone's own SQLite, so the existing payup.db file is opened exactly as before.
-        fun build(context: Context): AppDatabase =
-            Room.databaseBuilder<AppDatabase>(context, "payup.db")
-                .setDriver(AndroidSQLiteDriver())
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
-                .build()
+        /** Every migration, oldest first. Each platform's builder registers all of them. */
+        val MIGRATIONS: Array<Migration> get() = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
 
         /** v4: each game keeps its own currency; every earlier game was in shekels. */
         val MIGRATION_3_4 = object : Migration(3, 4) {
@@ -52,4 +48,10 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
     }
+}
+
+// Room generates the actual implementation for each platform.
+@Suppress("KotlinNoActualForExpect")
+expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
+    override fun initialize(): AppDatabase
 }
