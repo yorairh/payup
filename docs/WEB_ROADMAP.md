@@ -44,9 +44,9 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 - [x] **6.** **Go/no-go checkpoint (your call).** Decided GO on 2026-11-06: both spikes passed (Compose web works on a real iPhone; Room 3 opens the existing database). If Spike A fails on iPhone, we decide together: wait for a newer Compose, or build a separate web UI.
 
 ## Milestone 1 — code split, no visible change (release 0.3.0)
-- [ ] **7.** Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check. **Do this together with task 9:** Room 2.6.1 does not build on KSP 2 (Spike B), so the toolchain and Room 3 move in one step.
+- [x] **7.** (Done together with task 9, phone-tested over 0.2.0.) Upgrade the toolchain (Kotlin 2.4, AGP 9, KSP2, current Jetpack Compose) while still Android-only, and do a phone check. **Do this together with task 9:** Room 2.6.1 does not build on KSP 2 (Spike B), so the toolchain and Room 3 move in one step.
 - [ ] **8.** Create `:shared` (KMP, Android target only for now) and `:androidApp`. Move `domain/` and its tests to commonMain/commonTest. Replace `java.time` in `Leaderboard.kt` with kotlinx-datetime.
-- [ ] **9.** Move the database to Room 3 in `:shared`. DAOs become suspend/Flow, migrations are ported, and the database name, version and schemas stay the same.
+- [~] **9.** Room 3 is in (done with task 7, phone-tested); moving it into `:shared` waits for task 8. Move the database to Room 3 in `:shared`. DAOs become suspend/Flow, migrations are ported, and the database name, version and schemas stay the same.
 - [ ] **10.** Replace `ThemeStore` and `CurrencyStore` (SharedPreferences) with multiplatform settings, migrating the existing values.
 - [ ] **11.** Move strings to Compose resources: 9 languages with plurals, plus a cross-platform language override. Android keeps the system per-app language. Add the string-parity check to the repo.
 - [ ] **12.** Move ViewModels to lifecycle KMP, and the string routes to Navigation 3 with typed routes.
