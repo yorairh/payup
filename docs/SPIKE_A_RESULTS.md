@@ -13,7 +13,7 @@ Roadmap task 4. A throwaway test page to answer one question before the big refa
 |---|---|
 | Builds and runs (desktop Chromium, phone-size window) | Done |
 | Measured sizes | Done (below) |
-| **iPhone Safari test** | **Still waiting for a real iPhone** (see the checklist) |
+| **iPhone Safari test** | **Works** on a real iPhone (reported by the user on 2026-11-06 with the single word "Works"; iOS version, load time and per-item checklist results were not recorded) |
 | Android Chrome test | Done by the owner on 6 Nov 2026 (Chrome on their phone) and Brave on desktop: looked fine; the only oddity was the amount splitting (finding 6) |
 | Go / no-go (task 6) | After the iPhone results |
 
