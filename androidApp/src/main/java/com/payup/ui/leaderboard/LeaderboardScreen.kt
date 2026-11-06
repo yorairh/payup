@@ -1,5 +1,23 @@
 package com.payup.ui.leaderboard
 
+import com.payup.resources.Res
+import com.payup.resources.leaderboard
+import com.payup.resources.leaderboard_empty
+import com.payup.resources.metric_avg
+import com.payup.resources.metric_best
+import com.payup.resources.metric_profit
+import com.payup.resources.metric_win_rate
+import com.payup.resources.percent
+import com.payup.resources.period_all
+import com.payup.resources.period_month
+import com.payup.resources.period_year
+import com.payup.resources.stat_avg
+import com.payup.resources.stat_best
+import com.payup.resources.stat_buy_ins
+import com.payup.resources.stat_games
+import com.payup.resources.stat_profit
+import com.payup.resources.stat_win_rate
+import com.payup.resources.stat_worst
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -37,7 +55,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -45,7 +63,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.GameRepository
 import com.payup.domain.Leaderboard
 import com.payup.domain.LeaderboardMetric
@@ -94,7 +111,7 @@ fun LeaderboardScreen(onBack: () -> Unit) {
         }
     }
 
-    Scaffold(topBar = { PayUpTopBar(stringResource(R.string.leaderboard), onBack) }) { padding ->
+    Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.leaderboard), onBack) }) { padding ->
         Column(Modifier.padding(padding)) {
             ChipRow {
                 Period.entries.forEach { p ->
@@ -110,7 +127,7 @@ fun LeaderboardScreen(onBack: () -> Unit) {
             val list = stats ?: return@Column
             if (list.isEmpty()) {
                 Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
-                    Text(stringResource(R.string.leaderboard_empty), textAlign = TextAlign.Center)
+                    Text(stringResource(Res.string.leaderboard_empty), textAlign = TextAlign.Center)
                 }
                 return@Column
             }
@@ -152,24 +169,24 @@ private fun Chip(selected: Boolean, label: String, onClick: () -> Unit) {
 @Composable
 private fun periodLabel(period: Period): String = stringResource(
     when (period) {
-        Period.MONTH -> R.string.period_month
-        Period.YEAR -> R.string.period_year
-        Period.ALL -> R.string.period_all
+        Period.MONTH -> Res.string.period_month
+        Period.YEAR -> Res.string.period_year
+        Period.ALL -> Res.string.period_all
     }
 )
 
 @Composable
 private fun metricLabel(metric: LeaderboardMetric): String = stringResource(
     when (metric) {
-        LeaderboardMetric.PROFIT -> R.string.metric_profit
-        LeaderboardMetric.WIN_RATE -> R.string.metric_win_rate
-        LeaderboardMetric.AVG_PER_GAME -> R.string.metric_avg
-        LeaderboardMetric.BIGGEST_WIN -> R.string.metric_best
+        LeaderboardMetric.PROFIT -> Res.string.metric_profit
+        LeaderboardMetric.WIN_RATE -> Res.string.metric_win_rate
+        LeaderboardMetric.AVG_PER_GAME -> Res.string.metric_avg
+        LeaderboardMetric.BIGGEST_WIN -> Res.string.metric_best
     }
 )
 
 @Composable
-private fun percent(rate: Float): String = stringResource(R.string.percent, (rate * 100).roundToInt())
+private fun percent(rate: Float): String = stringResource(Res.string.percent, (rate * 100).roundToInt())
 
 @Composable
 private fun LeaderCard(
@@ -237,16 +254,16 @@ private fun LeaderCard(
         }
         Spacer(Modifier.height(12.dp))
         Row {
-            StatCell(stringResource(R.string.stat_profit), signedMoney(stats.profit), textColor)
-            StatCell(stringResource(R.string.stat_games), stats.games.toString(), textColor)
-            StatCell(stringResource(R.string.stat_win_rate), percent(stats.winRate), textColor)
-            StatCell(stringResource(R.string.stat_avg), signedMoney(stats.avgPerGame), textColor)
+            StatCell(stringResource(Res.string.stat_profit), signedMoney(stats.profit), textColor)
+            StatCell(stringResource(Res.string.stat_games), stats.games.toString(), textColor)
+            StatCell(stringResource(Res.string.stat_win_rate), percent(stats.winRate), textColor)
+            StatCell(stringResource(Res.string.stat_avg), signedMoney(stats.avgPerGame), textColor)
         }
         Spacer(Modifier.height(8.dp))
         Row {
-            StatCell(stringResource(R.string.stat_best), signedMoney(stats.bestGame), textColor)
-            StatCell(stringResource(R.string.stat_worst), signedMoney(stats.worstGame), textColor)
-            StatCell(stringResource(R.string.stat_buy_ins), money(stats.totalIn), textColor)
+            StatCell(stringResource(Res.string.stat_best), signedMoney(stats.bestGame), textColor)
+            StatCell(stringResource(Res.string.stat_worst), signedMoney(stats.worstGame), textColor)
+            StatCell(stringResource(Res.string.stat_buy_ins), money(stats.totalIn), textColor)
             Spacer(Modifier.weight(1f))
         }
     }

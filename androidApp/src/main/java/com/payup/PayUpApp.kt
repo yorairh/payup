@@ -7,6 +7,7 @@ import com.payup.data.CurrencyStore
 import com.payup.data.GameRepository
 import com.payup.data.ThemeStore
 import com.payup.data.build
+import com.payup.domain.AppLanguage
 import com.russhwolf.settings.SharedPreferencesSettings
 
 class PayUpApp : Application() {
@@ -16,4 +17,5 @@ class PayUpApp : Application() {
     private val settings by lazy { SharedPreferencesSettings(getSharedPreferences("settings", Context.MODE_PRIVATE)) }
     val themeStore: ThemeStore by lazy { ThemeStore(settings) }
     val currencyStore: CurrencyStore by lazy { CurrencyStore(settings) }
+    val appLanguage: AppLanguage by lazy { AndroidAppLanguage() }
 }

@@ -42,10 +42,10 @@
     <string name="setup_hint">כל שחקן מתחיל עם כניסה אחת.</string>
     <string name="no_friends_yet">כתבו שם למעלה כדי להוסיף את השחקן הראשון.</string>
     <plurals name="start_game">
-        <item quantity="one">התחלת משחק · שחקן %d</item>
-        <item quantity="two">התחלת משחק · %d שחקנים</item>
-        <item quantity="many">התחלת משחק · %d שחקנים</item>
-        <item quantity="other">התחלת משחק · %d שחקנים</item>
+        <item quantity="one">התחלת משחק · שחקן %1$d</item>
+        <item quantity="two">התחלת משחק · %1$d שחקנים</item>
+        <item quantity="many">התחלת משחק · %1$d שחקנים</item>
+        <item quantity="other">התחלת משחק · %1$d שחקנים</item>
     </plurals>
     <string name="random_dealer">מחלק אקראי</string>
     <string name="random_dealer_hint">מחלקים קלפים לפני המשחק; האס הראשון הוא המחלק.</string>
@@ -61,9 +61,9 @@
     <string name="pot">קופה</string>
     <plurals name="buy_ins_count">
         <item quantity="one">כניסה אחת</item>
-        <item quantity="two">%d כניסות</item>
-        <item quantity="many">%d כניסות</item>
-        <item quantity="other">%d כניסות</item>
+        <item quantity="two">%1$d כניסות</item>
+        <item quantity="many">%1$d כניסות</item>
+        <item quantity="other">%1$d כניסות</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">סכום אחר</string>
@@ -134,10 +134,10 @@
     <!-- history -->
     <string name="history_empty">עוד אין משחקים. משחקים שהסתיימו יופיעו כאן.</string>
     <plurals name="players_count">
-        <item quantity="one">שחקן %d</item>
-        <item quantity="two">%d שחקנים</item>
-        <item quantity="many">%d שחקנים</item>
-        <item quantity="other">%d שחקנים</item>
+        <item quantity="one">שחקן %1$d</item>
+        <item quantity="two">%1$d שחקנים</item>
+        <item quantity="many">%1$d שחקנים</item>
+        <item quantity="other">%1$d שחקנים</item>
     </plurals>
     <string name="pot_value">קופה %1$s</string>
     <string name="delete_game_title">למחוק את המשחק?</string>
@@ -166,7 +166,7 @@
     <string name="stat_best">הכי טוב</string>
     <string name="stat_worst">הכי גרוע</string>
     <string name="stat_buy_ins">כניסות</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">גיבוי</string>
     <string name="backup_summary">שמירה או שחזור של המשחקים</string>

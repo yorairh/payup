@@ -1,5 +1,18 @@
 package com.payup.ui.setup
 
+import com.payup.resources.Res
+import com.payup.resources.add
+import com.payup.resources.add_player
+import com.payup.resources.buy_in_amount
+import com.payup.resources.currency
+import com.payup.resources.no_friends_yet
+import com.payup.resources.pick_two
+import com.payup.resources.players
+import com.payup.resources.random_dealer
+import com.payup.resources.random_dealer_hint
+import com.payup.resources.setup_hint
+import com.payup.resources.setup_title
+import com.payup.resources.start_game
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,8 +45,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -47,7 +60,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.FilterChip
 import androidx.compose.ui.platform.LocalContext
 import com.payup.PayUpApp
-import com.payup.R
 import com.payup.data.CurrencyStore
 import com.payup.data.GameRepository
 import com.payup.domain.Currency
@@ -119,12 +131,12 @@ fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> 
     }
 
     Scaffold(
-        topBar = { PayUpTopBar(stringResource(R.string.setup_title), onBack) },
+        topBar = { PayUpTopBar(stringResource(Res.string.setup_title), onBack) },
         bottomBar = {
             Column(Modifier.navigationBarsPadding().padding(16.dp)) {
                 if (selected.size < 2) {
                     Text(
-                        stringResource(R.string.pick_two),
+                        stringResource(Res.string.pick_two),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 8.dp),
                     )
@@ -135,7 +147,7 @@ fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> 
                     modifier = Modifier.fillMaxWidth().height(56.dp),
                 ) {
                     Text(
-                        pluralStringResource(R.plurals.start_game, selected.size, selected.size),
+                        pluralStringResource(Res.plurals.start_game, selected.size, selected.size),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )
@@ -149,7 +161,7 @@ fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> 
             modifier = Modifier.padding(padding),
         ) {
             item {
-                Text(stringResource(R.string.currency), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(Res.string.currency), style = MaterialTheme.typography.titleMedium)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(vertical = 8.dp).horizontalScroll(rememberScrollState()),
@@ -165,28 +177,28 @@ fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> 
                 OutlinedTextField(
                     value = buyIn,
                     onValueChange = vm::setBuyIn,
-                    label = { Text(stringResource(R.string.buy_in_amount)) },
+                    label = { Text(stringResource(Res.string.buy_in_amount)) },
                     prefix = { Text(currency.symbol + " ") },
                     singleLine = true,
                     keyboardOptions = MoneyKeyboard,
-                    supportingText = { Text(stringResource(R.string.setup_hint)) },
+                    supportingText = { Text(stringResource(Res.string.setup_hint)) },
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 4.dp)) {
                     Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.random_dealer), style = MaterialTheme.typography.titleMedium)
-                        Text(stringResource(R.string.random_dealer_hint), style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(Res.string.random_dealer), style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(Res.string.random_dealer_hint), style = MaterialTheme.typography.bodySmall)
                     }
                     Switch(checked = randomDealer, onCheckedChange = { vm.randomDealer.value = it })
                 }
                 Spacer(Modifier.height(16.dp))
-                Text(stringResource(R.string.players), style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(Res.string.players), style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     OutlinedTextField(
                         value = newName,
                         onValueChange = { newName = it.take(30) },
-                        label = { Text(stringResource(R.string.add_player)) },
+                        label = { Text(stringResource(Res.string.add_player)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Words,
@@ -197,12 +209,12 @@ fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> 
                     )
                     Spacer(Modifier.padding(4.dp))
                     FilledIconButton(onClick = ::addTyped, enabled = newName.isNotBlank()) {
-                        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
+                        Icon(Icons.Default.Add, contentDescription = stringResource(Res.string.add))
                     }
                 }
                 Spacer(Modifier.height(8.dp))
                 if (allNames.isEmpty()) {
-                    Text(stringResource(R.string.no_friends_yet), style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(Res.string.no_friends_yet), style = MaterialTheme.typography.bodyMedium)
                 }
             }
             items(allNames, key = { it }) { name ->

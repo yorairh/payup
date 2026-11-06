@@ -1,6 +1,17 @@
 package com.payup.ui.result
 
+import com.payup.resources.Res
+import com.payup.resources.nobody_pays
+import com.payup.resources.payup
+import com.payup.resources.players_count
+import com.payup.resources.pot_value
+import com.payup.resources.results
+import com.payup.resources.share_chooser
+import com.payup.resources.share_header
+import com.payup.resources.who_pays_whom
 import android.content.Context
+import org.jetbrains.compose.resources.getPluralString
+import org.jetbrains.compose.resources.getString
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -10,7 +21,6 @@ import android.text.TextPaint
 import android.text.TextUtils
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.FileProvider
-import com.payup.R
 import com.payup.data.GameWithDetails
 import com.payup.data.results
 import com.payup.domain.Currency
@@ -29,35 +39,35 @@ private fun GameWithDetails.currency(): Currency = Currency.fromCode(game.curren
 private fun Context.signed(amount: Int, currency: Currency): String =
     moneyText(this, amount, currency, showPlus = true)
 
-private fun Context.header(game: GameWithDetails): String = getString(
-    R.string.share_header,
+private suspend fun Context.header(game: GameWithDetails): String = getString(
+    Res.string.share_header,
     game.dateText(),
-    getString(R.string.pot_value, moneyText(this, game.pot, game.currency())),
-    resources.getQuantityString(R.plurals.players_count, game.players.size, game.players.size),
+    getString(Res.string.pot_value, moneyText(this, game.pot, game.currency())),
+    getPluralString(Res.plurals.players_count, game.players.size, game.players.size),
 )
 
-fun buildShareText(context: Context, game: GameWithDetails): String = buildString {
+suspend fun buildShareText(context: Context, game: GameWithDetails): String = buildString {
     appendLine(context.header(game))
     appendLine()
-    appendLine(context.getString(R.string.results))
+    appendLine(getString(Res.string.results))
     game.results().forEach { appendLine("${it.name} ${context.signed(it.net, game.currency())}") }
     appendLine()
-    appendLine(context.getString(R.string.who_pays_whom))
+    appendLine(getString(Res.string.who_pays_whom))
     if (game.transfers.isEmpty()) {
-        appendLine(context.getString(R.string.nobody_pays))
+        appendLine(getString(Res.string.nobody_pays))
     } else {
         game.transfers.forEach { appendLine("${it.fromName} → ${it.toName} ${moneyText(context, it.amount, game.currency())}") }
     }
 }.trimEnd()
 
-fun shareText(context: Context, game: GameWithDetails) {
+suspend fun shareText(context: Context, game: GameWithDetails) {
     val send = Intent(Intent.ACTION_SEND)
         .setType("text/plain")
         .putExtra(Intent.EXTRA_TEXT, buildShareText(context, game))
-    context.startActivity(Intent.createChooser(send, context.getString(R.string.share_chooser)))
+    context.startActivity(Intent.createChooser(send, getString(Res.string.share_chooser)))
 }
 
-fun shareImage(context: Context, game: GameWithDetails, palette: PayUpPalette) {
+suspend fun shareImage(context: Context, game: GameWithDetails, palette: PayUpPalette) {
     val dir = File(context.cacheDir, "shared").apply { mkdirs() }
     dir.listFiles()?.forEach { it.delete() }
     val file = File(dir, "payup-${game.game.id}.png")
@@ -69,13 +79,13 @@ fun shareImage(context: Context, game: GameWithDetails, palette: PayUpPalette) {
         .setType("image/png")
         .putExtra(Intent.EXTRA_STREAM, uri)
         .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    val chooser = Intent.createChooser(send, context.getString(R.string.share_chooser))
+    val chooser = Intent.createChooser(send, getString(Res.string.share_chooser))
     chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     context.startActivity(chooser)
 }
 
 /** Draws the results card straight onto a bitmap, so sharing never depends on what is on screen. */
-private fun renderShareImage(context: Context, game: GameWithDetails, p: PayUpPalette): Bitmap {
+private suspend fun renderShareImage(context: Context, game: GameWithDetails, p: PayUpPalette): Bitmap {
     val width = 1080
     val pad = 64f
     val rowHeight = 92f
@@ -125,17 +135,17 @@ private fun renderShareImage(context: Context, game: GameWithDetails, p: PayUpPa
     }
 
     var y = pad + 110f
-    centered(context.getString(R.string.payup), titlePaint, y)
+    centered(getString(Res.string.payup), titlePaint, y)
     y += 70f
     centered(
-        "${game.dateText()} · " + context.getString(R.string.pot_value, moneyText(context, game.pot, game.currency())) +
-            " · " + context.resources.getQuantityString(R.plurals.players_count, game.players.size, game.players.size),
+        "${game.dateText()} · " + getString(Res.string.pot_value, moneyText(context, game.pot, game.currency())) +
+            " · " + getPluralString(Res.plurals.players_count, game.players.size, game.players.size),
         subPaint,
         y,
     )
 
     y += 100f
-    row(context.getString(R.string.results), sectionPaint, "", sectionPaint, y)
+    row(getString(Res.string.results), sectionPaint, "", sectionPaint, y)
     y += 20f
     results.forEach {
         y += rowHeight
@@ -148,11 +158,11 @@ private fun renderShareImage(context: Context, game: GameWithDetails, p: PayUpPa
     }
 
     y += 110f
-    row(context.getString(R.string.who_pays_whom), sectionPaint, "", sectionPaint, y)
+    row(getString(Res.string.who_pays_whom), sectionPaint, "", sectionPaint, y)
     y += 20f
     if (transfers.isEmpty()) {
         y += rowHeight
-        row(context.getString(R.string.nobody_pays), subPaint, "", subPaint, y)
+        row(getString(Res.string.nobody_pays), subPaint, "", subPaint, y)
     }
     transfers.forEach {
         y += rowHeight

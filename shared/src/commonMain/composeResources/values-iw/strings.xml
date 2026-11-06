@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PayUp</string>
+    <string name="tagline">חשבון הפוקר, סגור.</string>
+
+    <!-- common -->
+    <string name="back">חזרה</string>
+    <string name="cancel">ביטול</string>
+    <string name="save">שמירה</string>
+    <string name="add">הוספה</string>
+    <string name="delete">מחיקה</string>
+    <string name="rename">שינוי שם</string>
+    <string name="amount">סכום</string>
+    <string name="player_name">שם השחקן</string>
+
+    <!-- home -->
+    <string name="new_game">משחק חדש</string>
+    <string name="continue_game">המשך משחק</string>
+    <string name="history">היסטוריה</string>
+    <string name="friends">חברים</string>
+    <string name="discard_active_title">יש משחק פתוח</string>
+    <string name="discard_active_message">התחלת משחק חדש תמחק את המשחק שעדיין פתוח.</string>
+    <string name="discard">מחיקה</string>
+
+    <!-- settings -->
+    <string name="settings">הגדרות</string>
+    <string name="color_theme">ערכת צבעים</string>
+    <string name="theme_original">מקורי</string>
+    <string name="theme_color_blind">עיוורון צבעים</string>
+    <string name="theme_rich">עשיר</string>
+    <string name="theme_white_black">שחור ולבן</string>
+    <string name="theme_dark">כהה</string>
+    <string name="language">שפה</string>
+    <string name="currency">מטבע</string>
+    <string name="system_default">ברירת המחדל של המכשיר</string>
+
+    <!-- setup -->
+    <string name="setup_title">משחק חדש</string>
+    <string name="buy_in_amount">סכום כניסה</string>
+    <string name="players">שחקנים</string>
+    <string name="add_player">הוספת שחקן</string>
+    <string name="setup_hint">כל שחקן מתחיל עם כניסה אחת.</string>
+    <string name="no_friends_yet">כתבו שם למעלה כדי להוסיף את השחקן הראשון.</string>
+    <plurals name="start_game">
+        <item quantity="one">התחלת משחק · שחקן %1$d</item>
+        <item quantity="two">התחלת משחק · %1$d שחקנים</item>
+        <item quantity="many">התחלת משחק · %1$d שחקנים</item>
+        <item quantity="other">התחלת משחק · %1$d שחקנים</item>
+    </plurals>
+    <string name="random_dealer">מחלק אקראי</string>
+    <string name="random_dealer_hint">מחלקים קלפים לפני המשחק; האס הראשון הוא המחלק.</string>
+    <string name="dealing_title">מחלקים…</string>
+    <string name="dealing_hint">האס הראשון הוא המחלק</string>
+    <string name="dealer_is">%1$s המחלק!</string>
+    <string name="to_the_table">לשולחן</string>
+    <string name="dealer_badge">מ</string>
+    <string name="pick_two">יש לבחור לפחות 2 שחקנים</string>
+
+    <!-- table -->
+    <string name="table_title">השולחן</string>
+    <string name="pot">קופה</string>
+    <plurals name="buy_ins_count">
+        <item quantity="one">כניסה אחת</item>
+        <item quantity="two">%1$d כניסות</item>
+        <item quantity="many">%1$d כניסות</item>
+        <item quantity="other">%1$d כניסות</item>
+    </plurals>
+    <string name="add_buy_in">+%1$s</string>
+    <string name="custom">סכום אחר</string>
+    <string name="custom_buy_in_title">כניסה בסכום אחר ל%1$s</string>
+    <string name="undo_last">ביטול אחרון</string>
+    <string name="undone">הוסרו %1$s מ%2$s</string>
+    <string name="end_game">סיום משחק</string>
+    <string name="name_taken">%1$s כבר בשולחן</string>
+    <string name="no_buy_ins">אין כניסות.</string>
+    <string name="edit_buy_in">עריכת כניסה</string>
+    <string name="edit_buy_in_title">עריכת כניסה של %1$s</string>
+    <string name="remove_buy_in">הסרת כניסה</string>
+    <string name="remove_buy_in_title">להסיר %1$s מ%2$s?</string>
+    <string name="remove_buy_in_message">הקופה תרד בסכום הזה.</string>
+    <string name="remove_player">הסרת שחקן</string>
+    <string name="remove_player_min">משחק צריך לפחות 2 שחקנים.</string>
+    <string name="remove_player_title">להסיר את %1$s?</string>
+    <string name="remove_player_message">השחקן יוצא מהמשחק ו-%1$s יוצאים מהקופה.</string>
+
+    <!-- cash-out -->
+    <string name="cashout_title">ספירה</string>
+    <string name="cashout_hint">עם כמה כל שחקן סיים?</string>
+    <string name="counted_of_pot">נספרו %1$s מתוך %2$s</string>
+    <string name="put_in">שם %1$s</string>
+    <string name="final_amount">סיים עם</string>
+    <string name="auto_filled">מולא אוטומטית</string>
+    <string name="count_in_chips">ספירה בצ׳יפים</string>
+    <string name="chip_value">ערך של צ׳יפ אחד</string>
+    <string name="chips">צ׳יפים</string>
+    <string name="worth">שווה</string>
+    <string name="round_to_whole">עיגול ליחידות שלמות</string>
+    <string name="round_hint">חצאים ושברים הולכים למפסיד הגדול.</string>
+    <string name="exact_hint">סכומים מדויקים, כולל שברים.</string>
+    <string name="missing">חסרים %1$s</string>
+    <string name="extra">עודף של %1$s</string>
+    <string name="mismatch_hint">תקנו את הסכומים, או בטלו את ההפרש.</string>
+    <string name="void_amount">ביטול %1$s</string>
+    <string name="void_title">לבטל %1$s?</string>
+    <string name="void_missing_message">חסרים %1$s בספירה. המפסידים ישלמו %1$s פחות בסך הכול, לפי כמה שכל אחד הפסיד.</string>
+    <string name="void_extra_message">נספרו %1$s יותר מהקופה. המנצחים יקבלו %1$s פחות בסך הכול, לפי כמה שכל אחד הרוויח.</string>
+    <string name="payup">PAYUP!</string>
+
+    <!-- result -->
+    <string name="results">תוצאות</string>
+    <string name="winners">מנצחים</string>
+    <string name="losers">מפסידים</string>
+    <string name="broke_even">יצאו באפס</string>
+    <string name="who_pays_whom">מי משלם למי</string>
+    <string name="nobody_pays">כולם יצאו באפס. אף אחד לא משלם!</string>
+    <string name="voided_missing">חסרו %1$s והם בוטלו</string>
+    <string name="voided_extra">עודף של %1$s בוטל</string>
+    <string name="skip">דילוג</string>
+    <string name="done">סיום</string>
+    <string name="pays">משלם ל</string>
+    <string name="buy_ins_title">כניסות</string>
+    <string name="total_put_in">סך הכול הכניס</string>
+    <string name="chips_at">%1$d צ׳יפים × %2$s</string>
+    <string name="payments">תשלומים</string>
+    <string name="no_payments">אין תשלומים</string>
+    <string name="pays_to">משלם ל%1$s</string>
+    <string name="gets_from">מקבל מ%1$s</string>
+    <string name="share">שיתוף</string>
+    <string name="share_text">שיתוף כטקסט</string>
+    <string name="share_image">שיתוף כתמונה</string>
+    <string name="share_chooser">שיתוף התוצאות</string>
+    <string name="share_header">PayUp · %1$s · %2$s · %3$s</string>
+
+    <!-- history -->
+    <string name="history_empty">עוד אין משחקים. משחקים שהסתיימו יופיעו כאן.</string>
+    <plurals name="players_count">
+        <item quantity="one">שחקן %1$d</item>
+        <item quantity="two">%1$d שחקנים</item>
+        <item quantity="many">%1$d שחקנים</item>
+        <item quantity="other">%1$d שחקנים</item>
+    </plurals>
+    <string name="pot_value">קופה %1$s</string>
+    <string name="delete_game_title">למחוק את המשחק?</string>
+    <string name="delete_game_message">הוא יוסר מההיסטוריה.</string>
+
+    <!-- friends -->
+    <string name="friends_empty">עוד אין חברים שמורים. לחצו + כדי להוסיף את הקבועים.</string>
+    <string name="delete_friend_title">למחוק את %1$s?</string>
+    <string name="delete_friend_message">משחקים קודמים ישמרו את התוצאות שלהם.</string>
+    <string name="friend_exists">%1$s כבר קיים</string>
+
+    <!-- leaderboard -->
+    <string name="leaderboard">טבלת מובילים</string>
+    <string name="leaderboard_empty">אין משחקים שהסתיימו בתקופה הזו.</string>
+    <string name="period_month">החודש</string>
+    <string name="period_year">השנה</string>
+    <string name="period_all">כל הזמנים</string>
+    <string name="metric_profit">רווח</string>
+    <string name="metric_win_rate">אחוז ניצחונות</string>
+    <string name="metric_avg">ממוצע למשחק</string>
+    <string name="metric_best">הניצחון הגדול</string>
+    <string name="stat_profit">רווח</string>
+    <string name="stat_games">משחקים</string>
+    <string name="stat_win_rate">ניצחונות</string>
+    <string name="stat_avg">ממוצע</string>
+    <string name="stat_best">הכי טוב</string>
+    <string name="stat_worst">הכי גרוע</string>
+    <string name="stat_buy_ins">כניסות</string>
+    <string name="percent">%1$d%</string>
+    <!-- backup -->
+    <string name="backup_title">גיבוי</string>
+    <string name="backup_summary">שמירה או שחזור של המשחקים</string>
+    <string name="backup_save">שיתוף גיבוי</string>
+    <string name="backup_save_hint">שליחת קובץ הגיבוי לעצמך בהודעה או במייל, או שמירה ב-Drive</string>
+    <string name="backup_download">שמירת גיבוי בטלפון</string>
+    <string name="backup_download_hint">שומר את הקובץ בתיקייה שתבחרו, למשל הורדות</string>
+    <string name="backup_saved">הגיבוי נשמר</string>
+    <string name="backup_save_failed">לא ניתן היה לשמור את הגיבוי.</string>
+    <string name="backup_restore">שחזור משחקים</string>
+    <string name="backup_restore_hint">מוסיף משחקים מקובץ גיבוי. שום דבר בטלפון הזה לא נמחק</string>
+    <string name="backup_preview_body">משחקים בקובץ: %1$d\nמשחקים חדשים להוספה: %2$d</string>
+    <string name="backup_all_present">כל מה שבקובץ כבר נמצא בטלפון הזה.</string>
+    <string name="backup_skipped_unfinished">משחקים לא גמורים שדולגו: %1$d (אפשר להחזיק רק משחק אחד פתוח בכל פעם)</string>
+    <string name="backup_add_games">הוספת משחקים</string>
+    <string name="backup_done_body">משחקים שנוספו: %1$d</string>
+    <string name="backup_failed_title">השחזור נכשל</string>
+    <string name="backup_error_not_backup">הקובץ הזה אינו גיבוי של PayUp.</string>
+    <string name="backup_error_too_new">הגיבוי נוצר בגרסה חדשה יותר של PayUp. עדכנו את האפליקציה ונסו שוב.</string>
+    <string name="backup_error_invalid">קובץ הגיבוי פגום או מכיל נתונים לא תקינים.</string>
+    <string name="backup_error_read">לא ניתן היה לקרוא את הקובץ.</string>
+    <string name="close">סגירה</string>
+</resources>

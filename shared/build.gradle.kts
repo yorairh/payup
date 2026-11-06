@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
 }
@@ -13,6 +15,11 @@ kotlin {
         namespace = "com.payup.shared"
         compileSdk = 37
         minSdk = 26
+
+        // Packages the Compose resources (the translations) into the Android app.
+        androidResources {
+            enable = true
+        }
 
         withHostTestBuilder {}
     }
@@ -31,6 +38,8 @@ kotlin {
             api(libs.androidx.room.runtime)
             api(libs.androidx.sqlite)
             api(libs.multiplatform.settings)
+            api(compose.runtime)
+            api(libs.compose.components.resources)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -47,4 +56,11 @@ room3 {
 dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspWasmJs", libs.androidx.room.compiler)
+}
+
+// The strings live in src/commonMain/composeResources; Res is public so the Android app can use it.
+compose.resources {
+    packageOfResClass = "com.payup.resources"
+    publicResClass = true
+    generateResClass = always
 }

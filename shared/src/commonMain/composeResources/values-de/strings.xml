@@ -42,8 +42,8 @@
     <string name="setup_hint">Jeder Spieler startet mit einem Buy-in.</string>
     <string name="no_friends_yet">Gib oben einen Namen ein, um den ersten Spieler hinzuzufügen.</string>
     <plurals name="start_game">
-        <item quantity="one">Spiel starten · %d Spieler</item>
-        <item quantity="other">Spiel starten · %d Spieler</item>
+        <item quantity="one">Spiel starten · %1$d Spieler</item>
+        <item quantity="other">Spiel starten · %1$d Spieler</item>
     </plurals>
     <string name="random_dealer">Zufälliger Geber</string>
     <string name="random_dealer_hint">Vor dem Spiel werden Karten ausgeteilt; das erste Ass ist der Geber.</string>
@@ -58,8 +58,8 @@
     <string name="table_title">Der Tisch</string>
     <string name="pot">Pot</string>
     <plurals name="buy_ins_count">
-        <item quantity="one">%d Buy-in</item>
-        <item quantity="other">%d Buy-ins</item>
+        <item quantity="one">%1$d Buy-in</item>
+        <item quantity="other">%1$d Buy-ins</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">Eigener</string>
@@ -130,8 +130,8 @@
     <!-- history -->
     <string name="history_empty">Noch keine Spiele. Beendete Spiele erscheinen hier.</string>
     <plurals name="players_count">
-        <item quantity="one">%d Spieler</item>
-        <item quantity="other">%d Spieler</item>
+        <item quantity="one">%1$d Spieler</item>
+        <item quantity="other">%1$d Spieler</item>
     </plurals>
     <string name="pot_value">Pot %1$s</string>
     <string name="delete_game_title">Dieses Spiel löschen?</string>
@@ -160,7 +160,7 @@
     <string name="stat_best">Bester</string>
     <string name="stat_worst">Schlechtester</string>
     <string name="stat_buy_ins">Buy-ins</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">Sicherung</string>
     <string name="backup_summary">Spiele sichern oder wiederherstellen</string>

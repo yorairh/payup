@@ -1,5 +1,18 @@
 package com.payup.ui.settings
 
+import org.jetbrains.compose.resources.StringResource
+import com.payup.resources.Res
+import com.payup.resources.backup_summary
+import com.payup.resources.backup_title
+import com.payup.resources.color_theme
+import com.payup.resources.language
+import com.payup.resources.settings
+import com.payup.resources.system_default
+import com.payup.resources.theme_color_blind
+import com.payup.resources.theme_dark
+import com.payup.resources.theme_original
+import com.payup.resources.theme_rich
+import com.payup.resources.theme_white_black
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,8 +40,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,22 +49,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.payup.PayUpApp
-import com.payup.R
 import com.payup.ui.common.PayUpTopBar
+import com.payup.domain.AppLanguage
 import com.payup.domain.AppTheme
 import com.payup.ui.theme.Gold
 import com.payup.ui.theme.palette
 
-private fun AppTheme.label(): Int = when (this) {
-    AppTheme.ORIGINAL -> R.string.theme_original
-    AppTheme.COLOR_BLIND -> R.string.theme_color_blind
-    AppTheme.RICH -> R.string.theme_rich
-    AppTheme.WHITE_BLACK -> R.string.theme_white_black
-    AppTheme.DARK -> R.string.theme_dark
+private fun AppTheme.label(): StringResource = when (this) {
+    AppTheme.ORIGINAL -> Res.string.theme_original
+    AppTheme.COLOR_BLIND -> Res.string.theme_color_blind
+    AppTheme.RICH -> Res.string.theme_rich
+    AppTheme.WHITE_BLACK -> Res.string.theme_white_black
+    AppTheme.DARK -> Res.string.theme_dark
 }
 
 @Composable
@@ -61,7 +72,7 @@ fun SettingsScreen(onBack: () -> Unit) {
     val store = (LocalContext.current.applicationContext as PayUpApp).themeStore
     val selected by store.theme.collectAsStateWithLifecycle()
 
-    Scaffold(topBar = { PayUpTopBar(stringResource(R.string.settings), onBack) }) { padding ->
+    Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.settings), onBack) }) { padding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
@@ -70,54 +81,36 @@ fun SettingsScreen(onBack: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
         ) {
             // Both sections start collapsed; the header shows what is currently chosen.
-            CollapsibleSection(stringResource(R.string.color_theme), stringResource(selected.label())) {
+            CollapsibleSection(stringResource(Res.string.color_theme), stringResource(selected.label())) {
                 AppTheme.entries.forEach { theme ->
                     ThemeCard(theme, selected = theme == selected, onClick = { store.set(theme) })
                 }
             }
-            var tag by remember { mutableStateOf(currentLanguageTag()) }
-            val systemDefault = stringResource(R.string.system_default)
+            val language = (LocalContext.current.applicationContext as PayUpApp).appLanguage
+            var tag by remember { mutableStateOf(language.current()) }
+            val systemDefault = stringResource(Res.string.system_default)
             CollapsibleSection(
-                stringResource(R.string.language),
-                LANGUAGES.firstOrNull { it.first == tag }?.second ?: systemDefault,
+                stringResource(Res.string.language),
+                AppLanguage.OPTIONS.firstOrNull { it.tag == tag }?.nativeName ?: systemDefault,
             ) {
                 // Each language is shown in its own script so it can be found whatever the current language is.
                 OptionCard(systemDefault, selected = tag == "") {
                     tag = ""
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
+                    language.set("")
                 }
-                LANGUAGES.forEach { (code, name) ->
+                AppLanguage.OPTIONS.forEach { (code, name) ->
                     OptionCard(name, selected = tag == code) {
                         tag = code
-                        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(code))
+                        language.set(code)
                     }
                 }
             }
-            CollapsibleSection(stringResource(R.string.backup_title), stringResource(R.string.backup_summary)) {
+            CollapsibleSection(stringResource(Res.string.backup_title), stringResource(Res.string.backup_summary)) {
                 BackupActions()
             }
             Spacer(Modifier.padding(8.dp))
         }
     }
-}
-
-private val LANGUAGES = listOf(
-    "en" to "English",
-    "he" to "עברית",
-    "es" to "Español",
-    "ru" to "Русский",
-    "ar" to "العربية",
-    "fr" to "Français",
-    "de" to "Deutsch",
-    "pt" to "Português",
-    "zh-CN" to "中文",
-)
-
-/** The language the user picked, or "" for the system default (or an unlisted one). */
-private fun currentLanguageTag(): String {
-    val locale = AppCompatDelegate.getApplicationLocales()[0] ?: return ""
-    val code = if (locale.language == "iw") "he" else locale.language
-    return LANGUAGES.firstOrNull { it.first.substringBefore('-') == code }?.first ?: ""
 }
 
 @Composable

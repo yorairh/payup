@@ -1,5 +1,19 @@
 package com.payup.ui.table
 
+import com.payup.resources.Res
+import com.payup.resources.delete
+import com.payup.resources.edit_buy_in
+import com.payup.resources.edit_buy_in_title
+import com.payup.resources.no_buy_ins
+import com.payup.resources.put_in
+import com.payup.resources.remove_buy_in
+import com.payup.resources.remove_buy_in_message
+import com.payup.resources.remove_buy_in_title
+import com.payup.resources.remove_player
+import com.payup.resources.remove_player_message
+import com.payup.resources.remove_player_min
+import com.payup.resources.remove_player_title
+import com.payup.resources.save
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,10 +43,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.payup.R
 import com.payup.data.BuyInEntity
 import com.payup.data.PlayerWithBuyIns
 import com.payup.ui.common.AmountDialog
@@ -67,11 +80,11 @@ fun BuyInsSheet(
                 .padding(bottom = 16.dp),
         ) {
             Text(player.player.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-            Text(stringResource(R.string.put_in, money(player.totalIn)), color = Gold, style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(Res.string.put_in, money(player.totalIn)), color = Gold, style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(12.dp))
 
             if (buyIns.isEmpty()) {
-                Text(stringResource(R.string.no_buy_ins), style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(Res.string.no_buy_ins), style = MaterialTheme.typography.bodyMedium)
             }
             LazyColumn(modifier = Modifier.weight(1f, fill = false), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 items(buyIns, key = { it.id }) { buyIn ->
@@ -81,10 +94,10 @@ fun BuyInsSheet(
                             Text(timeFormat.format(Date(buyIn.createdAt)), style = MaterialTheme.typography.bodySmall)
                         }
                         IconButton(onClick = { editing = buyIn }) {
-                            Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit_buy_in))
+                            Icon(Icons.Default.Edit, contentDescription = stringResource(Res.string.edit_buy_in))
                         }
                         IconButton(onClick = { deleting = buyIn }) {
-                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.remove_buy_in))
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.remove_buy_in))
                         }
                     }
                 }
@@ -96,10 +109,10 @@ fun BuyInsSheet(
                 enabled = canRemovePlayer,
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                 modifier = Modifier.fillMaxWidth(),
-            ) { Text(stringResource(R.string.remove_player)) }
+            ) { Text(stringResource(Res.string.remove_player)) }
             if (!canRemovePlayer) {
                 Text(
-                    stringResource(R.string.remove_player_min),
+                    stringResource(Res.string.remove_player_min),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 4.dp),
                 )
@@ -109,8 +122,8 @@ fun BuyInsSheet(
 
     editing?.let { buyIn ->
         AmountDialog(
-            title = stringResource(R.string.edit_buy_in_title, player.player.name),
-            confirmLabel = stringResource(R.string.save),
+            title = stringResource(Res.string.edit_buy_in_title, player.player.name),
+            confirmLabel = stringResource(Res.string.save),
             initial = buyIn.amount,
             onConfirm = { onEdit(buyIn.id, it); editing = null },
             onDismiss = { editing = null },
@@ -118,18 +131,18 @@ fun BuyInsSheet(
     }
     deleting?.let { buyIn ->
         ConfirmDialog(
-            title = stringResource(R.string.remove_buy_in_title, money(buyIn.amount), player.player.name),
-            message = stringResource(R.string.remove_buy_in_message),
-            confirmLabel = stringResource(R.string.delete),
+            title = stringResource(Res.string.remove_buy_in_title, money(buyIn.amount), player.player.name),
+            message = stringResource(Res.string.remove_buy_in_message),
+            confirmLabel = stringResource(Res.string.delete),
             onConfirm = { onDelete(buyIn.id); deleting = null },
             onDismiss = { deleting = null },
         )
     }
     if (removingPlayer) {
         ConfirmDialog(
-            title = stringResource(R.string.remove_player_title, player.player.name),
-            message = stringResource(R.string.remove_player_message, money(player.totalIn)),
-            confirmLabel = stringResource(R.string.delete),
+            title = stringResource(Res.string.remove_player_title, player.player.name),
+            message = stringResource(Res.string.remove_player_message, money(player.totalIn)),
+            confirmLabel = stringResource(Res.string.delete),
             onConfirm = { removingPlayer = false; onRemovePlayer() },
             onDismiss = { removingPlayer = false },
         )

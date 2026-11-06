@@ -1,5 +1,16 @@
 package com.payup.ui.home
 
+import com.payup.resources.Res
+import com.payup.resources.app_name
+import com.payup.resources.continue_game
+import com.payup.resources.discard_active_message
+import com.payup.resources.discard_active_title
+import com.payup.resources.friends
+import com.payup.resources.history
+import com.payup.resources.leaderboard
+import com.payup.resources.new_game
+import com.payup.resources.settings
+import com.payup.resources.tagline
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -30,14 +41,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.GameRepository
 import com.payup.ui.common.ConfirmDialog
 import com.payup.ui.common.payUpViewModel
@@ -76,7 +86,7 @@ fun HomeScreen(
                 title = "",
                 actions = {
                     IconButton(onClick = onSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings))
+                        Icon(Icons.Default.Settings, contentDescription = stringResource(Res.string.settings))
                     }
                 },
             )
@@ -93,13 +103,13 @@ fun HomeScreen(
             Text("♠ ♥ ♣ ♦", fontSize = 28.sp, color = Gold)
             Spacer(Modifier.height(8.dp))
             Text(
-                stringResource(R.string.app_name),
+                stringResource(Res.string.app_name),
                 fontSize = 64.sp,
                 fontWeight = FontWeight.Black,
                 color = Gold,
                 modifier = Modifier.graphicsLayer { scaleX = pulse; scaleY = pulse },
             )
-            Text(stringResource(R.string.tagline), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(Res.string.tagline), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(48.dp))
 
             val buttonModifier = Modifier
@@ -107,39 +117,39 @@ fun HomeScreen(
                 .height(56.dp)
             activeGameId?.let { id ->
                 Button(onClick = { onContinue(id) }, modifier = buttonModifier) {
-                    Text(stringResource(R.string.continue_game), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(Res.string.continue_game), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(12.dp))
             }
             if (activeGameId == null) {
                 Button(onClick = onNewGame, modifier = buttonModifier) {
-                    Text(stringResource(R.string.new_game), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(Res.string.new_game), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             } else {
                 OutlinedButton(onClick = { confirmDiscard = true }, modifier = buttonModifier) {
-                    Text(stringResource(R.string.new_game), fontSize = 18.sp)
+                    Text(stringResource(Res.string.new_game), fontSize = 18.sp)
                 }
             }
             Spacer(Modifier.height(12.dp))
             OutlinedButton(onClick = onHistory, modifier = buttonModifier) {
-                Text(stringResource(R.string.history), fontSize = 18.sp)
+                Text(stringResource(Res.string.history), fontSize = 18.sp)
             }
             Spacer(Modifier.height(12.dp))
             OutlinedButton(onClick = onLeaderboard, modifier = buttonModifier) {
-                Text(stringResource(R.string.leaderboard), fontSize = 18.sp)
+                Text(stringResource(Res.string.leaderboard), fontSize = 18.sp)
             }
             Spacer(Modifier.height(12.dp))
             OutlinedButton(onClick = onFriends, modifier = buttonModifier) {
-                Text(stringResource(R.string.friends), fontSize = 18.sp)
+                Text(stringResource(Res.string.friends), fontSize = 18.sp)
             }
         }
     }
 
     if (confirmDiscard) {
         ConfirmDialog(
-            title = stringResource(R.string.discard_active_title),
-            message = stringResource(R.string.discard_active_message),
-            confirmLabel = stringResource(R.string.new_game),
+            title = stringResource(Res.string.discard_active_title),
+            message = stringResource(Res.string.discard_active_message),
+            confirmLabel = stringResource(Res.string.new_game),
             onConfirm = { confirmDiscard = false; onNewGame() },
             onDismiss = { confirmDiscard = false },
         )

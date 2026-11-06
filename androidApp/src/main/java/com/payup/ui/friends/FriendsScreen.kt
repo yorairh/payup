@@ -1,5 +1,17 @@
 package com.payup.ui.friends
 
+import org.jetbrains.compose.resources.getString
+import com.payup.resources.Res
+import com.payup.resources.add
+import com.payup.resources.add_player
+import com.payup.resources.delete
+import com.payup.resources.delete_friend_message
+import com.payup.resources.delete_friend_title
+import com.payup.resources.friend_exists
+import com.payup.resources.friends
+import com.payup.resources.friends_empty
+import com.payup.resources.rename
+import com.payup.resources.save
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,13 +43,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.payup.R
 import com.payup.data.FriendEntity
 import com.payup.data.GameRepository
 import com.payup.ui.common.ConfirmDialog
@@ -69,18 +80,18 @@ fun FriendsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
 
     Scaffold(
-        topBar = { PayUpTopBar(stringResource(R.string.friends), onBack) },
+        topBar = { PayUpTopBar(stringResource(Res.string.friends), onBack) },
         snackbarHost = { SnackbarHost(snackbar) },
         floatingActionButton = {
             FloatingActionButton(onClick = { adding = true }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_player))
+                Icon(Icons.Default.Add, contentDescription = stringResource(Res.string.add_player))
             }
         },
     ) { padding ->
         val list = friends ?: return@Scaffold
         if (list.isEmpty()) {
             Box(Modifier.fillMaxSize().padding(padding).padding(32.dp), contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.friends_empty), textAlign = TextAlign.Center)
+                Text(stringResource(Res.string.friends_empty), textAlign = TextAlign.Center)
             }
             return@Scaffold
         }
@@ -94,10 +105,10 @@ fun FriendsScreen(onBack: () -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 16.dp)) {
                         Text(friend.name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                         IconButton(onClick = { renaming = friend }) {
-                            Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.rename))
+                            Icon(Icons.Default.Edit, contentDescription = stringResource(Res.string.rename))
                         }
                         IconButton(onClick = { deleting = friend }) {
-                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete))
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.delete))
                         }
                     }
                 }
@@ -107,21 +118,21 @@ fun FriendsScreen(onBack: () -> Unit) {
 
     if (adding) {
         NameDialog(
-            title = stringResource(R.string.add_player),
-            confirmLabel = stringResource(R.string.add),
+            title = stringResource(Res.string.add_player),
+            confirmLabel = stringResource(Res.string.add),
             onConfirm = { vm.add(it); adding = false },
             onDismiss = { adding = false },
         )
     }
     renaming?.let { friend ->
         NameDialog(
-            title = stringResource(R.string.rename),
+            title = stringResource(Res.string.rename),
             initial = friend.name,
-            confirmLabel = stringResource(R.string.save),
+            confirmLabel = stringResource(Res.string.save),
             onConfirm = { newName ->
                 renaming = null
                 vm.rename(friend.id, newName) {
-                    scope.launch { snackbar.showSnackbar(context.getString(R.string.friend_exists, newName)) }
+                    scope.launch { snackbar.showSnackbar(getString(Res.string.friend_exists, newName)) }
                 }
             },
             onDismiss = { renaming = null },
@@ -129,9 +140,9 @@ fun FriendsScreen(onBack: () -> Unit) {
     }
     deleting?.let { friend ->
         ConfirmDialog(
-            title = stringResource(R.string.delete_friend_title, friend.name),
-            message = stringResource(R.string.delete_friend_message),
-            confirmLabel = stringResource(R.string.delete),
+            title = stringResource(Res.string.delete_friend_title, friend.name),
+            message = stringResource(Res.string.delete_friend_message),
+            confirmLabel = stringResource(Res.string.delete),
             onConfirm = { vm.delete(friend.id); deleting = null },
             onDismiss = { deleting = null },
         )

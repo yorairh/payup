@@ -42,7 +42,7 @@
     <string name="setup_hint">每位玩家开局有一次买入。</string>
     <string name="no_friends_yet">在上方输入名字，添加第一位玩家。</string>
     <plurals name="start_game">
-        <item quantity="other">开始牌局 · %d 位玩家</item>
+        <item quantity="other">开始牌局 · %1$d 位玩家</item>
     </plurals>
     <string name="random_dealer">随机庄家</string>
     <string name="random_dealer_hint">开局前先发牌；第一个拿到 A 的人是庄家。</string>
@@ -57,7 +57,7 @@
     <string name="table_title">牌桌</string>
     <string name="pot">底池</string>
     <plurals name="buy_ins_count">
-        <item quantity="other">%d 次买入</item>
+        <item quantity="other">%1$d 次买入</item>
     </plurals>
     <string name="add_buy_in">+%1$s</string>
     <string name="custom">自定义</string>
@@ -128,7 +128,7 @@
     <!-- history -->
     <string name="history_empty">还没有牌局。结束的牌局会显示在这里。</string>
     <plurals name="players_count">
-        <item quantity="other">%d 位玩家</item>
+        <item quantity="other">%1$d 位玩家</item>
     </plurals>
     <string name="pot_value">底池 %1$s</string>
     <string name="delete_game_title">删除这场牌局？</string>
@@ -157,7 +157,7 @@
     <string name="stat_best">最佳</string>
     <string name="stat_worst">最差</string>
     <string name="stat_buy_ins">买入</string>
-    <string name="percent">%1$d%%</string>
+    <string name="percent">%1$d%</string>
     <!-- backup -->
     <string name="backup_title">备份</string>
     <string name="backup_summary">保存或恢复你的牌局</string>

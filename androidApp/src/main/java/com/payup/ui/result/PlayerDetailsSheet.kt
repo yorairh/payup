@@ -1,5 +1,15 @@
 package com.payup.ui.result
 
+import com.payup.resources.Res
+import com.payup.resources.buy_ins_title
+import com.payup.resources.chips_at
+import com.payup.resources.final_amount
+import com.payup.resources.gets_from
+import com.payup.resources.no_buy_ins
+import com.payup.resources.no_payments
+import com.payup.resources.payments
+import com.payup.resources.pays_to
+import com.payup.resources.total_put_in
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,10 +30,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.payup.R
 import com.payup.data.GameWithDetails
 import com.payup.ui.common.money
 import com.payup.ui.common.signedMoney
@@ -64,24 +73,24 @@ fun PlayerDetailsSheet(game: GameWithDetails, playerName: String, onDismiss: () 
             Text(playerName, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(signedMoney(net), color = netColor, fontWeight = FontWeight.Black, style = MaterialTheme.typography.headlineMedium)
 
-            Section(stringResource(R.string.buy_ins_title))
-            if (buyIns.isEmpty()) Text(stringResource(R.string.no_buy_ins), style = MaterialTheme.typography.bodyMedium)
+            Section(stringResource(Res.string.buy_ins_title))
+            if (buyIns.isEmpty()) Text(stringResource(Res.string.no_buy_ins), style = MaterialTheme.typography.bodyMedium)
             buyIns.forEach {
                 Line(timeFormat.format(Date(it.createdAt)), money(it.amount))
             }
-            Line(stringResource(R.string.total_put_in), money(player.totalIn), bold = true, valueColor = Gold)
+            Line(stringResource(Res.string.total_put_in), money(player.totalIn), bold = true, valueColor = Gold)
 
-            Section(stringResource(R.string.final_amount))
+            Section(stringResource(Res.string.final_amount))
             if (chips != null && chipValue != null) {
-                Line(stringResource(R.string.chips_at, chips, money(chipValue)), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
+                Line(stringResource(Res.string.chips_at, chips, money(chipValue)), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
             } else {
-                Line(stringResource(R.string.final_amount), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
+                Line(stringResource(Res.string.final_amount), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
             }
 
-            Section(stringResource(R.string.payments))
-            if (pays.isEmpty() && gets.isEmpty()) Text(stringResource(R.string.no_payments), style = MaterialTheme.typography.bodyMedium)
-            pays.forEach { Line(stringResource(R.string.pays_to, it.toName), money(it.amount), valueColor = LoseRed) }
-            gets.forEach { Line(stringResource(R.string.gets_from, it.fromName), money(it.amount), valueColor = WinGreen) }
+            Section(stringResource(Res.string.payments))
+            if (pays.isEmpty() && gets.isEmpty()) Text(stringResource(Res.string.no_payments), style = MaterialTheme.typography.bodyMedium)
+            pays.forEach { Line(stringResource(Res.string.pays_to, it.toName), money(it.amount), valueColor = LoseRed) }
+            gets.forEach { Line(stringResource(Res.string.gets_from, it.fromName), money(it.amount), valueColor = WinGreen) }
             Spacer(Modifier.height(8.dp))
         }
     }
