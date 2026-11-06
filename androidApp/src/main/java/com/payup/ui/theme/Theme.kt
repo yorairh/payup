@@ -10,8 +10,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-
-enum class AppTheme { ORIGINAL, COLOR_BLIND, RICH, WHITE_BLACK, DARK }
+import com.payup.domain.AppTheme
 
 /**
  * Every color the app draws with. The names come from the original "poker felt" look:
