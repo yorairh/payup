@@ -12,9 +12,9 @@ Roadmap task 5. A throwaway port, on branch `spike-b-room3` (never merged), to p
 | `CREATE TABLE` SQL, indices, columns | **Identical** for all 5 tables. The only difference is that Room 3's JSON leaves out empty lists and `"notNull": false` |
 | Database file location | Same: Room 3 resolves a named database through `Context.getDatabasePath` |
 | APK size | 8.17 MB with Room 2.6.1, 8.32 MB with Room 3 (+0.15 MB), using the phone's own SQLite driver |
-| **Opens a real database on a phone** | **Waiting for the phone test below** |
+| **Opens a real database on a phone** | **Yes.** Tested on the user's phone on 2026-11-06: app B (Room 3) installed over app A (Room 2.6.1) and "all works" |
 
-The identical hash and SQL is strong evidence, but only a real file proves it.
+The identical hash and SQL was strong evidence, and the phone test confirmed it.
 
 ## What had to change
 
@@ -48,4 +48,4 @@ Tell me: did step 4 open normally with all games? If the app crashes or shows an
 
 ## Decision for task 6
 
-Room 3 on Android is a go if step 4 passes. It is a no-go for this approach if the Room 2.6.1 file doesn't open; then the options are the Room 2.8 intermediate step or a one-time export and import through the backup file (task 2 already exists for exactly this).
+**Result: GO.** The phone test passed, so Room 3 on Android is a go. The fallback options (the Room 2.8 intermediate step, or a one-time export and import through the backup file from task 2) are not needed.
