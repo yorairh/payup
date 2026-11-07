@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontFamily
@@ -53,6 +54,17 @@ import org.jetbrains.compose.resources.stringResource
 @JsFun("() => { if (window.payupReady) window.payupReady() }")
 private external fun notifyReady()
 
+/** Colours the page behind the app and the browser's own bars, and remembers it for the next start (see index.html). */
+@JsFun(
+    """(hex) => {
+        document.documentElement.style.background = hex;
+        const meta = document.querySelector('meta[name=theme-color]');
+        if (meta) meta.setAttribute('content', hex);
+        try { localStorage.setItem('themeColor', hex); } catch (e) {}
+    }""",
+)
+private external fun applyThemeColor(hex: String)
+
 private val rightToLeftLanguages = setOf("he", "iw", "ar")
 
 @Composable
@@ -63,6 +75,11 @@ fun WebApp() {
     CompositionLocalProvider(LocalLayoutDirection provides direction) {
         val theme by WebSettings.themeStore.theme.collectAsState()
         PayUpTheme(theme) {
+            // Safari colours its top and bottom bars from the page, so they follow the theme's background.
+            val background = MaterialTheme.colorScheme.background
+            LaunchedEffect(background) {
+                applyThemeColor("#" + (background.toArgb() and 0xFFFFFF).toString(16).padStart(6, '0'))
+            }
             Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 Gates {
                     SingleTab { database ->
