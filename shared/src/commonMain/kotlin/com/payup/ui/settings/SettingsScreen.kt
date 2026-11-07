@@ -1,5 +1,7 @@
 package com.payup.ui.settings
 
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import org.jetbrains.compose.resources.StringResource
 import com.payup.resources.Res
 import com.payup.resources.backup_summary
@@ -48,7 +50,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -72,7 +73,12 @@ fun SettingsScreen(onBack: () -> Unit) {
     val store = LocalAppDependencies.current.themeStore
     val selected by store.theme.collectAsStateWithLifecycle()
 
-    Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.settings), onBack) }) { padding ->
+    val snackbar = remember { SnackbarHostState() }
+
+    Scaffold(
+        topBar = { PayUpTopBar(stringResource(Res.string.settings), onBack) },
+        snackbarHost = { SnackbarHost(snackbar) },
+    ) { padding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
@@ -106,7 +112,7 @@ fun SettingsScreen(onBack: () -> Unit) {
                 }
             }
             CollapsibleSection(stringResource(Res.string.backup_title), stringResource(Res.string.backup_summary)) {
-                BackupActions()
+                BackupActions(snackbar)
             }
             Spacer(Modifier.padding(8.dp))
         }

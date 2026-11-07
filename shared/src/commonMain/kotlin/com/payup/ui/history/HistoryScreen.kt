@@ -1,5 +1,6 @@
 package com.payup.ui.history
 
+import com.payup.platform.LocalPlatform
 import com.payup.resources.Res
 import com.payup.resources.delete
 import com.payup.resources.delete_game_message
@@ -56,8 +57,6 @@ import com.payup.ui.theme.Gold
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.text.DateFormat
-import java.util.Date
 
 @Composable
 fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
@@ -97,10 +96,8 @@ fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
 
 @Composable
 private fun HistoryCard(game: GameWithDetails, onClick: () -> Unit, onDelete: () -> Unit) {
-    val date = remember(game.game.id) {
-        DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
-            .format(Date(game.game.endedAt ?: game.game.startedAt))
-    }
+    val dates = LocalPlatform.current.dates
+    val date = remember(game.game.id) { dates.dateTime(game.game.endedAt ?: game.game.startedAt) }
     val topWinner = remember(game) { game.results().firstOrNull { it.outcome == Outcome.TopWinner } }
 
     ProvideCurrency(game.game.currency) {

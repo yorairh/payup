@@ -1,5 +1,7 @@
 package com.payup.ui.result
 
+import com.payup.platform.LocalPlatform
+import com.payup.ui.common.isRtl
 import com.payup.resources.Res
 import com.payup.resources.broke_even
 import com.payup.resources.done
@@ -48,7 +50,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
 import com.payup.ui.common.PayUpTopBar
 import com.payup.ui.common.ProvideCurrency
 import androidx.compose.material3.MaterialTheme
@@ -107,7 +108,8 @@ fun ResultScreen(gameId: Long, celebrate: Boolean, onDone: () -> Unit) {
 
 @Composable
 private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: () -> Unit) {
-    val context = LocalContext.current
+    val platform = LocalPlatform.current
+    val rtl = isRtl()
     val scope = androidx.compose.runtime.rememberCoroutineScope()
     val palette = LocalPayUp.current
     var detailsOf by remember { mutableStateOf<String?>(null) }
@@ -147,11 +149,11 @@ private fun ResultContent(vm: ResultViewModel, game: GameWithDetails, onDone: ()
                             DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                                 DropdownMenuItem(
                                     text = { Text(stringResource(Res.string.share_text)) },
-                                    onClick = { menuOpen = false; scope.launch { shareText(context, game) } },
+                                    onClick = { menuOpen = false; scope.launch { platform.share.shareText(buildShareText(game, rtl, platform.dates)) } },
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(Res.string.share_image)) },
-                                    onClick = { menuOpen = false; scope.launch { shareImage(context, game, palette) } },
+                                    onClick = { menuOpen = false; scope.launch { platform.share.shareResultImage(game, palette, rtl) } },
                                 )
                             }
                         },
@@ -228,7 +230,8 @@ private fun Title(game: GameWithDetails, celebrate: Boolean, show: Boolean) {
     LaunchedEffect(show) {
         if (show) scale.animateTo(1f, spring(dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow))
     }
-    val date = remember(game.game.id) { game.dateText() }
+    val dates = LocalPlatform.current.dates
+    val date = remember(game.game.id) { game.dateText(dates) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier

@@ -1,5 +1,6 @@
 package com.payup.ui.table
 
+import com.payup.ui.common.isRtl
 import org.jetbrains.compose.resources.getString
 import com.payup.resources.Res
 import com.payup.resources.add
@@ -60,7 +61,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -97,7 +97,7 @@ fun TableScreen(gameId: Long, onBack: () -> Unit, onEndGame: () -> Unit) {
 private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -> Unit, onEndGame: () -> Unit) {
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
+    val rtl = isRtl()
     val currency = LocalCurrency.current
     var customFor by remember { mutableStateOf<PlayerWithBuyIns?>(null) }
     var addingPlayer by remember { mutableStateOf(false) }
@@ -123,7 +123,7 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
                     onClick = {
                         vm.undo { name, amount ->
                             scope.launch {
-                                snackbar.showSnackbar(getString(Res.string.undone, moneyText(context, amount, currency), name))
+                                snackbar.showSnackbar(getString(Res.string.undone, moneyText(amount, currency, rtl), name))
                             }
                         }
                     },

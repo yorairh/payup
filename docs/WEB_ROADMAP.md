@@ -50,7 +50,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 - [x] **10.** (Done: multiplatform-settings, same "settings" file and keys on Android so values carry over; 8 new tests.) Replace `ThemeStore` and `CurrencyStore` (SharedPreferences) with multiplatform settings, migrating the existing values.
 - [x] **11.** (Done: Compose resources in `:shared`, `values-he`, `AppLanguage` interface with the Android side, `StringParityTest`. Note for task 15: on the web `stringResource` loads asynchronously, so strings appear after the first frame unless they are preloaded.) Move strings to Compose resources: 9 languages with plurals, plus a cross-platform language override. Android keeps the system per-app language. Add the string-parity check to the repo.
 - [x] **12.** (Done: ViewModels are in `:shared`, `AppDependencies` replaces the `PayUpApp` cast, typed `Route` keys with JetBrains Navigation 3, same fade between screens. The backup file is read by the Android screen and handed to `BackupViewModel` as text.) Move ViewModels to lifecycle KMP, and the string routes to Navigation 3 with typed routes.
-- [ ] **13.** Move the screens to commonMain. The platform pieces become small expect/actuals:
+- [x] **13.** (Done: all screens, theme and common code are in `:shared`; the platform pieces are interfaces in `LocalPlatform` instead of expect/actual, with Android implementations in `:androidApp`. The share image is still drawn on an Android bitmap. The "backup saved" Toast became a snackbar.) Move the screens to commonMain. The platform pieces become small interfaces:
   - share text and share image (the image is currently drawn with Android Canvas);
   - date and time formatting;
   - system bars and the back button;

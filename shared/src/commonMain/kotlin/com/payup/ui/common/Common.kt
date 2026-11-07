@@ -23,7 +23,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.payup.domain.Currency
 import androidx.compose.runtime.mutableStateOf
@@ -69,21 +70,20 @@ fun ProvideCurrency(code: String?, content: @Composable () -> Unit) =
 fun ProvideCurrency(currency: Currency, content: @Composable () -> Unit) =
     CompositionLocalProvider(LocalCurrency provides currency, content = content)
 
+/** True when text and layout run right to left (Hebrew, Arabic). */
+@Composable
+fun isRtl(): Boolean = LocalLayoutDirection.current == LayoutDirection.Rtl
+
 /** Formats an amount in agorot with the current currency: ₪50, ₪18.5, −₪3.25. */
 @Composable
-fun money(amount: Int): String = moneyText(LocalContext.current, amount, LocalCurrency.current)
+fun money(amount: Int): String = moneyText(amount, LocalCurrency.current, isRtl())
 
 @Composable
-fun signedMoney(amount: Int): String = moneyText(LocalContext.current, amount, LocalCurrency.current, showPlus = true)
+fun signedMoney(amount: Int): String = moneyText(amount, LocalCurrency.current, isRtl(), showPlus = true)
 
 /** Same as [money] for code outside composition (snackbars, sharing); [showPlus] marks a positive amount with "+". */
-fun moneyText(context: android.content.Context, amount: Int, currency: Currency, showPlus: Boolean = false): String {
-    return MoneyFormat.format(amount, currency, context.isRtl(), showPlus)
-}
-
-/** True when the app's current language is written right to left (Hebrew, Arabic). */
-fun android.content.Context.isRtl(): Boolean =
-    resources.configuration.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
+fun moneyText(amount: Int, currency: Currency, rtl: Boolean, showPlus: Boolean = false): String =
+    MoneyFormat.format(amount, currency, rtl, showPlus)
 
 /** Leaderboard amounts are summed across games without converting, so they show the latest game's currency. */
 @Composable

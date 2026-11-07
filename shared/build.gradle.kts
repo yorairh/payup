@@ -42,6 +42,13 @@ kotlin {
             api(libs.jetbrains.lifecycle.viewmodel.navigation3)
             api(libs.multiplatform.settings)
             api(compose.runtime)
+            api(compose.foundation)
+            api(compose.material3)
+            api(compose.ui)
+            api(compose.animation)
+            api(libs.compose.material.icons.core)
+            api(libs.jetbrains.lifecycle.viewmodel.compose)
+            api(libs.jetbrains.lifecycle.runtime.compose)
             api(libs.compose.components.resources)
         }
         commonTest.dependencies {

@@ -1,5 +1,6 @@
 package com.payup.ui.result
 
+import com.payup.platform.LocalPlatform
 import com.payup.resources.Res
 import com.payup.resources.buy_ins_title
 import com.payup.resources.chips_at
@@ -40,8 +41,6 @@ import com.payup.ui.theme.Cream
 import com.payup.ui.theme.Gold
 import com.payup.ui.theme.LoseRed
 import com.payup.ui.theme.WinGreen
-import java.text.DateFormat
-import java.util.Date
 
 /** Everything this game knows about one player: buy-ins, what they finished with, the result, and who they settle with. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +48,7 @@ import java.util.Date
 fun PlayerDetailsSheet(game: GameWithDetails, playerName: String, onDismiss: () -> Unit) {
     val player = game.players.firstOrNull { it.player.name == playerName } ?: return
     val buyIns = remember(player.buyIns) { player.buyIns.sortedWith(compareBy({ it.createdAt }, { it.id })) }
-    val timeFormat = remember { DateFormat.getTimeInstance(DateFormat.SHORT) }
+    val dates = LocalPlatform.current.dates
     val net = player.player.net ?: 0
     val netColor: Color = when {
         net > 0 -> WinGreen
@@ -76,7 +75,7 @@ fun PlayerDetailsSheet(game: GameWithDetails, playerName: String, onDismiss: () 
             Section(stringResource(Res.string.buy_ins_title))
             if (buyIns.isEmpty()) Text(stringResource(Res.string.no_buy_ins), style = MaterialTheme.typography.bodyMedium)
             buyIns.forEach {
-                Line(timeFormat.format(Date(it.createdAt)), money(it.amount))
+                Line(dates.time(it.createdAt), money(it.amount))
             }
             Line(stringResource(Res.string.total_put_in), money(player.totalIn), bold = true, valueColor = Gold)
 
