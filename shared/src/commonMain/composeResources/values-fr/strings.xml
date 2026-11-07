@@ -63,7 +63,6 @@
         <item quantity="many">%1$d buy-ins</item>
         <item quantity="other">%1$d buy-ins</item>
     </plurals>
-    <string name="add_buy_in">+%1$s</string>
     <string name="custom">Autre</string>
     <string name="custom_buy_in_title">Buy-in personnalisé pour %1$s</string>
     <string name="undo_last">Annuler le dernier</string>

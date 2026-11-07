@@ -4,7 +4,6 @@ import com.payup.ui.common.isRtl
 import org.jetbrains.compose.resources.getString
 import com.payup.resources.Res
 import com.payup.resources.add
-import com.payup.resources.add_buy_in
 import com.payup.resources.add_player
 import com.payup.resources.buy_ins_count
 import com.payup.resources.custom
@@ -79,6 +78,7 @@ import com.payup.ui.common.PayUpTopBar
 import com.payup.ui.common.ProvideCurrency
 import com.payup.ui.common.money
 import com.payup.ui.common.moneyText
+import com.payup.ui.common.signedMoney
 import com.payup.ui.common.payUpViewModel
 import com.payup.ui.theme.Gold
 import kotlinx.coroutines.flow.SharingStarted
@@ -260,7 +260,7 @@ private fun PlayerCard(
             TextButton(onClick = onCustom) { Text(stringResource(Res.string.custom)) }
             Spacer(Modifier.width(4.dp))
             Button(onClick = onBuyIn, modifier = Modifier.height(52.dp)) {
-                Text(stringResource(Res.string.add_buy_in, money(defaultBuyIn)), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(signedMoney(defaultBuyIn), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
         }
     }

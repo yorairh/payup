@@ -63,7 +63,6 @@
         <item quantity="many">%1$d entradas</item>
         <item quantity="other">%1$d entradas</item>
     </plurals>
-    <string name="add_buy_in">+%1$s</string>
     <string name="custom">Outro valor</string>
     <string name="custom_buy_in_title">Entrada personalizada para %1$s</string>
     <string name="undo_last">Desfazer última</string>

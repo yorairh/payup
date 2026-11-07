@@ -65,7 +65,6 @@
         <item quantity="many">%1$d бай-инов</item>
         <item quantity="other">%1$d бай-ина</item>
     </plurals>
-    <string name="add_buy_in">+%1$s</string>
     <string name="custom">Своя сумма</string>
     <string name="custom_buy_in_title">Свой бай-ин для %1$s</string>
     <string name="undo_last">Отменить последний</string>
