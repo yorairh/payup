@@ -5,12 +5,11 @@ name: Deploy web
 on:
   push:
     tags: ['v[0-9]+.[0-9]+.[0-9]+']
-    branches: [milestone-1-code-split] # TEMPORARY, for the first test run: deploys to the preview channel "ci-test"
   workflow_dispatch:
     inputs:
       channel:
         description: 'Firebase channel ("live" is the real site; anything else is a temporary preview)'
-        default: 'ci-test'
+        default: 'live'
 
 permissions:
   contents: read
@@ -42,5 +41,5 @@ jobs:
         with:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PAYUP_AE6FC }}
           projectId: payup-ae6fc
-          channelId: ${{ github.ref_type == 'tag' && 'live' || inputs.channel || 'ci-test' }}
+          channelId: ${{ github.ref_type == 'tag' && 'live' || inputs.channel }}
           expires: 7d
