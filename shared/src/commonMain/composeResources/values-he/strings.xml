@@ -65,7 +65,6 @@
         <item quantity="many">%1$d כניסות</item>
         <item quantity="other">%1$d כניסות</item>
     </plurals>
-    <string name="add_buy_in">+%1$s</string>
     <string name="custom">סכום אחר</string>
     <string name="custom_buy_in_title">כניסה בסכום אחר ל%1$s</string>
     <string name="undo_last">ביטול אחרון</string>

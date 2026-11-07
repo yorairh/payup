@@ -69,7 +69,6 @@
         <item quantity="many">%1$d دخولًا</item>
         <item quantity="other">%1$d دخول</item>
     </plurals>
-    <string name="add_buy_in">+%1$s</string>
     <string name="custom">مخصص</string>
     <string name="custom_buy_in_title">دخول مخصص لـ %1$s</string>
     <string name="undo_last">تراجع عن الأخير</string>

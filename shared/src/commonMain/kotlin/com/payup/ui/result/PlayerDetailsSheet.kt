@@ -35,6 +35,7 @@ import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.payup.data.GameWithDetails
+import com.payup.ui.common.leftToRight
 import com.payup.ui.common.money
 import com.payup.ui.common.signedMoney
 import com.payup.ui.theme.Cream
@@ -81,7 +82,7 @@ fun PlayerDetailsSheet(game: GameWithDetails, playerName: String, onDismiss: () 
 
             Section(stringResource(Res.string.final_amount))
             if (chips != null && chipValue != null) {
-                Line(stringResource(Res.string.chips_at, chips, money(chipValue)), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
+                Line(leftToRight(stringResource(Res.string.chips_at, chips, money(chipValue))), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
             } else {
                 Line(stringResource(Res.string.final_amount), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
             }

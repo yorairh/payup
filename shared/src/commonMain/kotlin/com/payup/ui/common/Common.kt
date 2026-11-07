@@ -74,6 +74,9 @@ fun ProvideCurrency(currency: Currency, content: @Composable () -> Unit) =
 @Composable
 fun isRtl(): Boolean = LocalLayoutDirection.current == LayoutDirection.Rtl
 
+/** Keeps [text] (a sum like "10 chips × ₪5") reading left to right inside right-to-left text. */
+fun leftToRight(text: String): String = "⁦" + text + "⁩"
+
 /** Formats an amount in agorot with the current currency: ₪50, ₪18.5, −₪3.25. */
 @Composable
 fun money(amount: Int): String = moneyText(amount, LocalCurrency.current, isRtl())
