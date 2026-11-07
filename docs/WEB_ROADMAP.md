@@ -55,7 +55,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
   - date and time formatting;
   - system bars and the back button;
   - opening links.
-- [ ] **14.** Release 0.3.0, after a full phone regression check (every screen, every language, upgrade over 0.2.0 keeps the games).
+- [ ] **14.** (Deferred by the user on 2026-11-07: the 0.3.0 release candidate was built and nothing was pushed or tagged; do the release later, then the version in `androidApp/build.gradle.kts` is still 0.2.0 / code 2. Continue with milestone 2 first.) Release 0.3.0, after a full phone regression check (every screen, every language, upgrade over 0.2.0 keeps the games).
 
 ## Milestone 2 — the web app, local only (release 0.4.0)
 - [ ] **15.** Add the web target and entry point: `index.html`, a loading screen, bundled fonts, and an "update your iOS" page for unsupported browsers.
