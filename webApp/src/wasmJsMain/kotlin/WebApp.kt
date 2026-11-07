@@ -2,12 +2,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,9 +22,12 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.payup.data.AppDatabase
+import com.payup.data.FriendEntity
 import com.payup.domain.AppTheme
 import com.payup.domain.Currency
 import com.payup.resources.Res
+import com.payup.resources.already_open_in_another_tab
 import com.payup.resources.payup
 import com.payup.resources.players_count
 import com.payup.ui.common.isRtl
@@ -38,6 +44,7 @@ import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.preloadFont
 import org.jetbrains.compose.resources.stringResource
+import kotlinx.coroutines.launch
 
 /** Tells index.html the first real screen is up, so it can remove its loading screen. */
 @JsFun("() => { if (window.payupReady) window.payupReady() }")
@@ -55,9 +62,10 @@ fun WebApp() {
     val language = remember { browserLanguage().substringBefore('-').lowercase() }
     val direction = if (language in rightToLeftLanguages) LayoutDirection.Rtl else LayoutDirection.Ltr
     CompositionLocalProvider(LocalLayoutDirection provides direction) {
-        PayUpTheme(AppTheme.ORIGINAL) {
+        val theme by WebSettings.themeStore.theme.collectAsState()
+        PayUpTheme(theme) {
             Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                Gates { Shell() }
+                Gates { SingleTab { database -> Shell(database) } }
             }
         }
     }
@@ -93,9 +101,25 @@ private fun Gates(content: @Composable () -> Unit) {
     }
 }
 
+/** Opens the database, unless another tab of PayUp already has it open. */
+@Composable
+private fun SingleTab(content: @Composable (AppDatabase) -> Unit) {
+    var database by remember { mutableStateOf<AppDatabase?>(null) }
+    var blocked by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (acquireSingleTabLock()) database = openWebDatabase() else blocked = true
+    }
+    when {
+        blocked -> Column(Modifier.fillMaxSize().padding(24.dp), Arrangement.Center, Alignment.CenterHorizontally) {
+            Text(stringResource(Res.string.already_open_in_another_tab), style = MaterialTheme.typography.titleMedium)
+        }
+        database != null -> content(database!!)
+    }
+}
+
 /** A stand-in for the real screens, which arrive once the web database and platform pieces exist (roadmap 16 and 17). */
 @Composable
-private fun Shell() {
+private fun Shell(database: AppDatabase) {
     Column(
         Modifier.fillMaxSize().padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
@@ -109,5 +133,23 @@ private fun Shell() {
         Text("גבמר · مرحبا · 你好 · Привет · é ñ ü", style = MaterialTheme.typography.titleMedium)
         Text("♠ ♥ ♣ ♦  👑 🪙 🌧️", style = MaterialTheme.typography.titleMedium)
         Text("Web version: the screens are coming", style = MaterialTheme.typography.bodyMedium)
+        StorageCheck(database)
+    }
+}
+
+/** Temporary check that saved data survives a reload (roadmap 16). Removed when the real screens arrive (17). */
+@Composable
+private fun StorageCheck(database: AppDatabase) {
+    val names by database.dao().friends().collectAsState(emptyList())
+    val theme by WebSettings.themeStore.theme.collectAsState()
+    val scope = rememberCoroutineScope()
+    Text("Database: ${names.size} saved: ${names.joinToString { it.name }}", style = MaterialTheme.typography.bodyMedium)
+    Button(onClick = { scope.launch { database.dao().insertFriend(FriendEntity(name = "Test ${names.size + 1}")) } }) {
+        Text("Add a test name")
+    }
+    Button(onClick = { scope.launch { names.forEach { database.dao().deleteFriend(it.id) } } }) { Text("Delete test names") }
+    Text("Theme: ${theme.name}", style = MaterialTheme.typography.bodyMedium)
+    Button(onClick = { WebSettings.themeStore.set(AppTheme.entries[(theme.ordinal + 1) % AppTheme.entries.size]) }) {
+        Text("Change theme")
     }
 }

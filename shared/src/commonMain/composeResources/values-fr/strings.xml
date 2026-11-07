@@ -185,4 +185,5 @@
     <string name="backup_error_invalid">Le fichier de sauvegarde est endommagé ou contient des données non valides.</string>
     <string name="backup_error_read">Impossible de lire le fichier.</string>
     <string name="close">Fermer</string>
+    <string name="already_open_in_another_tab">PayUp est déjà ouvert dans un autre onglet. Fermez l’autre onglet, puis rechargez cette page.</string>
 </resources>

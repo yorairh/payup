@@ -185,4 +185,5 @@
     <string name="backup_error_invalid">El archivo de copia está dañado o contiene datos no válidos.</string>
     <string name="backup_error_read">No se pudo leer el archivo.</string>
     <string name="close">Cerrar</string>
+    <string name="already_open_in_another_tab">PayUp ya está abierto en otra pestaña. Cierra la otra pestaña y vuelve a cargar esta página.</string>
 </resources>
