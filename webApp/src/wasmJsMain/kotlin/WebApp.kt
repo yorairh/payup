@@ -1,5 +1,11 @@
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.TextButton
+import com.payup.resources.close
+import com.payup.resources.install_hint_body
+import com.payup.resources.install_hint_title
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -83,10 +89,40 @@ fun WebApp() {
             Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 Gates {
                     SingleTab { database ->
-                        Providers(database) { PayUpNavHost(bindToBrowser = { BrowserHistory(it) }) }
+                        Providers(database) {
+                            Box(Modifier.fillMaxSize()) {
+                                PayUpNavHost(bindToBrowser = { BrowserHistory(it) })
+                                InstallHintBanner(Modifier.align(Alignment.BottomCenter))
+                            }
+                        }
                     }
                 }
             }
+        }
+    }
+}
+
+/** On iPhone, a closable note on how to add the app to the Home Screen, which also keeps the saved games safe. */
+@Composable
+private fun InstallHintBanner(modifier: Modifier) {
+    var visible by remember { mutableStateOf(WebSettings.installHint.shouldShow()) }
+    if (!visible) return
+    Surface(
+        modifier.padding(16.dp),
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        shadowElevation = 8.dp,
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(stringResource(Res.string.install_hint_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(Res.string.install_hint_body), style = MaterialTheme.typography.bodyMedium)
+            TextButton(
+                onClick = {
+                    WebSettings.installHint.closed()
+                    visible = false
+                },
+                modifier = Modifier.align(Alignment.End),
+            ) { Text(stringResource(Res.string.close)) }
         }
     }
 }

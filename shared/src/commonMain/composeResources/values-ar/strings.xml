@@ -196,4 +196,6 @@
     <string name="close">إغلاق</string>
     <string name="already_open_in_another_tab">PayUp مفتوح بالفعل في علامة تبويب أخرى. أغلق علامة التبويب الأخرى ثم أعد تحميل هذه الصفحة.</string>
     <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
+    <string name="install_hint_title">أضف PayUp إلى الشاشة الرئيسية</string>
+    <string name="install_hint_body">اضغط على زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». سيُفتح PayUp كتطبيق وستبقى ألعابك محفوظة.</string>
 </resources>

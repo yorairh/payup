@@ -187,4 +187,6 @@
     <string name="close">Cerrar</string>
     <string name="already_open_in_another_tab">PayUp ya está abierto en otra pestaña. Cierra la otra pestaña y vuelve a cargar esta página.</string>
     <string name="copied_to_clipboard">Copiado al portapapeles</string>
+    <string name="install_hint_title">Añade PayUp a tu pantalla de inicio</string>
+    <string name="install_hint_body">Toca el botón Compartir y luego «Añadir a pantalla de inicio». PayUp se abrirá como una app y tus partidas estarán a salvo.</string>
 </resources>

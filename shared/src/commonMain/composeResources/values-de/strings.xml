@@ -184,4 +184,6 @@
     <string name="close">Schließen</string>
     <string name="already_open_in_another_tab">PayUp ist bereits in einem anderen Tab geöffnet. Schließe den anderen Tab und lade diese Seite neu.</string>
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
+    <string name="install_hint_title">PayUp zum Home-Bildschirm hinzufügen</string>
+    <string name="install_hint_body">Tippe auf „Teilen“ und dann auf „Zum Home-Bildschirm“. PayUp öffnet sich dann wie eine App, und deine Spiele bleiben sicher gespeichert.</string>
 </resources>

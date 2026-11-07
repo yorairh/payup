@@ -190,4 +190,6 @@
     <string name="close">Закрыть</string>
     <string name="already_open_in_another_tab">PayUp уже открыт в другой вкладке. Закройте другую вкладку и обновите эту страницу.</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
+    <string name="install_hint_title">Добавьте PayUp на главный экран</string>
+    <string name="install_hint_body">Нажмите «Поделиться», затем «На экран “Домой”». PayUp будет открываться как приложение, а ваши игры сохранятся.</string>
 </resources>

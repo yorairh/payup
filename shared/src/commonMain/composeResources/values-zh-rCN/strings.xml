@@ -181,4 +181,6 @@
     <string name="close">关闭</string>
     <string name="already_open_in_another_tab">PayUp 已在另一个标签页中打开。请关闭另一个标签页，然后重新加载此页面。</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
+    <string name="install_hint_title">将 PayUp 添加到主屏幕</string>
+    <string name="install_hint_body">点按“分享”按钮，然后选择“添加到主屏幕”。PayUp 将像应用一样打开，你的牌局也会被妥善保存。</string>
 </resources>

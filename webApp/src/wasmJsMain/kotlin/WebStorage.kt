@@ -3,6 +3,7 @@ import androidx.sqlite.driver.web.WebWorkerSQLiteDriver
 import com.payup.data.AppDatabase
 import com.payup.data.CurrencyStore
 import com.payup.data.ThemeStore
+import com.russhwolf.settings.Settings
 import com.russhwolf.settings.StorageSettings
 import kotlinx.coroutines.await
 import kotlinx.coroutines.delay
@@ -17,6 +18,7 @@ object WebSettings {
     val themeStore = ThemeStore(settings)
     val currencyStore = CurrencyStore(settings)
     val language = WebAppLanguage(settings)
+    val installHint = InstallHint(settings)
 }
 
 /**
@@ -57,4 +59,28 @@ suspend fun acquireSingleTabLock(): Boolean {
         delay(300)
     }
     return false
+}
+
+/**
+ * The "Add to Home Screen" hint. Safari deletes a website's saved data after about a week without a visit, but not an
+ * app added to the Home Screen, so the hint is shown on the first visit and once more a week after it was closed.
+ */
+class InstallHint(private val settings: Settings) {
+    fun shouldShow(): Boolean {
+        if (!isIosBrowserNotInstalled()) return false
+        val closed = settings.getInt(CLOSED_COUNT, 0)
+        val last = settings.getLong(LAST_CLOSED, 0L)
+        return closed == 0 || (closed == 1 && nowMillis() - last > WEEK_MILLIS)
+    }
+
+    fun closed() {
+        settings.putInt(CLOSED_COUNT, settings.getInt(CLOSED_COUNT, 0) + 1)
+        settings.putLong(LAST_CLOSED, nowMillis().toLong())
+    }
+
+    private companion object {
+        const val CLOSED_COUNT = "installHintClosed"
+        const val LAST_CLOSED = "installHintLastClosed"
+        const val WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000.0
+    }
 }
