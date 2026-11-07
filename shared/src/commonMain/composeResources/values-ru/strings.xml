@@ -188,4 +188,5 @@
     <string name="backup_error_invalid">Файл резервной копии повреждён или содержит недопустимые данные.</string>
     <string name="backup_error_read">Не удалось прочитать файл.</string>
     <string name="close">Закрыть</string>
+    <string name="already_open_in_another_tab">PayUp уже открыт в другой вкладке. Закройте другую вкладку и обновите эту страницу.</string>
 </resources>

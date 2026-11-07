@@ -23,6 +23,10 @@ kotlin {
     sourceSets {
         wasmJsMain.dependencies {
             implementation(project(":shared"))
+            implementation(libs.androidx.sqlite.web)
+            implementation(libs.kotlinx.browser)
+            // The Web Worker that runs SQLite, bundled from webApp/worker.
+            implementation(npm("sqlite-wasm-worker", layout.projectDirectory.dir("worker").asFile))
         }
     }
 }

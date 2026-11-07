@@ -194,4 +194,5 @@
     <string name="backup_error_invalid">ملف النسخة الاحتياطية تالف أو يحتوي على بيانات غير صالحة.</string>
     <string name="backup_error_read">تعذّرت قراءة الملف.</string>
     <string name="close">إغلاق</string>
+    <string name="already_open_in_another_tab">PayUp مفتوح بالفعل في علامة تبويب أخرى. أغلق علامة التبويب الأخرى ثم أعد تحميل هذه الصفحة.</string>
 </resources>

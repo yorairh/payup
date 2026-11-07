@@ -182,4 +182,5 @@
     <string name="backup_error_invalid">Die Sicherungsdatei ist beschädigt oder enthält ungültige Daten.</string>
     <string name="backup_error_read">Die Datei konnte nicht gelesen werden.</string>
     <string name="close">Schließen</string>
+    <string name="already_open_in_another_tab">PayUp ist bereits in einem anderen Tab geöffnet. Schließe den anderen Tab und lade diese Seite neu.</string>
 </resources>

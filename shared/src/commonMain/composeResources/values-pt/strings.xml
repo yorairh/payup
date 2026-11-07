@@ -185,4 +185,5 @@
     <string name="backup_error_invalid">O arquivo de backup está corrompido ou contém dados inválidos.</string>
     <string name="backup_error_read">Não foi possível ler o arquivo.</string>
     <string name="close">Fechar</string>
+    <string name="already_open_in_another_tab">O PayUp já está aberto em outra aba. Feche a outra aba e recarregue esta página.</string>
 </resources>

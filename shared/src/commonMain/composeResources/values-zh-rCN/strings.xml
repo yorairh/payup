@@ -179,4 +179,5 @@
     <string name="backup_error_invalid">备份文件已损坏或包含无效数据。</string>
     <string name="backup_error_read">无法读取该文件。</string>
     <string name="close">关闭</string>
+    <string name="already_open_in_another_tab">PayUp 已在另一个标签页中打开。请关闭另一个标签页，然后重新加载此页面。</string>
 </resources>
