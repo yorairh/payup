@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b3d2e">
+    <title>PayUp</title>
+    <style>
+        /* The original PayUp theme colours, so the page never flashes white while the app starts. */
+        html, body { margin: 0; height: 100%; background: #0b3d2e; color: #f5f0e1; font-family: system-ui, sans-serif; }
+        #boot { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; box-sizing: border-box; }
+        #boot h1 { margin: 0 0 12px; font-size: 56px; letter-spacing: 1px; color: #f2c14e; }
+        #boot p { margin: 8px 0; font-size: 18px; line-height: 1.5; }
+        #boot .spinner { width: 28px; height: 28px; margin: 20px auto 0; border: 3px solid rgba(245, 240, 225, .25);
+            border-top-color: #f2c14e; border-radius: 50%; animation: spin 0.9s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        /* Compose adds its own canvas on top; the loading screen is removed once the first screen is ready. */
+    </style>
+    <script>
+        // Test helper: open the page with ?lang=he (or ar, ru, zh-CN, en...) to pretend the browser speaks that language.
+        (function () {
+            var forced = new URLSearchParams(location.search).get('lang');
+            if (forced) {
+                Object.defineProperty(navigator, 'languages', { get: function () { return [forced]; } });
+                Object.defineProperty(navigator, 'language', { get: function () { return forced; } });
+            }
+        })();
+    </script>
+</head>
+<body>
+<div id="boot">
+    <div id="bootContent">
+        <h1>PayUp</h1>
+        <div class="spinner" role="status" aria-label="Loading"></div>
+    </div>
+</div>
+<script>
+    // Kotlin/Wasm needs WebAssembly GC (Safari and iOS 18.2+, Chrome 119+, Firefox 120+). Without it, show a plain
+    // page that says what to update; no app code is loaded at all.
+    var gc = false;
+    try { gc = WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 95, 1, 120, 0])); } catch (e) {}
+    var boot = document.getElementById('boot');
+    if (new URLSearchParams(location.search).has('nowasm')) gc = false; // test helper for this page
+    if (!gc) {
+        boot.innerHTML =
+            '<div style="max-width: 420px">' +
+            '<h1>PayUp</h1>' +
+            '<p>This browser is too old to run PayUp.<br>On iPhone, please update to iOS 18.2 or newer. ' +
+            'On other devices, update your browser.</p>' +
+            '<p dir="rtl" lang="he">הדפדפן הזה ישן מדי להפעלת PayUp.<br>באייפון, יש לעדכן ל-iOS 18.2 ומעלה. ' +
+            'במכשירים אחרים, יש לעדכן את הדפדפן.</p>' +
+            '</div>';
+    } else {
+        var s = document.createElement('script');
+        s.src = 'payup.js';
+        s.onerror = function () {
+            document.getElementById('bootContent').innerHTML =
+                '<h1>PayUp</h1><p>Could not load the app. Check your connection and reload the page.</p>';
+        };
+        document.body.appendChild(s);
+    }
+    // The app calls this when its first real screen is drawn.
+    window.payupReady = function () { var el = document.getElementById('boot'); if (el) el.remove(); };
+</script>
+</body>
+</html>
