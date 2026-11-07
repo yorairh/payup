@@ -58,7 +58,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.FilterChip
-import androidx.compose.ui.platform.LocalContext
 import com.payup.data.CurrencyStore
 import com.payup.data.GameRepository
 import com.payup.domain.Currency

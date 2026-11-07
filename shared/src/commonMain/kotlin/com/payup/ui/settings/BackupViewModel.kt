@@ -32,13 +32,9 @@ class BackupViewModel(private val repository: GameRepository) : ViewModel() {
         return withContext(Dispatchers.Default) { BackupFile.write(backup) }
     }
 
-    /**
-     * Reads a chosen file with [readText] (the platform opens it; null means it could not be read or is too big)
-     * and shows what restoring it would add; nothing is changed yet.
-     */
-    fun readFile(readText: suspend () -> String?) {
+    /** Shows what restoring the chosen file's [text] would add (null: it could not be read); nothing is changed yet. */
+    fun readFile(text: String?) {
         viewModelScope.launch {
-            val text = readText()
             if (text == null) {
                 _ui.value = BackupUi.Failed(BackupFailure.UNREADABLE)
                 return@launch

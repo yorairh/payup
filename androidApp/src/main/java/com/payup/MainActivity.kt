@@ -23,6 +23,11 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.payup.platform.AndroidBackupFiles
+import com.payup.platform.AndroidDateFormatter
+import com.payup.platform.AndroidShareService
+import com.payup.platform.LocalPlatform
+import com.payup.platform.PlatformServices
 import com.payup.ui.Route
 import com.payup.ui.RouteSavedStateConfiguration
 import com.payup.ui.cashout.CashOutScreen
@@ -43,8 +48,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dependencies = (application as PayUpApp).dependencies
+        val dates = AndroidDateFormatter()
+        val platform = PlatformServices(dates, AndroidShareService(this, dates), AndroidBackupFiles(this))
         setContent {
-            CompositionLocalProvider(LocalAppDependencies provides dependencies) {
+            CompositionLocalProvider(LocalAppDependencies provides dependencies, LocalPlatform provides platform) {
                 val theme by dependencies.themeStore.theme.collectAsStateWithLifecycle()
                 val dark = theme.palette().dark
                 // Status/navigation bar icons must flip with the theme (dark icons on the white theme).

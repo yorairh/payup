@@ -1,5 +1,11 @@
 package com.payup.ui.settings
 
+import androidx.compose.material3.SnackbarHostState
+import com.payup.platform.LocalPlatform
+import com.payup.platform.PickedFile
+import kotlin.time.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.StringResource
 import com.payup.resources.Res
@@ -23,13 +29,6 @@ import com.payup.resources.backup_saved
 import com.payup.resources.backup_skipped_unfinished
 import com.payup.resources.cancel
 import com.payup.resources.close
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
@@ -42,10 +41,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -60,61 +57,33 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
-import java.time.LocalDate
-
-private fun readLimited(resolver: ContentResolver, uri: Uri): String? {
-    try {
-        resolver.openInputStream(uri)?.use { input ->
-            val out = ByteArrayOutputStream()
-            val buffer = ByteArray(64 * 1024)
-            while (true) {
-                val n = input.read(buffer)
-                if (n < 0) break
-                if (out.size() + n > BackupFile.MAX_BYTES) return null
-                out.write(buffer, 0, n)
-            }
-            return String(out.toByteArray(), Charsets.UTF_8)
-        }
-    } catch (e: IOException) {
-        return null
-    } catch (e: SecurityException) {
-        return null
-    }
-    return null
-}
 
 /** The two backup buttons for Settings, and the dialogs that go with restoring. */
 @Composable
-fun BackupActions() {
-    val context = LocalContext.current
+fun BackupActions(snackbar: SnackbarHostState) {
+    val files = LocalPlatform.current.backupFiles
     val vm = payUpViewModel { BackupViewModel(it.repository) }
     val ui by vm.ui.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) vm.readFile { withContext(Dispatchers.IO) { readLimited(context.contentResolver, uri) } }
-    }
-
-    // The user picks the folder (Downloads, Drive...) in the system file dialog, so no storage permission is needed.
-    val saver = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
-        if (uri != null) scope.launch {
-            val saved = saveBackup(context, uri, vm.backupText())
-            Toast.makeText(context, getString(if (saved) Res.string.backup_saved else Res.string.backup_save_failed), Toast.LENGTH_SHORT).show()
-        }
-    }
 
     Column(verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp)) {
         ActionCard(stringResource(Res.string.backup_save), stringResource(Res.string.backup_save_hint)) {
-            scope.launch { shareBackup(context, vm.backupText()) }
+            scope.launch { files.share(backupFileName(), vm.backupText()) }
         }
         ActionCard(stringResource(Res.string.backup_download), stringResource(Res.string.backup_download_hint)) {
-            saver.launch(backupFileName())
+            scope.launch {
+                val saved = files.saveAs(backupFileName(), vm.backupText()) ?: return@launch
+                snackbar.showSnackbar(getString(if (saved) Res.string.backup_saved else Res.string.backup_save_failed))
+            }
         }
-        // Backups sent through chat apps often lose their file type, so any file can be picked.
         ActionCard(stringResource(Res.string.backup_restore), stringResource(Res.string.backup_restore_hint)) {
-            picker.launch(arrayOf("*/*"))
+            scope.launch {
+                when (val picked = files.pick()) {
+                    PickedFile.Cancelled -> Unit
+                    PickedFile.Unreadable -> vm.readFile(null)
+                    is PickedFile.Text -> vm.readFile(picked.text)
+                }
+            }
         }
     }
 
@@ -184,34 +153,7 @@ private fun ActionCard(title: String, hint: String, onClick: () -> Unit) {
     }
 }
 
-private fun backupFileName() = "payup-backup-${LocalDate.now()}.json"
-
-/** Writes the backup to the file the user just created in the system file dialog; false if it could not be written. */
-private suspend fun saveBackup(context: Context, uri: Uri, text: String): Boolean = withContext(Dispatchers.IO) {
-    try {
-        val out = context.contentResolver.openOutputStream(uri, "wt") ?: return@withContext false
-        out.use { it.write(text.toByteArray(Charsets.UTF_8)) }
-        true
-    } catch (e: IOException) {
-        false
-    } catch (e: SecurityException) {
-        false
-    }
-}
-
-/** Writes the backup into the app's cache and hands it to the share menu (Drive, WhatsApp, e-mail...). */
-private suspend fun shareBackup(context: Context, text: String) {
-    val file = withContext(Dispatchers.IO) {
-        val dir = File(context.cacheDir, "shared").apply { mkdirs() }
-        dir.listFiles()?.forEach { it.delete() }
-        File(dir, backupFileName()).also { it.writeText(text, Charsets.UTF_8) }
-    }
-    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-    val send = Intent(Intent.ACTION_SEND)
-        .setType("application/json")
-        .putExtra(Intent.EXTRA_STREAM, uri)
-        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    val chooser = Intent.createChooser(send, getString(Res.string.backup_save))
-    chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    context.startActivity(chooser)
+private fun backupFileName(): String {
+    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    return "payup-backup-$today.json"
 }

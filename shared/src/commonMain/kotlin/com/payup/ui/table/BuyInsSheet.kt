@@ -1,5 +1,6 @@
 package com.payup.ui.table
 
+import com.payup.platform.LocalPlatform
 import com.payup.resources.Res
 import com.payup.resources.delete
 import com.payup.resources.edit_buy_in
@@ -52,8 +53,6 @@ import com.payup.ui.common.AmountDialog
 import com.payup.ui.common.ConfirmDialog
 import com.payup.ui.common.money
 import com.payup.ui.theme.Gold
-import java.text.DateFormat
-import java.util.Date
 
 /** Every buy-in of one player, with edit and delete, plus removing the whole player. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +69,7 @@ fun BuyInsSheet(
     var deleting by remember { mutableStateOf<BuyInEntity?>(null) }
     var removingPlayer by remember { mutableStateOf(false) }
     val buyIns = remember(player.buyIns) { player.buyIns.sortedWith(compareBy({ it.createdAt }, { it.id })) }
-    val timeFormat = remember { DateFormat.getTimeInstance(DateFormat.SHORT) }
+    val dates = LocalPlatform.current.dates
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(
@@ -91,7 +90,7 @@ fun BuyInsSheet(
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                         Column(Modifier.weight(1f)) {
                             Text(money(buyIn.amount), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                            Text(timeFormat.format(Date(buyIn.createdAt)), style = MaterialTheme.typography.bodySmall)
+                            Text(dates.time(buyIn.createdAt), style = MaterialTheme.typography.bodySmall)
                         }
                         IconButton(onClick = { editing = buyIn }) {
                             Icon(Icons.Default.Edit, contentDescription = stringResource(Res.string.edit_buy_in))
