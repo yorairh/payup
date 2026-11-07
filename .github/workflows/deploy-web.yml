@@ -1,0 +1,43 @@
+# Publishes the web app to Firebase Hosting (https://payup-ae6fc.web.app) when a release tag vX.Y.Z is pushed.
+# It can also be started by hand from the Actions tab; "channel" then picks a preview channel instead of the live site.
+name: Deploy web
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Firebase channel ("live" is the real site; anything else is a temporary preview)'
+        default: 'live'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      # The unit tests run first, so a broken release is never deployed.
+      - name: Test and build the website
+        run: ./gradlew :shared:testAndroidHostTest :webApp:wasmJsBrowserDistribution --console=plain
+
+      # Builds go to ~/.payup-build (see build.gradle.kts).
+      - name: Collect the site
+        run: cp -r ~/.payup-build/webApp/dist/wasmJs/productionExecutable web-dist
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: payup-ae6fc
+          channelId: ${{ github.event_name == 'workflow_dispatch' && inputs.channel || 'live' }}
+          expires: 7d
