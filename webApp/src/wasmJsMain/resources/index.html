@@ -17,12 +17,16 @@
         /* Compose adds its own canvas on top; the loading screen is removed once the first screen is ready. */
     </style>
     <script>
-        // Test helper: open the page with ?lang=he (or ar, ru, zh-CN, en...) to pretend the browser speaks that language.
+        // The language the app shows: ?lang=he (a test helper) wins, then the language picked in Settings, which the
+        // app saves under "language", then the browser's own. The app reads the browser language to pick strings and
+        // layout direction, so overriding it here changes both.
         (function () {
             var forced = new URLSearchParams(location.search).get('lang');
+            if (!forced) { try { forced = localStorage.getItem('language'); } catch (e) {} }
             if (forced) {
                 Object.defineProperty(navigator, 'languages', { get: function () { return [forced]; } });
                 Object.defineProperty(navigator, 'language', { get: function () { return forced; } });
+                document.documentElement.lang = forced;
             }
         })();
     </script>

@@ -183,4 +183,5 @@
     <string name="backup_error_read">The file could not be read.</string>
     <string name="close">Close</string>
     <string name="already_open_in_another_tab">PayUp is already open in another tab. Close the other tab, then reload this page.</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>

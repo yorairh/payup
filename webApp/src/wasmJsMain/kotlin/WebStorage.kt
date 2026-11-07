@@ -16,6 +16,7 @@ object WebSettings {
     private val settings = StorageSettings()
     val themeStore = ThemeStore(settings)
     val currencyStore = CurrencyStore(settings)
+    val language = WebAppLanguage(settings)
 }
 
 /**
