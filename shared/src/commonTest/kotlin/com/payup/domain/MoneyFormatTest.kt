@@ -4,6 +4,9 @@ import kotlin.test.assertEquals
 import kotlin.test.Test
 
 class MoneyFormatTest {
+    private val LRI = "⁦"
+    private val PDI = "⁩"
+
     private fun ltr(amount: Int, currency: Currency = Currency.ILS, plus: Boolean = false) =
         MoneyFormat.format(amount, currency, rtl = false, showPlus = plus)
 
@@ -17,7 +20,7 @@ class MoneyFormatTest {
         )
         Currency.entries.forEach { c ->
             assertEquals(symbols.getValue(c) + "50", ltr(5000, c))
-            assertEquals("50 " + symbols.getValue(c), rtl(5000, c))
+            assertEquals(LRI + "50 " + symbols.getValue(c) + PDI, rtl(5000, c))
         }
     }
 
@@ -27,14 +30,14 @@ class MoneyFormatTest {
         assertEquals("€18.5", ltr(1850, Currency.EUR))
     }
 
-    @Test fun rightToLeftKeepsTheSignInsideTheNumber() {
-        assertEquals("⁦−3.25⁩ ₪", rtl(-325))
-        assertEquals("⁦+18.5⁩ $", rtl(1850, Currency.USD, plus = true))
+    @Test fun rightToLeftDrawsTheAmountLeftToRightWithTheSymbolOnTheRight() {
+        assertEquals(LRI + "−3.25 ₪" + PDI, rtl(-325))
+        assertEquals(LRI + "+18.5 $" + PDI, rtl(1850, Currency.USD, plus = true))
     }
 
     @Test fun zeroNeverGetsASign() {
         assertEquals("₪0", ltr(0, plus = true))
-        assertEquals("0 ₪", rtl(0, plus = true))
+        assertEquals(LRI + "0 ₪" + PDI, rtl(0, plus = true))
     }
 
     @Test fun plusIsOptionalAndNeverOnNegatives() {

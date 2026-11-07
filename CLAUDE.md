@@ -44,7 +44,7 @@ Game flow: `setup` → optional `deal` → `table` → `cashout` → `result`. A
 
 ### Patterns that span several files
 
-- **Money** is an `Int` in hundredths (agorot, despite the currency). `Money` parses and formats numbers. `MoneyFormat` places the symbol and sign: `₪50` left to right, `50 ₪` right to left.
+- **Money** is an `Int` in hundredths (agorot, despite the currency). `Money` parses and formats numbers. `MoneyFormat` places the symbol and sign: `₪50` left to right, `50 ₪` right to left (still drawn left to right inside an isolate, so the symbol sits on the right of the number).
 - **Currency** is stored per game, with symbol only and no conversion. `LocalCurrency` deliberately has no default, so a screen that shows money must wrap its content in `ProvideCurrency(game.game.currency)` or it crashes. The screen's outer composable loads the game, then provides the currency to a private `*Content` composable. The leaderboard sums across games without converting and shows the latest finished game's currency (`WithLatestCurrency`). This is an agreed product decision.
 - **Cash-out** is an immutable `CashOutSession`. Each event returns a `CashOutStep` containing the new session and a list of `CashOutWrite`s, and `CashOutViewModel` stays thin and passes those writes to `GameRepository.saveCashOut`, which stores them in one transaction. Add cash-out behaviour to the session, with a test in `CashOutSessionTest`.
 - **Outcomes** come from `GameOutcomes.rank`, reached through `GameWithDetails.results()`. The result screen, share text, share image and history card all use it. On a tie for first, whoever is listed first gets the crown.
