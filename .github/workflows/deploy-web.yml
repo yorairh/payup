@@ -28,9 +28,11 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      # The yarn lock file records where the local worker package lives on the author's PC, so the check that it is
+      # unchanged cannot pass on the runner (-x skips only that check; the package versions still come from the lock).
       # The unit tests run first, so a broken release is never deployed.
       - name: Test and build the website
-        run: ./gradlew :shared:testAndroidHostTest :webApp:wasmJsBrowserDistribution --console=plain
+        run: ./gradlew :shared:testAndroidHostTest :webApp:wasmJsBrowserDistribution -x kotlinWasmStoreYarnLock --console=plain
 
       # Builds go to ~/.payup-build (see build.gradle.kts).
       - name: Collect the site
