@@ -25,6 +25,7 @@ kotlin {
             implementation(project(":shared"))
             implementation(libs.androidx.sqlite.web)
             implementation(libs.kotlinx.browser)
+            implementation(libs.navigation3.browser)
             // The Web Worker that runs SQLite, bundled from webApp/worker.
             implementation(npm("sqlite-wasm-worker", layout.projectDirectory.dir("worker").asFile))
         }

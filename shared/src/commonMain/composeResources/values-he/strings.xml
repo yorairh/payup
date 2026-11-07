@@ -189,4 +189,5 @@
     <string name="backup_error_read">לא ניתן היה לקרוא את הקובץ.</string>
     <string name="close">סגירה</string>
     <string name="already_open_in_another_tab">PayUp כבר פתוח בלשונית אחרת. סגרו את הלשונית האחרת ואז טענו מחדש את הדף.</string>
+    <string name="copied_to_clipboard">הועתק ללוח</string>
 </resources>

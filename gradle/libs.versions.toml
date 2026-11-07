@@ -38,6 +38,7 @@ jetbrains-navigation3-ui = { group = "org.jetbrains.androidx.navigation3", name 
 jetbrains-lifecycle-viewmodel-navigation3 = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycle" }
 androidx-sqlite = { group = "androidx.sqlite", name = "sqlite", version.ref = "sqlite" }
 androidx-sqlite-web = { group = "androidx.sqlite", name = "sqlite-web", version.ref = "sqlite" }
+navigation3-browser = { group = "com.github.terrakok", name = "navigation3-browser", version = "1.1.0" }
 kotlinx-browser = { group = "org.jetbrains.kotlinx", name = "kotlinx-browser", version = "0.3" }
 androidx-room-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room" }
