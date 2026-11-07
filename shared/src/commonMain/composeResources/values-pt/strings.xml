@@ -187,4 +187,6 @@
     <string name="close">Fechar</string>
     <string name="already_open_in_another_tab">O PayUp já está aberto em outra aba. Feche a outra aba e recarregue esta página.</string>
     <string name="copied_to_clipboard">Copiado para a área de transferência</string>
+    <string name="install_hint_title">Adicione o PayUp à tela inicial</string>
+    <string name="install_hint_body">Toque no botão Compartilhar e depois em “Adicionar à Tela de Início”. O PayUp abrirá como um app e suas partidas ficarão seguras.</string>
 </resources>

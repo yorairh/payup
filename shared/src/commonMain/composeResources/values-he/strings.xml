@@ -190,4 +190,6 @@
     <string name="close">סגירה</string>
     <string name="already_open_in_another_tab">PayUp כבר פתוח בלשונית אחרת. סגרו את הלשונית האחרת ואז טענו מחדש את הדף.</string>
     <string name="copied_to_clipboard">הועתק ללוח</string>
+    <string name="install_hint_title">הוסיפו את PayUp למסך הבית</string>
+    <string name="install_hint_body">הקישו על כפתור השיתוף ואז על ”הוסף למסך הבית“. כך PayUp ייפתח כמו אפליקציה והמשחקים שלכם יישמרו.</string>
 </resources>

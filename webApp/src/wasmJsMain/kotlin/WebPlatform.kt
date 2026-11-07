@@ -192,3 +192,16 @@ class WebBackupFiles : BackupFiles {
         }
     }
 }
+
+/** True on an iPhone or iPad that shows the site in a browser, not as an app added to the Home Screen. */
+@JsFun(
+    """() => {
+        const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const installed = navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+        return ios && !installed;
+    }""",
+)
+external fun isIosBrowserNotInstalled(): Boolean
+
+@JsFun("() => Date.now()")
+external fun nowMillis(): Double

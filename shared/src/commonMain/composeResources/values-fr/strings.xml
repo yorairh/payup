@@ -187,4 +187,6 @@
     <string name="close">Fermer</string>
     <string name="already_open_in_another_tab">PayUp est déjà ouvert dans un autre onglet. Fermez l’autre onglet, puis rechargez cette page.</string>
     <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
+    <string name="install_hint_title">Ajoutez PayUp à l’écran d’accueil</string>
+    <string name="install_hint_body">Touchez le bouton Partager, puis « Sur l’écran d’accueil ». PayUp s’ouvrira comme une appli et vos parties seront conservées.</string>
 </resources>

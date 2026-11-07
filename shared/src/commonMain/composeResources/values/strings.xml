@@ -184,4 +184,6 @@
     <string name="close">Close</string>
     <string name="already_open_in_another_tab">PayUp is already open in another tab. Close the other tab, then reload this page.</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="install_hint_title">Add PayUp to your Home Screen</string>
+    <string name="install_hint_body">Tap the Share button, then “Add to Home Screen”. PayUp then opens like an app, and your games are kept safe.</string>
 </resources>

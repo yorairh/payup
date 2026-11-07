@@ -32,6 +32,21 @@ kotlin {
     }
 }
 
+// The service worker (sw.js) caches every file of the build when it installs, so the app works offline after the first
+// visit. It reads the list of files from precache.json, which is written next to them when the site is built.
+tasks.named("wasmJsBrowserDistribution") {
+    doLast {
+        outputs.files.files.filter { it.isDirectory && File(it, "index.html").exists() }.forEach { dir ->
+            val files = dir.walkTopDown()
+                .filter { it.isFile && !it.name.endsWith(".map") && it.name != "precache.json" && it.name != "sw.js" }
+                .map { it.relativeTo(dir).invariantSeparatorsPath }
+                .sorted()
+                .toList()
+            File(dir, "precache.json").writeText(files.joinToString(",\n", "[\n", "\n]\n") { "  \"$it\"" })
+        }
+    }
+}
+
 // The fonts live in src/commonMain/composeResources/font.
 compose.resources {
     packageOfResClass = "com.payup.web.resources"
