@@ -5,8 +5,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+// The web build adds its own repositories for downloading Node.js, Yarn and Binaryen, so project repositories are allowed.
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
@@ -14,4 +15,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "PayUp"
-include(":app")
+include(":shared")
+include(":androidApp")
+include(":webApp")

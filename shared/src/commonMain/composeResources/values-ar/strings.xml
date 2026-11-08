@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PayUp</string>
+    <string name="tagline">حساب البوكر، منتهٍ.</string>
+
+    <!-- common -->
+    <string name="back">رجوع</string>
+    <string name="cancel">إلغاء</string>
+    <string name="save">حفظ</string>
+    <string name="add">إضافة</string>
+    <string name="delete">حذف</string>
+    <string name="rename">إعادة تسمية</string>
+    <string name="amount">المبلغ</string>
+    <string name="player_name">اسم اللاعب</string>
+
+    <!-- home -->
+    <string name="new_game">لعبة جديدة</string>
+    <string name="continue_game">متابعة اللعبة</string>
+    <string name="history">السجل</string>
+    <string name="friends">الأصدقاء</string>
+    <string name="discard_active_title">لعبة قيد التقدم</string>
+    <string name="discard_active_message">بدء لعبة جديدة سيحذف اللعبة التي لم تنتهِ بعد.</string>
+    <string name="discard">حذف</string>
+
+    <!-- settings -->
+    <string name="settings">الإعدادات</string>
+    <string name="color_theme">سمة الألوان</string>
+    <string name="theme_original">الأصلية</string>
+    <string name="theme_color_blind">عمى الألوان</string>
+    <string name="theme_rich">فاخرة</string>
+    <string name="theme_white_black">أبيض وأسود</string>
+    <string name="theme_dark">داكنة</string>
+    <string name="language">اللغة</string>
+    <string name="currency">العملة</string>
+    <string name="system_default">الافتراضي للنظام</string>
+
+    <!-- setup -->
+    <string name="setup_title">لعبة جديدة</string>
+    <string name="buy_in_amount">مبلغ الدخول</string>
+    <string name="players">اللاعبون</string>
+    <string name="add_player">إضافة لاعب</string>
+    <string name="setup_hint">يبدأ كل لاعب بدخول واحد.</string>
+    <string name="no_friends_yet">اكتب اسمًا في الأعلى لإضافة أول لاعب.</string>
+    <plurals name="start_game">
+        <item quantity="zero">بدء اللعبة · %1$d لاعب</item>
+        <item quantity="one">بدء اللعبة · لاعب واحد</item>
+        <item quantity="two">بدء اللعبة · لاعبان</item>
+        <item quantity="few">بدء اللعبة · %1$d لاعبين</item>
+        <item quantity="many">بدء اللعبة · %1$d لاعبًا</item>
+        <item quantity="other">بدء اللعبة · %1$d لاعب</item>
+    </plurals>
+    <string name="random_dealer">موزّع عشوائي</string>
+    <string name="random_dealer_hint">يتم توزيع الورق قبل اللعبة؛ أول آص هو الموزّع.</string>
+    <string name="dealing_title">جارٍ التوزيع…</string>
+    <string name="dealing_hint">أول آص هو الموزّع</string>
+    <string name="dealer_is">%1$s هو الموزّع!</string>
+    <string name="to_the_table">إلى الطاولة</string>
+    <string name="dealer_badge">م</string>
+    <string name="pick_two">اختر لاعبَين على الأقل</string>
+
+    <!-- table -->
+    <string name="table_title">الطاولة</string>
+    <string name="pot">الوعاء</string>
+    <plurals name="buy_ins_count">
+        <item quantity="zero">%1$d دخول</item>
+        <item quantity="one">دخول واحد</item>
+        <item quantity="two">دخولان</item>
+        <item quantity="few">%1$d دخولات</item>
+        <item quantity="many">%1$d دخولًا</item>
+        <item quantity="other">%1$d دخول</item>
+    </plurals>
+    <string name="custom">مخصص</string>
+    <string name="custom_buy_in_title">دخول مخصص لـ %1$s</string>
+    <string name="undo_last">تراجع عن الأخير</string>
+    <string name="undone">تمت إزالة %1$s من %2$s</string>
+    <string name="end_game">إنهاء اللعبة</string>
+    <string name="name_taken">%1$s موجود بالفعل على الطاولة</string>
+    <string name="no_buy_ins">لا توجد دخولات.</string>
+    <string name="edit_buy_in">تعديل الدخول</string>
+    <string name="edit_buy_in_title">تعديل دخول %1$s</string>
+    <string name="remove_buy_in">إزالة الدخول</string>
+    <string name="remove_buy_in_title">إزالة %1$s من %2$s؟</string>
+    <string name="remove_buy_in_message">سينقص الوعاء بهذا المبلغ.</string>
+    <string name="remove_player">إزالة اللاعب</string>
+    <string name="remove_player_min">تحتاج اللعبة إلى لاعبَين على الأقل.</string>
+    <string name="remove_player_title">إزالة %1$s؟</string>
+    <string name="remove_player_message">سيغادر اللعبة وسيخرج %1$s من الوعاء.</string>
+
+    <!-- cash-out -->
+    <string name="cashout_title">العدّ</string>
+    <string name="cashout_hint">بكم أنهى كل لاعب؟</string>
+    <string name="counted_of_pot">تم عدّ %1$s من %2$s</string>
+    <string name="put_in">دفع %1$s</string>
+    <string name="final_amount">أنهى بـ</string>
+    <string name="auto_filled">تمت التعبئة تلقائيًا</string>
+    <string name="count_in_chips">العدّ بالرقائق</string>
+    <string name="chip_value">قيمة الرقاقة الواحدة</string>
+    <string name="chips">الرقائق</string>
+    <string name="worth">تساوي</string>
+    <string name="round_to_whole">تقريب إلى وحدات كاملة</string>
+    <string name="round_hint">الأنصاف والكسور تذهب إلى أكبر الخاسرين.</string>
+    <string name="exact_hint">مبالغ دقيقة، بما فيها الكسور.</string>
+    <string name="missing">ينقص %1$s</string>
+    <string name="extra">زيادة %1$s</string>
+    <string name="mismatch_hint">صحّح المبالغ، أو ألغِ الفرق.</string>
+    <string name="void_amount">إلغاء %1$s</string>
+    <string name="void_title">إلغاء %1$s؟</string>
+    <string name="void_missing_message">ينقص %1$s من العدّ. سيدفع الخاسرون %1$s أقل إجمالًا، بحسب خسارة كل واحد.</string>
+    <string name="void_extra_message">هناك %1$s أكثر من الوعاء. سيحصل الفائزون على %1$s أقل إجمالًا، بحسب ربح كل واحد.</string>
+    <string name="payup">ادفعوا!</string>
+
+    <!-- result -->
+    <string name="results">النتائج</string>
+    <string name="winners">الفائزون</string>
+    <string name="losers">الخاسرون</string>
+    <string name="broke_even">خرجوا متعادلين</string>
+    <string name="who_pays_whom">من يدفع لمن</string>
+    <string name="nobody_pays">الجميع متعادلون. لا أحد يدفع!</string>
+    <string name="voided_missing">كان ينقص %1$s وتم إلغاؤه</string>
+    <string name="voided_extra">تم إلغاء زيادة قدرها %1$s</string>
+    <string name="skip">تخطي</string>
+    <string name="done">تم</string>
+    <string name="pays">يدفع لـ</string>
+    <string name="buy_ins_title">الدخولات</string>
+    <string name="total_put_in">إجمالي ما دفع</string>
+    <string name="chips_at">%1$d رقاقة × %2$s</string>
+    <string name="payments">المدفوعات</string>
+    <string name="no_payments">لا مدفوعات</string>
+    <string name="pays_to">يدفع لـ %1$s</string>
+    <string name="gets_from">يستلم من %1$s</string>
+    <string name="share">مشاركة</string>
+    <string name="share_text">مشاركة كنص</string>
+    <string name="share_image">مشاركة كصورة</string>
+    <string name="share_chooser">مشاركة النتائج</string>
+    <string name="share_header">PayUp · %1$s · %2$s · %3$s</string>
+
+    <!-- history -->
+    <string name="history_empty">لا توجد ألعاب بعد. ستظهر الألعاب المنتهية هنا.</string>
+    <plurals name="players_count">
+        <item quantity="zero">%1$d لاعب</item>
+        <item quantity="one">لاعب واحد</item>
+        <item quantity="two">لاعبان</item>
+        <item quantity="few">%1$d لاعبين</item>
+        <item quantity="many">%1$d لاعبًا</item>
+        <item quantity="other">%1$d لاعب</item>
+    </plurals>
+    <string name="pot_value">الوعاء %1$s</string>
+    <string name="delete_game_title">حذف هذه اللعبة؟</string>
+    <string name="delete_game_message">ستتم إزالتها من السجل.</string>
+
+    <!-- friends -->
+    <string name="friends_empty">لا يوجد أصدقاء محفوظون بعد. اضغط + لإضافة اللاعبين المعتادين.</string>
+    <string name="delete_friend_title">حذف %1$s؟</string>
+    <string name="delete_friend_message">الألعاب السابقة تحتفظ بنتائجها.</string>
+    <string name="friend_exists">%1$s موجود بالفعل</string>
+
+    <!-- leaderboard -->
+    <string name="leaderboard">لوحة المتصدرين</string>
+    <string name="leaderboard_empty">لا توجد ألعاب منتهية في هذه الفترة.</string>
+    <string name="period_month">هذا الشهر</string>
+    <string name="period_year">هذه السنة</string>
+    <string name="period_all">كل الأوقات</string>
+    <string name="metric_profit">الربح</string>
+    <string name="metric_win_rate">نسبة الفوز</string>
+    <string name="metric_avg">المتوسط لكل لعبة</string>
+    <string name="metric_best">أكبر فوز</string>
+    <string name="stat_profit">الربح</string>
+    <string name="stat_games">الألعاب</string>
+    <string name="stat_win_rate">الفوز %</string>
+    <string name="stat_avg">المتوسط</string>
+    <string name="stat_best">الأفضل</string>
+    <string name="stat_worst">الأسوأ</string>
+    <string name="stat_buy_ins">الدخولات</string>
+    <string name="percent">%1$d%</string>
+    <!-- backup -->
+    <string name="backup_title">النسخ الاحتياطي</string>
+    <string name="backup_summary">احفظ ألعابك أو استعدها</string>
+    <string name="backup_save">مشاركة النسخة الاحتياطية</string>
+    <string name="backup_save_hint">أرسل ملف النسخة لنفسك في رسالة أو بريد إلكتروني، أو احفظه في Drive</string>
+    <string name="backup_download">حفظ النسخة على الهاتف</string>
+    <string name="backup_download_hint">يحفظ الملف في مجلد تختاره، مثل التنزيلات</string>
+    <string name="backup_saved">تم حفظ النسخة الاحتياطية</string>
+    <string name="backup_save_failed">تعذّر حفظ النسخة الاحتياطية.</string>
+    <string name="backup_restore">استعادة الألعاب</string>
+    <string name="backup_restore_hint">يضيف ألعابًا من ملف نسخة احتياطية. لا يُحذف أي شيء من هذا الهاتف</string>
+    <string name="backup_preview_body">الألعاب في الملف: %1$d\nالألعاب الجديدة للإضافة: %2$d</string>
+    <string name="backup_all_present">كل ما في هذا الملف موجود بالفعل على هذا الهاتف.</string>
+    <string name="backup_skipped_unfinished">الألعاب غير المكتملة التي تم تخطيها: %1$d (لا يمكن أن تكون هناك إلا لعبة واحدة جارية في كل مرة)</string>
+    <string name="backup_add_games">إضافة الألعاب</string>
+    <string name="backup_done_body">الألعاب المضافة: %1$d</string>
+    <string name="backup_failed_title">فشلت الاستعادة</string>
+    <string name="backup_error_not_backup">هذا الملف ليس نسخة احتياطية من PayUp.</string>
+    <string name="backup_error_too_new">أُنشئت هذه النسخة بإصدار أحدث من PayUp. حدّث التطبيق وحاول مرة أخرى.</string>
+    <string name="backup_error_invalid">ملف النسخة الاحتياطية تالف أو يحتوي على بيانات غير صالحة.</string>
+    <string name="backup_error_read">تعذّرت قراءة الملف.</string>
+    <string name="close">إغلاق</string>
+    <string name="already_open_in_another_tab">PayUp مفتوح بالفعل في علامة تبويب أخرى. أغلق علامة التبويب الأخرى ثم أعد تحميل هذه الصفحة.</string>
+    <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
+    <string name="install_hint_title">أضف PayUp إلى الشاشة الرئيسية</string>
+    <string name="install_hint_body">اضغط على زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». سيُفتح PayUp كتطبيق وستبقى ألعابك محفوظة.</string>
+</resources>
