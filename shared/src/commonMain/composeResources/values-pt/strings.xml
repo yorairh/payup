@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PayUp</string>
+    <string name="tagline">As entradas do pôquer, acertadas.</string>
+
+    <!-- common -->
+    <string name="back">Voltar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
+    <string name="add">Adicionar</string>
+    <string name="delete">Excluir</string>
+    <string name="rename">Renomear</string>
+    <string name="amount">Valor</string>
+    <string name="player_name">Nome do jogador</string>
+
+    <!-- home -->
+    <string name="new_game">Novo jogo</string>
+    <string name="continue_game">Continuar jogo</string>
+    <string name="history">Histórico</string>
+    <string name="friends">Amigos</string>
+    <string name="discard_active_title">Jogo em andamento</string>
+    <string name="discard_active_message">Iniciar um novo jogo descartará o jogo que ainda está em andamento.</string>
+    <string name="discard">Descartar</string>
+
+    <!-- settings -->
+    <string name="settings">Configurações</string>
+    <string name="color_theme">Tema de cores</string>
+    <string name="theme_original">Original</string>
+    <string name="theme_color_blind">Daltonismo</string>
+    <string name="theme_rich">Luxo</string>
+    <string name="theme_white_black">Preto e branco</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="language">Idioma</string>
+    <string name="currency">Moeda</string>
+    <string name="system_default">Padrão do sistema</string>
+
+    <!-- setup -->
+    <string name="setup_title">Novo jogo</string>
+    <string name="buy_in_amount">Valor da entrada</string>
+    <string name="players">Jogadores</string>
+    <string name="add_player">Adicionar jogador</string>
+    <string name="setup_hint">Cada jogador começa com uma entrada.</string>
+    <string name="no_friends_yet">Digite um nome acima para adicionar o primeiro jogador.</string>
+    <plurals name="start_game">
+        <item quantity="one">Iniciar jogo · %1$d jogador</item>
+        <item quantity="many">Iniciar jogo · %1$d jogadores</item>
+        <item quantity="other">Iniciar jogo · %1$d jogadores</item>
+    </plurals>
+    <string name="random_dealer">Carteador aleatório</string>
+    <string name="random_dealer_hint">As cartas são distribuídas antes do jogo; o primeiro ás é o carteador.</string>
+    <string name="dealing_title">Distribuindo…</string>
+    <string name="dealing_hint">O primeiro ás é o carteador</string>
+    <string name="dealer_is">%1$s é o carteador!</string>
+    <string name="to_the_table">Para a mesa</string>
+    <string name="dealer_badge">C</string>
+    <string name="pick_two">Escolha pelo menos 2 jogadores</string>
+
+    <!-- table -->
+    <string name="table_title">A mesa</string>
+    <string name="pot">Pote</string>
+    <plurals name="buy_ins_count">
+        <item quantity="one">%1$d entrada</item>
+        <item quantity="many">%1$d entradas</item>
+        <item quantity="other">%1$d entradas</item>
+    </plurals>
+    <string name="custom">Outro valor</string>
+    <string name="custom_buy_in_title">Entrada personalizada para %1$s</string>
+    <string name="undo_last">Desfazer última</string>
+    <string name="undone">%1$s removido de %2$s</string>
+    <string name="end_game">Encerrar jogo</string>
+    <string name="name_taken">%1$s já está na mesa</string>
+    <string name="no_buy_ins">Sem entradas.</string>
+    <string name="edit_buy_in">Editar entrada</string>
+    <string name="edit_buy_in_title">Editar entrada de %1$s</string>
+    <string name="remove_buy_in">Remover entrada</string>
+    <string name="remove_buy_in_title">Remover %1$s de %2$s?</string>
+    <string name="remove_buy_in_message">O pote diminui nesse valor.</string>
+    <string name="remove_player">Remover jogador</string>
+    <string name="remove_player_min">Um jogo precisa de pelo menos 2 jogadores.</string>
+    <string name="remove_player_title">Remover %1$s?</string>
+    <string name="remove_player_message">O jogador sai do jogo e %1$s saem do pote.</string>
+
+    <!-- cash-out -->
+    <string name="cashout_title">Contagem</string>
+    <string name="cashout_hint">Com quanto cada jogador terminou?</string>
+    <string name="counted_of_pot">Contado %1$s de %2$s</string>
+    <string name="put_in">Colocou %1$s</string>
+    <string name="final_amount">Terminou com</string>
+    <string name="auto_filled">Preenchido automaticamente</string>
+    <string name="count_in_chips">Contar em fichas</string>
+    <string name="chip_value">Valor de uma ficha</string>
+    <string name="chips">Fichas</string>
+    <string name="worth">Vale</string>
+    <string name="round_to_whole">Arredondar para unidades inteiras</string>
+    <string name="round_hint">Metades e frações vão para o maior perdedor.</string>
+    <string name="exact_hint">Valores exatos, incluindo frações.</string>
+    <string name="missing">Faltam %1$s</string>
+    <string name="extra">Sobram %1$s</string>
+    <string name="mismatch_hint">Corrija os valores ou anule a diferença.</string>
+    <string name="void_amount">Anular %1$s</string>
+    <string name="void_title">Anular %1$s?</string>
+    <string name="void_missing_message">Faltam %1$s na contagem. Os perdedores pagarão %1$s a menos no total, conforme o quanto cada um perdeu.</string>
+    <string name="void_extra_message">Há %1$s a mais que o pote. Os vencedores receberão %1$s a menos no total, conforme o quanto cada um ganhou.</string>
+    <string name="payup">PAGUEM!</string>
+
+    <!-- result -->
+    <string name="results">Resultados</string>
+    <string name="winners">Vencedores</string>
+    <string name="losers">Perdedores</string>
+    <string name="broke_even">Ficaram no zero</string>
+    <string name="who_pays_whom">Quem paga a quem</string>
+    <string name="nobody_pays">Todos ficaram no zero. Ninguém paga!</string>
+    <string name="voided_missing">Faltavam %1$s e foram anulados</string>
+    <string name="voided_extra">%1$s a mais foram anulados</string>
+    <string name="skip">Pular</string>
+    <string name="done">Concluir</string>
+    <string name="pays">paga a</string>
+    <string name="buy_ins_title">Entradas</string>
+    <string name="total_put_in">Total colocado</string>
+    <string name="chips_at">%1$d fichas × %2$s</string>
+    <string name="payments">Pagamentos</string>
+    <string name="no_payments">Sem pagamentos</string>
+    <string name="pays_to">Paga a %1$s</string>
+    <string name="gets_from">Recebe de %1$s</string>
+    <string name="share">Compartilhar</string>
+    <string name="share_text">Compartilhar como texto</string>
+    <string name="share_image">Compartilhar como imagem</string>
+    <string name="share_chooser">Compartilhar resultados</string>
+    <string name="share_header">PayUp · %1$s · %2$s · %3$s</string>
+
+    <!-- history -->
+    <string name="history_empty">Nenhum jogo ainda. Os jogos concluídos aparecem aqui.</string>
+    <plurals name="players_count">
+        <item quantity="one">%1$d jogador</item>
+        <item quantity="many">%1$d jogadores</item>
+        <item quantity="other">%1$d jogadores</item>
+    </plurals>
+    <string name="pot_value">Pote %1$s</string>
+    <string name="delete_game_title">Excluir este jogo?</string>
+    <string name="delete_game_message">Ele será removido do seu histórico.</string>
+
+    <!-- friends -->
+    <string name="friends_empty">Nenhum amigo salvo ainda. Toque em + para adicionar seus parceiros de sempre.</string>
+    <string name="delete_friend_title">Excluir %1$s?</string>
+    <string name="delete_friend_message">Os jogos anteriores mantêm seus resultados.</string>
+    <string name="friend_exists">%1$s já existe</string>
+
+    <!-- leaderboard -->
+    <string name="leaderboard">Ranking</string>
+    <string name="leaderboard_empty">Nenhum jogo concluído neste período.</string>
+    <string name="period_month">Este mês</string>
+    <string name="period_year">Este ano</string>
+    <string name="period_all">Sempre</string>
+    <string name="metric_profit">Lucro</string>
+    <string name="metric_win_rate">Taxa de vitórias</string>
+    <string name="metric_avg">Média por jogo</string>
+    <string name="metric_best">Maior vitória</string>
+    <string name="stat_profit">Lucro</string>
+    <string name="stat_games">Jogos</string>
+    <string name="stat_win_rate">Vitórias %</string>
+    <string name="stat_avg">Média</string>
+    <string name="stat_best">Melhor</string>
+    <string name="stat_worst">Pior</string>
+    <string name="stat_buy_ins">Entradas</string>
+    <string name="percent">%1$d%</string>
+    <!-- backup -->
+    <string name="backup_title">Backup</string>
+    <string name="backup_summary">Salve ou restaure seus jogos</string>
+    <string name="backup_save">Compartilhar backup</string>
+    <string name="backup_save_hint">Envie o arquivo de backup para si mesmo por mensagem ou e-mail, ou salve no Drive</string>
+    <string name="backup_download">Salvar backup no telefone</string>
+    <string name="backup_download_hint">Salva o arquivo em uma pasta que você escolher, como Downloads</string>
+    <string name="backup_saved">Backup salvo</string>
+    <string name="backup_save_failed">Não foi possível salvar o backup.</string>
+    <string name="backup_restore">Restaurar jogos</string>
+    <string name="backup_restore_hint">Adiciona jogos de um arquivo de backup. Nada neste telefone é apagado</string>
+    <string name="backup_preview_body">Jogos no arquivo: %1$d\nJogos novos a adicionar: %2$d</string>
+    <string name="backup_all_present">Tudo neste arquivo já está neste telefone.</string>
+    <string name="backup_skipped_unfinished">Jogos não terminados ignorados: %1$d (só pode haver um jogo em andamento por vez)</string>
+    <string name="backup_add_games">Adicionar jogos</string>
+    <string name="backup_done_body">Jogos adicionados: %1$d</string>
+    <string name="backup_failed_title">Falha ao restaurar</string>
+    <string name="backup_error_not_backup">Este arquivo não é um backup do PayUp.</string>
+    <string name="backup_error_too_new">Este backup foi criado por uma versão mais recente do PayUp. Atualize o app e tente novamente.</string>
+    <string name="backup_error_invalid">O arquivo de backup está corrompido ou contém dados inválidos.</string>
+    <string name="backup_error_read">Não foi possível ler o arquivo.</string>
+    <string name="close">Fechar</string>
+    <string name="already_open_in_another_tab">O PayUp já está aberto em outra aba. Feche a outra aba e recarregue esta página.</string>
+    <string name="copied_to_clipboard">Copiado para a área de transferência</string>
+    <string name="install_hint_title">Adicione o PayUp à tela inicial</string>
+    <string name="install_hint_body">Toque no botão Compartilhar e depois em “Adicionar à Tela de Início”. O PayUp abrirá como um app e suas partidas ficarão seguras.</string>
+</resources>
