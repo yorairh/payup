@@ -8,6 +8,21 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
 }
 
+// The version shown on the home screen is the Android app's versionName, so there is one place to change it.
+val appVersionDir = layout.buildDirectory.dir("generated/appVersion")
+val generateAppVersion by tasks.registering {
+    val gradleFile = rootProject.file("androidApp/build.gradle.kts")
+    val outDir = appVersionDir
+    inputs.file(gradleFile)
+    outputs.dir(outDir)
+    doLast {
+        val version = Regex("versionName\\s*=\\s*\"([^\"]+)\"").find(gradleFile.readText())!!.groupValues[1]
+        val file = outDir.get().asFile.resolve("AppVersion.kt")
+        file.parentFile.mkdirs()
+        file.writeText("const val APP_VERSION = \"$version\"\n")
+    }
+}
+
 kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
@@ -21,6 +36,7 @@ kotlin {
     }
 
     sourceSets {
+        wasmJsMain { kotlin.srcDir(files(appVersionDir).builtBy(generateAppVersion)) }
         wasmJsMain.dependencies {
             implementation(project(":shared"))
             implementation(libs.androidx.sqlite.web)

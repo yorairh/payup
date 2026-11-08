@@ -12,6 +12,8 @@ class AppDependencies(
     val themeStore: ThemeStore,
     val currencyStore: CurrencyStore,
     val appLanguage: AppLanguage,
+    /** The release name shown on the home screen, like "0.4.0". */
+    val appVersion: String,
 )
 
 /** Set once at the root of the app; there is no default, so a missing provider fails loudly. */
