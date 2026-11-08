@@ -18,6 +18,7 @@ class PayUpApp : Application() {
             themeStore = ThemeStore(settings),
             currencyStore = CurrencyStore(settings),
             appLanguage = AndroidAppLanguage(),
+            appVersion = packageManager.getPackageInfo(packageName, 0).versionName.orEmpty(),
         )
     }
 }

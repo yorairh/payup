@@ -137,6 +137,7 @@ private fun Providers(database: AppDatabase, content: @Composable () -> Unit) {
             themeStore = WebSettings.themeStore,
             currencyStore = WebSettings.currencyStore,
             appLanguage = WebSettings.language,
+            appVersion = APP_VERSION,
         )
     }
     val platform = remember(fonts) {
