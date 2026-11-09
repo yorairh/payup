@@ -72,7 +72,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 
 ## Milestone 3 — shared game links (release 0.5.0)
 - [x] **22.** (Done: the design is in `docs/SHARED_GAMES.md`; database version 5 adds `shareId`, `isHost`, `hostKey` and a unique index on `shareId`, migration 4→5 with the exported schema. No sharing behaviour yet. Phone check passed: installing over 0.4.0 kept all games.) Design the online game data: a random unguessable game ID, the host's anonymous ID, and a secret host key. Local database migration 4→5 adds the shared ID and host flag.
-- [x] **23.** (Written and tested, not deployed: `firebase/firestore.rules` with 22 emulator tests passing, a GitHub check `firestore-rules.yml`, details in `docs/SHARED_GAMES.md`. Still to do by hand with the user: create the Firestore database (Tel Aviv, `me-west1`), enable Anonymous sign-in in the console, deploy the rules.) Firestore security rules:
+- [x] **23.** (Written and tested, not deployed: `firebase/firestore.rules` with 22 emulator tests passing, a GitHub check `firestore-rules.yml`, details in `docs/SHARED_GAMES.md`. Firestore database created (Tel Aviv, `me-west1`), Anonymous sign-in enabled and the rules deployed on 2026-11-09; a smoke test against the real project passed: anonymous sign-in, create, read, list denied, signed-out read denied, delete. A Firebase web app "PayUp web" is registered.) Firestore security rules:
   - anyone with the ID can read;
   - only the current host can write;
   - a takeover needs the host key;
