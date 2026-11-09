@@ -28,3 +28,17 @@ a restored game is always a plain local game.
 ## Watched games
 When a game you watched finishes it is saved into your history once (`shareId` set, `isHost` false). It then counts in the
 leaderboard like any finished game. Names are matched to your friends only when identical. Viewers cannot claim a player.
+
+## Security rules (task 23)
+`firebase/firestore.rules`, tested by `firebase/test/rules.test.js` on the local emulator (`cd firebase`, `npm install`, `npm test`;
+needs JDK 21 and Node). A GitHub check runs them on pull requests that touch the rules.
+- Read: any signed-in (anonymous) user can `get` one game; `list` is never allowed.
+- Create: signed in, `hostUid` is the caller, `revision` is 1, the shape is valid.
+- Update/delete: only the current `hostUid`; each update raises `revision` by exactly 1 and cannot change `hostKeyHash`.
+- Takeover: the new host first creates `games/{id}/claims/{theirUid}` holding the key; the rules accept it only if its SHA-256
+  (hex) equals `hostKeyHash`; then they update the game with themselves as `hostUid`. Claims can only be read or deleted by their
+  owner and cannot be listed. The client deletes its claim afterwards (clean-up, not security).
+- Limits: at most 20 players and 400 transfers, `currency` up to 8 characters, amounts in a sane range, no unknown fields.
+  Firestore rules cannot loop over lists, so the contents of `players` and `transfers` are not checked item by item.
+- Deploying the rules is done by hand (`firebase deploy --only firestore:rules`) after the tests pass; the GitHub deploy key only
+  publishes the website.
