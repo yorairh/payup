@@ -1,0 +1,30 @@
+# Shared games: the online data (roadmap task 22)
+
+Decisions for sharing a live game by link. Rules, sync code and screens come in tasks 23 to 28.
+
+## Where a game lives
+- Firebase project `payup-ae6fc`, Firestore, one document per game: `games/{id}`. It holds the whole game and is rewritten
+  whole by the host on every change, so viewers get atomic updates with a single live listener.
+- `revision` goes up by one on every write; `schemaVersion` (1 now) lets later app versions read old games.
+- Fields: the game settings (`startedAt`, `endedAt`, `defaultBuyIn`, `finished`, `voidedDifference`, `chipValue`,
+  `roundToWhole`, `currency`, dealer as a position in `players`), `players` in table order (name, buy-ins with amount and
+  time, `chips`, `finalAmount`, `net`), `transfers` (from name, to name, amount), plus `hostUid`, `hostKeyHash`, `revision`,
+  `schemaVersion`.
+- Not uploaded: the friends list, local database ids, the card-deal state, other games.
+
+## Identity and links
+- The id is 128 random bits written as 22 URL-safe characters: unguessable, and games cannot be listed.
+- Viewer link: `https://payup-ae6fc.web.app/g/<id>` (a real path, so Android can open it in the app, task 29).
+- Host link: `https://payup-ae6fc.web.app/h/<id>#<hostKey>`. The host key is 128 random bits after the `#`, which browsers
+  never send to a server. The document stores only a hash of it (`hostKeyHash`), never the key.
+- The host is the anonymous Firebase user of the device (`hostUid`). A host who reinstalls or clears the browser takes
+  control back with the host link; opening it on another device hands the game over (task 27).
+
+## On the device (database version 5)
+`games` gets `shareId` (null = never shared), `isHost` (default false), `hostKey` (null except on the host's devices), and a
+unique index on `shareId`, which is what keeps a watched game from being saved twice. Backups do not include these three, so
+a restored game is always a plain local game.
+
+## Watched games
+When a game you watched finishes it is saved into your history once (`shareId` set, `isHost` false). It then counts in the
+leaderboard like any finished game. Names are matched to your friends only when identical. Viewers cannot claim a player.
