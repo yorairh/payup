@@ -71,7 +71,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
 - [x] **21.** (Released as v0.4.0: the web app is live at https://payup-ae6fc.web.app, deployed by the tag workflow; the APK is attached to the GitHub release. It includes milestone 1, so task 14 (0.3.0) was folded into this release and never published separately.) Release 0.4.0: test the web app in the built-in browser here, then on your iPhone and Android Chrome.
 
 ## Milestone 3 — shared game links (release 0.5.0)
-- [x] **22.** (Done: the design is in `docs/SHARED_GAMES.md`; database version 5 adds `shareId`, `isHost`, `hostKey` and a unique index on `shareId`, migration 4→5 with the exported schema. No sharing behaviour yet. Needs a phone check: installing over 0.4.0 keeps the games.) Design the online game data: a random unguessable game ID, the host's anonymous ID, and a secret host key. Local database migration 4→5 adds the shared ID and host flag.
+- [x] **22.** (Done: the design is in `docs/SHARED_GAMES.md`; database version 5 adds `shareId`, `isHost`, `hostKey` and a unique index on `shareId`, migration 4→5 with the exported schema. No sharing behaviour yet. Phone check passed: installing over 0.4.0 kept all games.) Design the online game data: a random unguessable game ID, the host's anonymous ID, and a secret host key. Local database migration 4→5 adds the shared ID and host flag.
 - [ ] **23.** Firestore security rules:
   - anyone with the ID can read;
   - only the current host can write;
