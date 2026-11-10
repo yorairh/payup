@@ -78,7 +78,7 @@ Friends with iPhones can't install the Android app, and the user doesn't want th
   - a takeover needs the host key;
   - games can't be listed;
   - plus tests for the rules on the Firebase emulator.
-- [ ] **24.** Add the `GameSync` interface in common code, with an Android implementation (Firebase SDK) and a web implementation (Firebase JS SDK). Both sign in anonymously.
+- [x] **24.** (Done: `GameSync` in `shared/.../sync/` with the online game shape, ids, SHA-256 and the mapping from and to the screens' game, all unit-tested; `FirebaseGameSync` on the Android SDK; `WebGameSync` on the JS SDK through `webApp/firebase-bridge`. Both sign in anonymously. The web one was checked against the real database in the browser: create, update, live watch, takeover, delete, stranger and wrong key refused. The Android one compiles and is first used on a phone in task 25. The release APK grew from 10.3 to 15.4 MB.) Add the `GameSync` interface in common code, with an Android implementation (Firebase SDK) and a web implementation (Firebase JS SDK). Both sign in anonymously.
 - [ ] **25.** Host flow: a Share button on the table screen uploads the game and shows the QR code, share sheet and copy link. The host's later edits sync live, and a status shows offline or syncing.
 - [ ] **26.** Viewer flow: opening a link shows the game read-only and live (table, cash-out, result). When the game finishes, it's saved into the viewer's history once, without duplicates.
 - [ ] **27.** Host handover: opening the host link takes over editing, and the previous host turns into a viewer.

@@ -40,6 +40,7 @@ import com.payup.data.AppDatabase
 import com.payup.data.GameRepository
 import com.payup.platform.LocalPlatform
 import com.payup.platform.PlatformServices
+import com.payup.sync.ShareIds
 import com.payup.resources.Res
 import com.payup.resources.already_open_in_another_tab
 import com.payup.resources.payup
@@ -138,6 +139,8 @@ private fun Providers(database: AppDatabase, content: @Composable () -> Unit) {
             currencyStore = WebSettings.currencyStore,
             appLanguage = WebSettings.language,
             appVersion = APP_VERSION,
+            gameSync = WebGameSync(),
+            shareIds = ShareIds(webRandomBytes),
         )
     }
     val platform = remember(fonts) {
