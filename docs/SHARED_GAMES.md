@@ -29,6 +29,17 @@ a restored game is always a plain local game.
 When a game you watched finishes it is saved into your history once (`shareId` set, `isHost` false). It then counts in the
 leaderboard like any finished game. Names are matched to your friends only when identical. Viewers cannot claim a player.
 
+## Sync code (task 24)
+- `shared/.../sync/`: `GameSync` (`signIn`, `publish`, `watch`, `delete`, `takeOver`), `SharedGame` (the online shape, JSON with absent
+  fields left out), `OnlineGame` (game + revision + host), `toSharedGame()` / `toGameWithDetails()` (to and from the screens' game),
+  `ShareIds` (22-character ids and host keys from a platform `RandomBytes`), `sha256Hex`.
+- Games cross the platform seam as JSON text. Android (`androidApp/.../FirebaseGameSync.kt`) turns it into maps for the Firebase Android
+  SDK (`google-services.json` is committed: the identifiers are public, the rules protect the data). Web (`webApp/firebase-bridge/bridge.js`)
+  holds the Firebase JS SDK and the public web config, and answers with JSON text; `WebGameSync.kt` wraps it.
+- `publish` is a transaction: a missing game is created with revision 1, otherwise the next revision is written. It fails when offline
+  (`GameSyncException.Kind.Offline`), so the caller shows "offline" and retries; the latest state is all that is ever uploaded.
+- `watch` ignores a "missing" answer that only comes from the saved copy, so offline never looks like "deleted".
+
 ## Security rules (task 23)
 `firebase/firestore.rules`, tested by `firebase/test/rules.test.js` on the local emulator (`cd firebase`, `npm install`, `npm test`;
 needs JDK 21 and Node). A GitHub check runs them on pull requests that touch the rules.
