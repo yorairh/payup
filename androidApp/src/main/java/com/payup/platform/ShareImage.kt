@@ -19,6 +19,7 @@ import com.payup.resources.who_pays_whom
 import com.payup.ui.common.moneyText
 import com.payup.ui.result.currency
 import com.payup.ui.result.dateText
+import com.payup.ui.result.transferText
 import com.payup.ui.theme.PayUpPalette
 import org.jetbrains.compose.resources.getPluralString
 import org.jetbrains.compose.resources.getString
@@ -104,7 +105,7 @@ internal suspend fun renderShareImage(game: GameWithDetails, p: PayUpPalette, rt
     }
     transfers.forEach {
         y += rowHeight
-        row("${it.fromName} → ${it.toName}", namePaint, moneyText(it.amount, game.currency(), rtl), paint(48f, p.gold.toArgb(), bold = true), y)
+        row(transferText(it.fromName, it.toName, rtl), namePaint, moneyText(it.amount, game.currency(), rtl), paint(48f, p.gold.toArgb(), bold = true), y)
     }
     return bitmap
 }
