@@ -27,6 +27,17 @@ suspend fun shareHeader(game: GameWithDetails, rtl: Boolean, dates: DateFormatte
     getPluralString(Res.plurals.players_count, game.players.size, game.players.size),
 )
 
+/**
+ * "payer → receiver" for plain text. In a right-to-left line the payer sits on the right, so the arrow must point left,
+ * toward the receiver (the arrow character itself is never mirrored). Each name is isolated, so Hebrew names inside an
+ * English line (or the reverse) cannot pull the arrow into their own direction, and the line's direction follows the
+ * app language.
+ */
+fun transferText(from: String, to: String, rtl: Boolean): String {
+    val names = "⁨$from⁩ ${if (rtl) '←' else '→'} ⁨$to⁩"
+    return if (rtl) "⁧$names⁩" else "⁦$names⁩"
+}
+
 suspend fun buildShareText(game: GameWithDetails, rtl: Boolean, dates: DateFormatter): String = buildString {
     appendLine(shareHeader(game, rtl, dates))
     appendLine()
@@ -37,6 +48,6 @@ suspend fun buildShareText(game: GameWithDetails, rtl: Boolean, dates: DateForma
     if (game.transfers.isEmpty()) {
         appendLine(getString(Res.string.nobody_pays))
     } else {
-        game.transfers.forEach { appendLine("${it.fromName} → ${it.toName} ${moneyText(it.amount, game.currency(), rtl)}") }
+        game.transfers.forEach { appendLine("${transferText(it.fromName, it.toName, rtl)} ${moneyText(it.amount, game.currency(), rtl)}") }
     }
 }.trimEnd()
