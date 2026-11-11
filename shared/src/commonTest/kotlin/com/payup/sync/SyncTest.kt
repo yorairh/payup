@@ -131,3 +131,11 @@ class SharedGameTest {
         assertEquals(details.transfers.map { Triple(it.fromName, it.toName, it.amount) }, back.transfers.map { Triple(it.fromName, it.toName, it.amount) })
     }
 }
+
+class ShareLinksTest {
+    @kotlin.test.Test
+    fun links_have_the_agreed_shape() {
+        kotlin.test.assertEquals("https://payup-ae6fc.web.app/g/abc", ShareLinks.viewer("abc"))
+        kotlin.test.assertEquals("https://payup-ae6fc.web.app/h/abc#key", ShareLinks.host("abc", "key"))
+    }
+}

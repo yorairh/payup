@@ -186,4 +186,14 @@
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
     <string name="install_hint_title">PayUp zum Home-Bildschirm hinzufügen</string>
     <string name="install_hint_body">Tippe auf „Teilen“ und dann auf „Zum Home-Bildschirm“. PayUp öffnet sich dann wie eine App, und deine Spiele bleiben sicher gespeichert.</string>
+    <string name="share_game">Live teilen</string>
+    <string name="share_title">Dieses Spiel live verfolgen</string>
+    <string name="share_scan">Freunde können diesen Code scannen oder den Link öffnen, um das Spiel zu verfolgen.</string>
+    <string name="share_link">Link teilen</string>
+    <string name="copy_link">Link kopieren</string>
+    <string name="share_failed">Teilen gerade nicht möglich. Prüfe deine Verbindung.</string>
+    <string name="sync_syncing">Synchronisiere…</string>
+    <string name="sync_offline">Offline</string>
+    <string name="sync_stopped">Teilen beendet</string>
+    <string name="share_message">Verfolge mein PayUp-Spiel live: %1$s</string>
 </resources>

@@ -186,4 +186,14 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="install_hint_title">Add PayUp to your Home Screen</string>
     <string name="install_hint_body">Tap the Share button, then “Add to Home Screen”. PayUp then opens like an app, and your games are kept safe.</string>
+    <string name="share_game">Share live</string>
+    <string name="share_title">Watch this game live</string>
+    <string name="share_scan">Friends can scan this code or open the link to follow the game.</string>
+    <string name="share_link">Share link</string>
+    <string name="copy_link">Copy link</string>
+    <string name="share_failed">Can't share right now. Check your connection.</string>
+    <string name="sync_syncing">Syncing…</string>
+    <string name="sync_offline">Offline</string>
+    <string name="sync_stopped">Sharing stopped</string>
+    <string name="share_message">Follow my PayUp game live: %1$s</string>
 </resources>

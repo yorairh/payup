@@ -13,6 +13,11 @@ import com.payup.resources.edit_buy_in
 import com.payup.resources.end_game
 import com.payup.resources.name_taken
 import com.payup.resources.pot
+import com.payup.resources.share_failed
+import com.payup.resources.share_game
+import com.payup.resources.sync_offline
+import com.payup.resources.sync_stopped
+import com.payup.resources.sync_syncing
 import com.payup.resources.table_title
 import com.payup.resources.undo_last
 import com.payup.resources.undone
@@ -40,6 +45,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -80,6 +86,9 @@ import com.payup.ui.common.money
 import com.payup.ui.common.moneyText
 import com.payup.ui.common.signedMoney
 import com.payup.ui.common.payUpViewModel
+import com.payup.sync.ShareLinks
+import com.payup.sync.ShareResult
+import com.payup.sync.SyncStatus
 import com.payup.ui.theme.Gold
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -87,7 +96,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TableScreen(gameId: Long, onBack: () -> Unit, onEndGame: () -> Unit) {
-    val vm = payUpViewModel { TableViewModel(it.repository, gameId) }
+    val vm = payUpViewModel { TableViewModel(it.repository, it.sharedGames, gameId) }
     val details by vm.game.collectAsStateWithLifecycle()
     val game = details ?: return
     ProvideCurrency(game.game.currency) { TableContent(vm, game, onBack, onEndGame) }
@@ -102,12 +111,43 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
     var customFor by remember { mutableStateOf<PlayerWithBuyIns?>(null) }
     var addingPlayer by remember { mutableStateOf(false) }
     var sheetPlayerId by remember { mutableStateOf<Long?>(null) }
+    var shareLink by remember { mutableStateOf<String?>(null) }
+    var sharing by remember { mutableStateOf(false) }
+    val syncStatus by vm.syncStatus.collectAsStateWithLifecycle()
 
     val defaultBuyIn = game.game.defaultBuyIn
 
     Scaffold(
         topBar = {
             PayUpTopBar(stringResource(Res.string.table_title), onBack) {
+                if (game.game.shareId != null && game.game.isHost) {
+                    when (syncStatus) {
+                        SyncStatus.Synced -> {}
+                        SyncStatus.Syncing -> Text(stringResource(Res.string.sync_syncing), style = MaterialTheme.typography.labelMedium)
+                        SyncStatus.Offline -> Text(stringResource(Res.string.sync_offline), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error)
+                        SyncStatus.Stopped -> Text(stringResource(Res.string.sync_stopped), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error)
+                    }
+                }
+                IconButton(
+                    enabled = !sharing,
+                    onClick = {
+                        val existing = game.game.shareId
+                        if (existing != null) {
+                            shareLink = ShareLinks.viewer(existing)
+                        } else {
+                            sharing = true
+                            vm.share { result ->
+                                sharing = false
+                                when (result) {
+                                    is ShareResult.Shared -> shareLink = result.link
+                                    ShareResult.Failed -> scope.launch { snackbar.showSnackbar(getString(Res.string.share_failed)) }
+                                }
+                            }
+                        }
+                    },
+                ) {
+                    Icon(Icons.Default.Share, contentDescription = stringResource(Res.string.share_game))
+                }
                 IconButton(onClick = { addingPlayer = true }) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(Res.string.add_player))
                 }
@@ -166,6 +206,10 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
                 onDismiss = { sheetPlayerId = null },
             )
         }
+    }
+
+    shareLink?.let { link ->
+        ShareSheet(link, onDismiss = { shareLink = null })
     }
 
     customFor?.let { player ->

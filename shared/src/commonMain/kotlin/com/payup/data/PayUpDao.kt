@@ -61,6 +61,14 @@ interface PayUpDao {
     @Query("SELECT * FROM games WHERE id = :id")
     suspend fun gameOnce(id: Long): GameWithDetails?
 
+    /** The shared game this device hosts that was started last, finished or not. */
+    @Transaction
+    @Query("SELECT * FROM games WHERE shareId IS NOT NULL AND isHost = 1 ORDER BY startedAt DESC, id DESC LIMIT 1")
+    fun latestHostedGame(): Flow<GameWithDetails?>
+
+    @Query("UPDATE games SET shareId = :shareId, isHost = 1, hostKey = :hostKey WHERE id = :gameId")
+    suspend fun markShared(gameId: Long, shareId: String, hostKey: String)
+
     /** Just the currency column, so the leaderboard never loads every game's players and buy-ins. */
     @Query("SELECT currency FROM games WHERE finished = 1 ORDER BY COALESCE(endedAt, startedAt) DESC LIMIT 1")
     fun latestFinishedCurrencyCode(): Flow<String?>
