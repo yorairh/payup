@@ -189,4 +189,14 @@
     <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
     <string name="install_hint_title">Ajoutez PayUp à l’écran d’accueil</string>
     <string name="install_hint_body">Touchez le bouton Partager, puis « Sur l’écran d’accueil ». PayUp s’ouvrira comme une appli et vos parties seront conservées.</string>
+    <string name="share_game">Partager en direct</string>
+    <string name="share_title">Suivez cette partie en direct</string>
+    <string name="share_scan">Vos amis peuvent scanner ce code ou ouvrir le lien pour suivre la partie.</string>
+    <string name="share_link">Partager le lien</string>
+    <string name="copy_link">Copier le lien</string>
+    <string name="share_failed">Partage impossible pour le moment. Vérifiez votre connexion.</string>
+    <string name="sync_syncing">Synchronisation…</string>
+    <string name="sync_offline">Hors ligne</string>
+    <string name="sync_stopped">Partage arrêté</string>
+    <string name="share_message">Suivez ma partie PayUp en direct : %1$s</string>
 </resources>

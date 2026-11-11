@@ -192,4 +192,14 @@
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="install_hint_title">Добавьте PayUp на главный экран</string>
     <string name="install_hint_body">Нажмите «Поделиться», затем «На экран “Домой”». PayUp будет открываться как приложение, а ваши игры сохранятся.</string>
+    <string name="share_game">Поделиться онлайн</string>
+    <string name="share_title">Следите за игрой онлайн</string>
+    <string name="share_scan">Друзья могут отсканировать код или открыть ссылку, чтобы следить за игрой.</string>
+    <string name="share_link">Поделиться ссылкой</string>
+    <string name="copy_link">Копировать ссылку</string>
+    <string name="share_failed">Сейчас нельзя поделиться. Проверьте подключение.</string>
+    <string name="sync_syncing">Синхронизация…</string>
+    <string name="sync_offline">Нет связи</string>
+    <string name="sync_stopped">Трансляция остановлена</string>
+    <string name="share_message">Следите за моей игрой в PayUp онлайн: %1$s</string>
 </resources>

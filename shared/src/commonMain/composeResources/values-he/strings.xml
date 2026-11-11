@@ -192,4 +192,14 @@
     <string name="copied_to_clipboard">הועתק ללוח</string>
     <string name="install_hint_title">הוסיפו את PayUp למסך הבית</string>
     <string name="install_hint_body">הקישו על כפתור השיתוף ואז על ”הוסף למסך הבית“. כך PayUp ייפתח כמו אפליקציה והמשחקים שלכם יישמרו.</string>
+    <string name="share_game">שיתוף חי</string>
+    <string name="share_title">צפו במשחק בשידור חי</string>
+    <string name="share_scan">חברים יכולים לסרוק את הקוד או לפתוח את הקישור כדי לעקוב אחרי המשחק.</string>
+    <string name="share_link">שיתוף קישור</string>
+    <string name="copy_link">העתקת קישור</string>
+    <string name="share_failed">אי אפשר לשתף כרגע. בדקו את החיבור.</string>
+    <string name="sync_syncing">מסנכרן…</string>
+    <string name="sync_offline">לא מחובר</string>
+    <string name="sync_stopped">השיתוף הופסק</string>
+    <string name="share_message">עקבו אחרי משחק הפוקר שלי ב-PayUp בשידור חי: %1$s</string>
 </resources>

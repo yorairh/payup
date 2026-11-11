@@ -22,6 +22,12 @@ class GameRepository(private val db: AppDatabase) {
 
     fun game(id: Long): Flow<GameWithDetails?> = dao.game(id)
 
+    /** The shared game this device hosts that was started last; the one kept in step with its online copy. */
+    val latestHostedGame: Flow<GameWithDetails?> = dao.latestHostedGame()
+
+    /** Records that game [gameId] is online as [shareId] and that this device hosts it with [hostKey]. */
+    suspend fun markShared(gameId: Long, shareId: String, hostKey: String) = dao.markShared(gameId, shareId, hostKey)
+
     /** Currency of the most recently finished game; the leaderboard adds amounts up without converting. */
     val latestCurrency: Flow<Currency> = dao.latestFinishedCurrencyCode()
         .map { Currency.fromCode(it) }

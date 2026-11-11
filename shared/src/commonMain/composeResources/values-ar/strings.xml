@@ -198,4 +198,14 @@
     <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
     <string name="install_hint_title">أضف PayUp إلى الشاشة الرئيسية</string>
     <string name="install_hint_body">اضغط على زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». سيُفتح PayUp كتطبيق وستبقى ألعابك محفوظة.</string>
+    <string name="share_game">مشاركة مباشرة</string>
+    <string name="share_title">تابع هذه اللعبة مباشرة</string>
+    <string name="share_scan">يمكن للأصدقاء مسح هذا الرمز أو فتح الرابط لمتابعة اللعبة.</string>
+    <string name="share_link">مشاركة الرابط</string>
+    <string name="copy_link">نسخ الرابط</string>
+    <string name="share_failed">تعذرت المشاركة الآن. تحقق من الاتصال.</string>
+    <string name="sync_syncing">جارٍ المزامنة…</string>
+    <string name="sync_offline">غير متصل</string>
+    <string name="sync_stopped">توقفت المشاركة</string>
+    <string name="share_message">تابع لعبتي في PayUp مباشرة: %1$s</string>
 </resources>
