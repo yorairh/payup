@@ -1,4 +1,4 @@
-# Publishes the web app to Firebase Hosting (https://payup-ae6fc.web.app) when a release tag vX.Y.Z is pushed.
+# Publishes the web app to Firebase Hosting (https://payup.web.app) when a release tag vX.Y.Z is pushed.
 # It can also be started by hand from the Actions tab; "channel" then picks a preview channel instead of the live site.
 name: Deploy web
 

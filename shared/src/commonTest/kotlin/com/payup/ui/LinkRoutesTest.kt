@@ -9,17 +9,17 @@ class LinkRoutesTest {
 
     @Test
     fun viewer_link_opens_the_watch_screen() =
-        assertEquals(Route.Watch(id), routeForLink("https://payup-ae6fc.web.app/g/$id"))
+        assertEquals(Route.Watch(id), routeForLink("https://payup.web.app/g/$id"))
 
     @Test
     fun host_link_opens_the_take_over_screen() =
-        assertEquals(Route.TakeOver(id, key), routeForLink("https://payup-ae6fc.web.app/h/$id#$key"))
+        assertEquals(Route.TakeOver(id, key), routeForLink("https://payup.web.app/h/$id#$key"))
 
     @Test
     fun anything_else_opens_nothing() {
-        assertEquals(null, routeForLink("https://payup-ae6fc.web.app/"))
-        assertEquals(null, routeForLink("https://payup-ae6fc.web.app/g/short"))
-        assertEquals(null, routeForLink("https://payup-ae6fc.web.app/h/$id"))
+        assertEquals(null, routeForLink("https://payup.web.app/"))
+        assertEquals(null, routeForLink("https://payup.web.app/g/short"))
+        assertEquals(null, routeForLink("https://payup.web.app/h/$id"))
         assertEquals(null, routeForLink(id))
     }
 }
