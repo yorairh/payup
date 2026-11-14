@@ -1,5 +1,6 @@
 package com.payup.ui.result
 
+import com.payup.resources.chips_share_of_pot
 import com.payup.platform.LocalPlatform
 import com.payup.resources.Res
 import com.payup.resources.buy_ins_title
@@ -81,7 +82,13 @@ fun PlayerDetailsSheet(game: GameWithDetails, playerName: String, onDismiss: () 
             Line(stringResource(Res.string.total_put_in), money(player.totalIn), bold = true, valueColor = Gold)
 
             Section(stringResource(Res.string.final_amount))
-            if (chips != null && chipValue != null) {
+            val totalChips = game.players.sumOf { it.player.chips ?: 0 }
+            if (chips != null && game.game.chipsByShare && totalChips > 0) {
+                // One decimal, dropped when it is zero: "25%" or "33.3%".
+                val tenths = chips * 1000L / totalChips
+                val share = if (tenths % 10 == 0L) "${tenths / 10}%" else "${tenths / 10}.${tenths % 10}%"
+                Line(leftToRight(stringResource(Res.string.chips_share_of_pot, chips, totalChips, share)), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
+            } else if (chips != null && chipValue != null) {
                 Line(leftToRight(stringResource(Res.string.chips_at, chips, money(chipValue))), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)
             } else {
                 Line(stringResource(Res.string.final_amount), money(player.player.finalAmount ?: 0), bold = true, valueColor = Gold)

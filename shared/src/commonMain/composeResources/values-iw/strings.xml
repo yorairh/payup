@@ -228,4 +228,7 @@
     <string name="replaced_ok">צפייה במשחק</string>
     <string name="delete_game_shared_message">המשחק יוסר מההיסטוריה שלכם, והקישור החי יפסיק לעבוד עבור כל מי שצופה.</string>
     <string name="delete_game_offline">אי אפשר למחוק משחק משותף בלי חיבור. נסו שוב כשתהיו מחוברים.</string>
+    <string name="chips_no_value">לצ׳יפים אין ערך קבוע</string>
+    <string name="chips_no_value_hint">כל שחקן מקבל מהקופה לפי חלקו בצ׳יפים.</string>
+    <string name="chips_share_of_pot">%1$d מתוך %2$d צ׳יפים = %3$s מהקופה</string>
 </resources>

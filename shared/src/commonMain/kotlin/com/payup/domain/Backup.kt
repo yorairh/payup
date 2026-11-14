@@ -28,6 +28,7 @@ data class BackupGame(
     val finished: Boolean,
     val voidedDifference: Int = 0,
     val chipValue: Int? = null,
+    val chipsByShare: Boolean = false,
     val roundToWhole: Boolean = true,
     /** Position of the dealer in [players], or null when the game started without the card deal. */
     val dealerIndex: Int? = null,

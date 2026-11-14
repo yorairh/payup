@@ -222,4 +222,7 @@
     <string name="replaced_ok">Spiel ansehen</string>
     <string name="delete_game_shared_message">Es wird aus deinem Verlauf entfernt, und der Live-Link funktioniert für alle Zuschauer nicht mehr.</string>
     <string name="delete_game_offline">Ein geteiltes Spiel kann ohne Verbindung nicht gelöscht werden. Versuche es erneut, wenn du online bist.</string>
+    <string name="chips_no_value">Chips haben keinen festen Wert</string>
+    <string name="chips_no_value_hint">Jeder Spieler erhält vom Pot einen Anteil entsprechend seinen Chips.</string>
+    <string name="chips_share_of_pot">%1$d von %2$d Chips = %3$s des Pots</string>
 </resources>

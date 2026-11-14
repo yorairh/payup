@@ -1,5 +1,7 @@
 package com.payup.ui.cashout
 
+import com.payup.resources.chips_no_value_hint
+import com.payup.resources.chips_no_value
 import com.payup.resources.Res
 import com.payup.resources.auto_filled
 import com.payup.resources.cashout_hint
@@ -143,6 +145,7 @@ private fun CashOutContent(vm: CashOutViewModel, current: CashOutState, onBack: 
                     settings = current.chips,
                     onEnabled = vm::setChipMode,
                     onValue = vm::setChipValue,
+                    onByShare = vm::setByShare,
                     onRound = vm::setRoundToWhole,
                 )
             }
@@ -211,6 +214,7 @@ private fun ChipCard(
     settings: ChipSettings,
     onEnabled: (Boolean) -> Unit,
     onValue: (String) -> Unit,
+    onByShare: (Boolean) -> Unit,
     onRound: (Boolean) -> Unit,
 ) {
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)) {
@@ -228,7 +232,16 @@ private fun ChipCard(
             }
             AnimatedVisibility(visible = settings.enabled) {
                 Column {
-                    OutlinedTextField(
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(Res.string.chips_no_value), style = MaterialTheme.typography.bodyLarge)
+                            if (settings.byShare) {
+                                Text(stringResource(Res.string.chips_no_value_hint), style = MaterialTheme.typography.bodySmall)
+                            }
+                        }
+                        Switch(checked = settings.byShare, onCheckedChange = onByShare)
+                    }
+                    if (!settings.byShare) OutlinedTextField(
                         value = settings.valueText,
                         onValueChange = onValue,
                         label = { Text(stringResource(Res.string.chip_value)) },

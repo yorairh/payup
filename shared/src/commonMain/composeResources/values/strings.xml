@@ -222,4 +222,7 @@
     <string name="replaced_ok">Watch the game</string>
     <string name="delete_game_shared_message">It will be removed from your history, and the live link stops working for everyone watching.</string>
     <string name="delete_game_offline">Can't delete a shared game without a connection. Try again when you're online.</string>
+    <string name="chips_no_value">Chips have no set value</string>
+    <string name="chips_no_value_hint">Each player gets a share of the pot in proportion to their chips.</string>
+    <string name="chips_share_of_pot">%1$d of %2$d chips = %3$s of the pot</string>
 </resources>

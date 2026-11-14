@@ -38,6 +38,7 @@ class CashOutViewModel(private val repository: GameRepository, private val gameI
                     // First load: restore what was typed before the app was closed, and the chip settings (or the last game's).
                     CashOutSession.start(
                         players, details.pot, details.game.chipValue, details.game.roundToWhole, repository.lastChipSettings(),
+                        savedByShare = details.game.chipsByShare,
                     )
                 }
             }
@@ -53,6 +54,8 @@ class CashOutViewModel(private val repository: GameRepository, private val gameI
     fun setChipValue(text: String) = apply { it.setChipValue(text) }
 
     fun setRoundToWhole(round: Boolean) = apply { it.setRoundToWhole(round) }
+
+    fun setByShare(byShare: Boolean) = apply { it.setByShare(byShare) }
 
     fun onFieldDone(playerId: Long) = apply { it.fieldDone(playerId) }
 

@@ -130,6 +130,12 @@ class SharedGameTest {
         assertEquals(details.results(), back.results())
         assertEquals(details.transfers.map { Triple(it.fromName, it.toName, it.amount) }, back.transfers.map { Triple(it.fromName, it.toName, it.amount) })
     }
+
+    @Test fun chipShareModeRoundTrips() {
+        val shared = details.toSharedGame().copy(chipsByShare = true)
+        assertEquals(shared, SharedGame.fromJson(shared.toJson()))
+        assertTrue("\"chipsByShare\":true" in shared.toJson())
+    }
 }
 
 class ShareLinksTest {

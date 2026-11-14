@@ -27,6 +27,8 @@ data class GameEntity(
     val voidedDifference: Int = 0,
     /** Value of one chip when the cash-out is counted in chips; null when counting money directly. */
     val chipValue: Int? = null,
+    /** Chips have no set value: the pot is split by each player's share of all chips ([chipValue] is null then). */
+    @ColumnInfo(defaultValue = "0") val chipsByShare: Boolean = false,
     /** Chip mode: round each player down to whole shekels and give the leftover to the biggest loser. */
     @ColumnInfo(defaultValue = "1") val roundToWhole: Boolean = true,
     /** The player picked as dealer by the card deal at game start; null when the game started without it. */
