@@ -1,8 +1,10 @@
 package com.payup.ui.takeover
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import com.payup.ui.common.ConfirmDialog
+import com.payup.ui.common.UnreachableMessage
+import com.payup.ui.common.StatusMessage
+import com.payup.ui.common.CenteredColumn
+import com.payup.sync.watchPatiently
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
@@ -20,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,11 +32,9 @@ import com.payup.LocalAppDependencies
 import com.payup.data.GameRepository
 import com.payup.data.GameWithDetails
 import com.payup.resources.Res
-import com.payup.resources.cancel
 import com.payup.resources.replaced_message
 import com.payup.resources.replaced_ok
 import com.payup.resources.replaced_title
-import com.payup.resources.retry
 import com.payup.resources.takeover_action
 import com.payup.resources.takeover_body
 import com.payup.resources.takeover_discard_message
@@ -44,7 +43,6 @@ import com.payup.resources.takeover_invalid
 import com.payup.resources.takeover_title
 import com.payup.resources.takeover_watch
 import com.payup.resources.watch_not_found
-import com.payup.resources.watch_unreachable
 import com.payup.sync.GameSync
 import com.payup.sync.GameSyncException
 import com.payup.sync.SharedGame
@@ -55,9 +53,7 @@ import com.payup.ui.common.ProvideCurrency
 import com.payup.ui.common.money
 import com.payup.ui.common.payUpViewModel
 import com.payup.ui.theme.Gold
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -75,7 +71,7 @@ sealed interface TakeOverUi {
     data object Invalid : TakeOverUi
 
     /** The game, and whether taking over would discard an unfinished game on this device. */
-    data class Ready(val game: GameWithDetails, val discardsActiveGame: Boolean) : TakeOverUi
+    data class Ready(val shared: SharedGame, val game: GameWithDetails, val discardsActiveGame: Boolean) : TakeOverUi
 
     data object Working : TakeOverUi
 
@@ -92,7 +88,6 @@ class TakeOverViewModel(
 ) : ViewModel() {
     private val state = MutableStateFlow<TakeOverUi>(TakeOverUi.Loading)
     val ui: StateFlow<TakeOverUi> = state
-    private var latest: SharedGame? = null
     private var job: Job? = null
 
     init {
@@ -107,39 +102,25 @@ class TakeOverViewModel(
     private fun start() {
         job?.cancel()
         job = viewModelScope.launch {
-            launch {
-                delay(10_000)
-                if (state.value == TakeOverUi.Loading) state.value = TakeOverUi.Unreachable
-            }
-            try {
-                sync.watch(shareId).collect { heard ->
-                    val current = state.value
-                    if (current is TakeOverUi.Working || current is TakeOverUi.Done) return@collect
-                    when (heard) {
-                        is WatchState.Found -> {
-                            val game = heard.online.game
-                            latest = game
-                            // A finished game has no host to take over: it is simply watched (and saved).
-                            state.value = if (game.finished) {
-                                TakeOverUi.Done(null)
-                            } else {
-                                TakeOverUi.Ready(game.toGameWithDetails(shareId), repository.hasActiveGame())
-                            }
-                        }
-                        WatchState.NotFound -> state.value = TakeOverUi.NotFound
-                        is WatchState.Failed -> state.value = TakeOverUi.Unreachable
+            sync.watchPatiently(shareId).collect { heard ->
+                val current = state.value
+                if (current is TakeOverUi.Working || current is TakeOverUi.Done) return@collect
+                state.value = when (heard) {
+                    is WatchState.Found -> {
+                        val game = heard.online.game
+                        // A finished game has no host to take over: it is simply watched (and saved).
+                        if (game.finished) TakeOverUi.Done(null)
+                        else TakeOverUi.Ready(game, game.toGameWithDetails(shareId), repository.hasActiveGame())
                     }
+                    WatchState.NotFound -> TakeOverUi.NotFound
+                    is WatchState.Failed -> TakeOverUi.Unreachable
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                state.value = TakeOverUi.Unreachable
             }
         }
     }
 
     fun takeOver() {
-        val game = latest ?: return
+        val game = (state.value as? TakeOverUi.Ready)?.shared ?: return
         state.value = TakeOverUi.Working
         viewModelScope.launch {
             try {
@@ -162,21 +143,14 @@ fun TakeOverScreen(shareId: String, hostKey: String, onBack: () -> Unit, onWatch
         if (shown is TakeOverUi.Done) shown.hostedGameId?.let(onHosting) ?: onWatch()
     }
     Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.takeover_title), onBack) }) { padding ->
-        Column(
-            Modifier.fillMaxSize().padding(padding).padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+        CenteredColumn(Modifier.padding(padding)) {
             when (shown) {
                 TakeOverUi.Loading, TakeOverUi.Working, is TakeOverUi.Done -> CircularProgressIndicator()
-                TakeOverUi.NotFound -> Message(stringResource(Res.string.watch_not_found))
-                TakeOverUi.Invalid -> Message(stringResource(Res.string.takeover_invalid))
-                TakeOverUi.Unreachable -> {
-                    Message(stringResource(Res.string.watch_unreachable))
-                    Button(onClick = vm::retry) { Text(stringResource(Res.string.retry)) }
-                }
+                TakeOverUi.NotFound -> StatusMessage(stringResource(Res.string.watch_not_found))
+                TakeOverUi.Invalid -> StatusMessage(stringResource(Res.string.takeover_invalid))
+                TakeOverUi.Unreachable -> UnreachableMessage(vm::retry)
                 is TakeOverUi.Ready -> ProvideCurrency(shown.game.game.currency) {
-                    Message(stringResource(Res.string.takeover_body))
+                    StatusMessage(stringResource(Res.string.takeover_body))
                     Text(money(shown.game.pot), style = MaterialTheme.typography.displayMedium, color = Gold)
                     Text(shown.game.players.joinToString(", ") { it.player.name }, textAlign = TextAlign.Center)
                     Button(
@@ -191,18 +165,15 @@ fun TakeOverScreen(shareId: String, hostKey: String, onBack: () -> Unit, onWatch
         }
     }
     if (confirmDiscard) {
-        AlertDialog(
-            onDismissRequest = { confirmDiscard = false },
-            title = { Text(stringResource(Res.string.takeover_discard_title)) },
-            text = { Text(stringResource(Res.string.takeover_discard_message)) },
-            confirmButton = { TextButton(onClick = { confirmDiscard = false; vm.takeOver() }) { Text(stringResource(Res.string.takeover_action)) } },
-            dismissButton = { TextButton(onClick = { confirmDiscard = false }) { Text(stringResource(Res.string.cancel)) } },
+        ConfirmDialog(
+            title = stringResource(Res.string.takeover_discard_title),
+            message = stringResource(Res.string.takeover_discard_message),
+            confirmLabel = stringResource(Res.string.takeover_action),
+            onConfirm = { confirmDiscard = false; vm.takeOver() },
+            onDismiss = { confirmDiscard = false },
         )
     }
 }
-
-@Composable
-private fun Message(text: String) = Text(text, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
 
 /**
  * Shown on any screen when someone else took over a game this device was hosting. Taking the person to the live game

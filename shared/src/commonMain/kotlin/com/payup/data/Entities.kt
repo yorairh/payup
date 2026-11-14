@@ -106,3 +106,6 @@ data class GameWithDetails(
     val transfers: List<TransferEntity> get() = unorderedTransfers.sortedBy { it.id }
     val pot: Int get() = unorderedPlayers.sumOf { it.totalIn }
 }
+
+/** True when this device is the host of the game's online copy. */
+val GameEntity.hostedOnline: Boolean get() = isHost && shareId != null

@@ -1,5 +1,11 @@
 package com.payup.sync
 
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 
 /** What a live listener on one shared game reports. A listener that has not heard anything yet reports nothing. */
@@ -31,9 +37,6 @@ class GameSyncException(val kind: Kind, message: String, cause: Throwable? = nul
  * Firestore. Every call signs in anonymously first if needed. Failures are [GameSyncException]s.
  */
 interface GameSync {
-    /** This device's anonymous user id, signing in if there is no saved sign-in yet. */
-    suspend fun signIn(): String
-
     /**
      * Makes the online game [id] equal to [game], in one transaction: a missing game is created with this user as host
      * (and [hostKeyHash], see [sha256Hex]); otherwise the next revision is written. Fails when offline or not the host.
@@ -48,4 +51,27 @@ interface GameSync {
 
     /** Becomes the host of game [id] by proving knowledge of the host key; the previous host turns into a viewer. */
     suspend fun takeOver(id: String, hostKey: String)
+}
+
+/**
+ * [GameSync.watch] for a screen: if nothing is heard within [patience] it reports [WatchState.Failed] (offline), and a
+ * thrown error is reported as [WatchState.Failed] too. A late answer still comes through afterwards.
+ */
+fun GameSync.watchPatiently(id: String, patience: Duration = 10.seconds): Flow<WatchState> = channelFlow {
+    val silence = launch {
+        delay(patience)
+        send(WatchState.Failed(GameSyncException(GameSyncException.Kind.Offline, "No answer")))
+    }
+    try {
+        watch(id).collect {
+            silence.cancel()
+            send(it)
+        }
+        silence.cancel()
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        silence.cancel()
+        send(WatchState.Failed(e as? GameSyncException ?: GameSyncException(GameSyncException.Kind.Other, "Watch failed", e)))
+    }
 }

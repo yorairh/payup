@@ -1,3 +1,4 @@
+import com.payup.ui.routeForLink
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,6 @@ import com.payup.data.GameRepository
 import com.payup.platform.LocalPlatform
 import com.payup.platform.PlatformServices
 import com.payup.sync.ShareIds
-import com.payup.sync.ShareLinks
 import com.payup.resources.Res
 import com.payup.resources.already_open_in_another_tab
 import com.payup.resources.payup
@@ -88,12 +88,9 @@ private external fun clearPageHash()
 /** The screen a link opened (a shared game link or a host link), or null for the plain app address. */
 private fun linkRoute(): Route? {
     val path = pagePath()
-    if (path.startsWith("/h/")) {
-        val link = ShareLinks.parseHostLink("https://payup.web.app" + path + pageHash())
-        clearPageHash()
-        return link?.let { Route.TakeOver(it.gameId, it.hostKey) }
-    }
-    return ShareLinks.parseViewerId(path.takeIf { it.startsWith("/g/") }.orEmpty())?.let { Route.Watch(it) }
+    val route = routeForLink(path + pageHash())
+    if (path.startsWith("/h/")) clearPageHash()
+    return route
 }
 
 private val rightToLeftLanguages = setOf("he", "iw", "ar")

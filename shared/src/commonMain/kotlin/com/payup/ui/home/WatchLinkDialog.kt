@@ -14,15 +14,15 @@ import com.payup.resources.cancel
 import com.payup.resources.watch_a_game
 import com.payup.resources.watch_link_label
 import com.payup.resources.watch_start
-import com.payup.sync.ShareLinks
+import com.payup.ui.Route
+import com.payup.ui.routeForLink
 import org.jetbrains.compose.resources.stringResource
 
-/** Asks for a pasted game link (the phone has no links that open the app yet) and hands back the game id in it. */
+/** Asks for a pasted game link (a viewer link, a host link or a bare game id) and hands back the screen it opens. */
 @Composable
-fun WatchLinkDialog(onWatch: (String) -> Unit, onTakeOver: (String, String) -> Unit, onDismiss: () -> Unit) {
+fun WatchLinkDialog(onOpen: (Route) -> Unit, onDismiss: () -> Unit) {
     var text by remember { mutableStateOf("") }
-    val hostLink = ShareLinks.parseHostLink(text)
-    val id = ShareLinks.parseViewerId(text)
+    val route = routeForLink(text, allowBareId = true)
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(Res.string.watch_a_game)) },
@@ -35,10 +35,7 @@ fun WatchLinkDialog(onWatch: (String) -> Unit, onTakeOver: (String, String) -> U
             )
         },
         confirmButton = {
-            TextButton(
-                onClick = { if (hostLink != null) onTakeOver(hostLink.gameId, hostLink.hostKey) else id?.let(onWatch) },
-                enabled = hostLink != null || id != null,
-            ) { Text(stringResource(Res.string.watch_start)) }
+            TextButton(onClick = { route?.let(onOpen) }, enabled = route != null) { Text(stringResource(Res.string.watch_start)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel)) } },
     )

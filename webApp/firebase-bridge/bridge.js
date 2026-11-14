@@ -6,7 +6,7 @@
 
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously } from 'firebase/auth';
-import { deleteDoc, doc, getFirestore, onSnapshot, runTransaction } from 'firebase/firestore';
+import { doc, getFirestore, onSnapshot, runTransaction } from 'firebase/firestore';
 
 // These identify the Firebase project and are meant to be public; what protects the data is firestore.rules.
 const config = {
@@ -58,10 +58,6 @@ export function randomHex(count) {
     return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
 }
 
-export function signIn() {
-    return attempt(uid);
-}
-
 /** Creates the game (revision 1), or writes the next revision of a game this user hosts, in one transaction. */
 export function publish(id, hostKeyHash, contentJson) {
     return attempt(async () => {
@@ -102,9 +98,9 @@ export function takeOver(id, hostKey) {
             const existing = await tx.get(gameRef(id));
             if (!existing.exists()) throw new Error('The game is gone');
             tx.set(gameRef(id), { ...existing.data(), revision: existing.data().revision + 1, hostUid: me });
+            // The claim is used up here, so a leftover one can never take the game back later.
+            tx.delete(claim);
         });
-        // Tidying up only; the rules do not depend on the claim being removed.
-        try { await deleteDoc(claim); } catch (ignored) { /* nothing to do */ }
         return null;
     });
 }

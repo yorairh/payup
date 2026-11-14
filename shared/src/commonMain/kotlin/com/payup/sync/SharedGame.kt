@@ -94,9 +94,9 @@ fun GameWithDetails.toSharedGame(): SharedGame = SharedGame(
 
 /**
  * The game as the screens expect it, for showing a watched game read-only. Database ids are made up (1, 2, 3...) and only
- * link the pieces together; [shareId] is the online id and [isHost] says whether this device edits it.
+ * link the pieces together; [shareId] is the online id.
  */
-fun SharedGame.toGameWithDetails(shareId: String, isHost: Boolean = false): GameWithDetails {
+fun SharedGame.toGameWithDetails(shareId: String): GameWithDetails {
     val playerIds = players.indices.map { it + 1L }
     var buyInId = 0L
     return GameWithDetails(
@@ -112,7 +112,7 @@ fun SharedGame.toGameWithDetails(shareId: String, isHost: Boolean = false): Game
             dealerPlayerId = dealerIndex?.let { playerIds.getOrNull(it) },
             currency = currency,
             shareId = shareId,
-            isHost = isHost,
+            isHost = false,
         ),
         unorderedPlayers = players.mapIndexed { i, p ->
             PlayerWithBuyIns(

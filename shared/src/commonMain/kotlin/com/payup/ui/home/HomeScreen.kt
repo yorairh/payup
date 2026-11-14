@@ -1,5 +1,6 @@
 package com.payup.ui.home
 
+import com.payup.ui.Route
 import com.payup.resources.Res
 import com.payup.resources.app_name
 import com.payup.resources.continue_game
@@ -69,8 +70,7 @@ fun HomeScreen(
     onHistory: () -> Unit,
     onLeaderboard: () -> Unit,
     onFriends: () -> Unit,
-    onWatch: (String) -> Unit,
-    onTakeOver: (String, String) -> Unit,
+    onOpenLink: (Route) -> Unit,
     onSettings: () -> Unit,
 ) {
     val vm = payUpViewModel { HomeViewModel(it.repository) }
@@ -166,8 +166,7 @@ fun HomeScreen(
 
     if (watching) {
         WatchLinkDialog(
-            onWatch = { watching = false; onWatch(it) },
-            onTakeOver = { id, key -> watching = false; onTakeOver(id, key) },
+            onOpen = { watching = false; onOpenLink(it) },
             onDismiss = { watching = false },
         )
     }

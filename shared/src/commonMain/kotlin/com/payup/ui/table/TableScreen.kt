@@ -1,5 +1,6 @@
 package com.payup.ui.table
 
+import com.payup.data.hostedOnline
 import com.payup.ui.common.isRtl
 import org.jetbrains.compose.resources.getString
 import com.payup.resources.Res
@@ -87,7 +88,6 @@ import com.payup.ui.common.moneyText
 import com.payup.ui.common.signedMoney
 import com.payup.ui.common.payUpViewModel
 import com.payup.sync.ShareLinks
-import com.payup.sync.ShareResult
 import com.payup.sync.SyncStatus
 import com.payup.ui.theme.Gold
 import kotlinx.coroutines.flow.SharingStarted
@@ -122,7 +122,7 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
     Scaffold(
         topBar = {
             PayUpTopBar(stringResource(Res.string.table_title), onBack) {
-                if (game.game.shareId != null && game.game.isHost) {
+                if (game.game.hostedOnline) {
                     when (syncStatus) {
                         SyncStatus.Synced -> {}
                         SyncStatus.Syncing -> Text(stringResource(Res.string.sync_syncing), style = MaterialTheme.typography.labelMedium)
@@ -133,18 +133,11 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
                 IconButton(
                     enabled = !sharing,
                     onClick = {
-                        val existing = game.game.shareId
-                        if (existing != null) {
-                            shareLink = ShareLinks.viewer(existing)
-                        } else {
-                            sharing = true
-                            vm.share { result ->
-                                sharing = false
-                                when (result) {
-                                    is ShareResult.Shared -> shareLink = result.link
-                                    ShareResult.Failed -> scope.launch { snackbar.showSnackbar(getString(Res.string.share_failed)) }
-                                }
-                            }
+                        sharing = true
+                        vm.share { link ->
+                            sharing = false
+                            if (link != null) shareLink = link
+                            else scope.launch { snackbar.showSnackbar(getString(Res.string.share_failed)) }
                         }
                     },
                 ) {

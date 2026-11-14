@@ -22,4 +22,11 @@ class LinkRoutesTest {
         assertEquals(null, routeForLink("https://payup.web.app/h/$id"))
         assertEquals(null, routeForLink(id))
     }
+
+    @Test
+    fun pasted_text_may_be_just_the_game_id() {
+        assertEquals(Route.Watch(id), routeForLink(id, allowBareId = true))
+        assertEquals(Route.TakeOver(id, key), routeForLink("https://payup.web.app/h/$id#$key", allowBareId = true))
+        assertEquals(null, routeForLink("hello", allowBareId = true))
+    }
 }
