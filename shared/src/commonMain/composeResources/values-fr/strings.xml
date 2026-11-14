@@ -223,4 +223,6 @@
     <string name="replaced_title">Quelqu'un d'autre a pris le contrôle de cette partie</string>
     <string name="replaced_message">Vous la suivez maintenant en direct. Ce que vous avez modifié hors ligne sans l'envoyer est perdu.</string>
     <string name="replaced_ok">Suivre la partie</string>
+    <string name="delete_game_shared_message">Elle sera retirée de votre historique, et le lien en direct ne fonctionnera plus pour tous ceux qui la suivent.</string>
+    <string name="delete_game_offline">Impossible de supprimer une partie partagée sans connexion. Réessayez une fois en ligne.</string>
 </resources>

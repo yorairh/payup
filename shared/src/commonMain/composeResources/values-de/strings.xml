@@ -220,4 +220,6 @@
     <string name="replaced_title">Jemand anderes hat dieses Spiel übernommen</string>
     <string name="replaced_message">Du schaust es jetzt live an. Änderungen, die du offline gemacht und nicht gesendet hast, sind verloren.</string>
     <string name="replaced_ok">Spiel ansehen</string>
+    <string name="delete_game_shared_message">Es wird aus deinem Verlauf entfernt, und der Live-Link funktioniert für alle Zuschauer nicht mehr.</string>
+    <string name="delete_game_offline">Ein geteiltes Spiel kann ohne Verbindung nicht gelöscht werden. Versuche es erneut, wenn du online bist.</string>
 </resources>

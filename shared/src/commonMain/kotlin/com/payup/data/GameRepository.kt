@@ -26,6 +26,12 @@ class GameRepository(private val db: AppDatabase) {
     /** The shared game this device hosts that was started last; the one kept in step with its online copy. */
     val latestHostedGame: Flow<GameWithDetails?> = dao.latestHostedGame()
 
+    /** The online id of game [gameId] if this device hosts it, else null. */
+    suspend fun hostedShareId(gameId: Long): String? = dao.hostedShareId(gameId)
+
+    /** The online id of the unfinished game this device hosts, if there is one. */
+    suspend fun activeHostedShareId(): String? = dao.activeHostedShareId()
+
     /** The game on this device that is the shared game [shareId], if any. */
     suspend fun gameBySharedId(shareId: String): GameEntity? = dao.gameBySharedId(shareId)
 

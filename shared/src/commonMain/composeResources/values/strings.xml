@@ -220,4 +220,6 @@
     <string name="replaced_title">Someone else took over this game</string>
     <string name="replaced_message">You are now watching it live. Anything you changed while offline and never sent is lost.</string>
     <string name="replaced_ok">Watch the game</string>
+    <string name="delete_game_shared_message">It will be removed from your history, and the live link stops working for everyone watching.</string>
+    <string name="delete_game_offline">Can't delete a shared game without a connection. Try again when you're online.</string>
 </resources>

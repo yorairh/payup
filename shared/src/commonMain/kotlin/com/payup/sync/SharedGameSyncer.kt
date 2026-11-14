@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -54,6 +57,10 @@ class SharedGameSyncer(
     private val state = MutableStateFlow(SyncStatus.Synced)
     val status: StateFlow<SyncStatus> = state
 
+    /** Uploads and removals take turns, so a late upload can never bring back a game that was just removed. */
+    private val lock = Mutex()
+    private val removed = mutableSetOf<String>()
+
     private val lostGame = MutableStateFlow<String?>(null)
 
     /** The online id of a game this device used to host but someone else took over; null when there is none. */
@@ -80,7 +87,7 @@ class SharedGameSyncer(
             val hash = sha256Hex(details.game.hostKey.orEmpty())
             while (true) {
                 try {
-                    sync.publish(id, hash, details.toSharedGame())
+                    lock.withLock { if (id !in removed) sync.publish(id, hash, details.toSharedGame()) }
                     state.value = SyncStatus.Synced
                     return@collectLatest
                 } catch (e: GameSyncException) {
@@ -111,5 +118,50 @@ class SharedGameSyncer(
         } catch (e: GameSyncException) {
             ShareResult.Failed
         }
+    }
+    /**
+     * Deletes game [gameId] from this device. If this device hosts it online, the online copy goes first, so the link
+     * stops working; returns false (and changes nothing) when that is not possible without a connection.
+     */
+    suspend fun deleteGame(gameId: Long): Boolean {
+        val id = repository.hostedShareId(gameId)
+        if (id != null) {
+            val removedOnline = lock.withLock {
+                try {
+                    sync.delete(id)
+                    removed += id
+                    true
+                } catch (e: GameSyncException) {
+                    // Refused: someone else is the host now (or it is already gone), so there is nothing of ours to remove.
+                    if (e.kind == GameSyncException.Kind.Denied) removed += id
+                    e.kind == GameSyncException.Kind.Denied
+                }
+            }
+            if (!removedOnline) return false
+        }
+        repository.deleteGame(gameId)
+        return true
+    }
+
+    /**
+     * Tries to remove the online copy of the unfinished game this device hosts, because it is about to be thrown away.
+     * Never blocks for long and never fails: offline, the online copy simply stays behind.
+     */
+    suspend fun discardActiveGameOnline() {
+        val id = repository.activeHostedShareId() ?: return
+        withTimeoutOrNull(DISCARD_WAIT) {
+            lock.withLock {
+                removed += id
+                try {
+                    sync.delete(id)
+                } catch (e: GameSyncException) {
+                    // Left behind online; nothing more to do.
+                }
+            }
+        }
+    }
+
+    private companion object {
+        val DISCARD_WAIT = 5.seconds
     }
 }
