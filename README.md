@@ -24,6 +24,17 @@ New versions install over the old one and keep your games. Always download the n
 - **Backup:** Settings → Backup creates a file, and Restore reads it on Android or on the web, so you can move games between devices.
 - **9 languages:** English, Hebrew, Spanish, Russian, Arabic, French, German, Portuguese and Chinese, with right-to-left layout.
 
+## The web app
+
+The web app at **https://payup.web.app** is the same app as on Android, with the same screens and the same 9 languages, so friends on an iPhone can use it too. No account and no install from a store.
+
+- **Browsers:** a recent Safari (iPhone with iOS 18.2 or newer), Chrome, Edge or Firefox. An older browser shows an "update your browser" page.
+- **Install it:** on an iPhone, Share → Add to Home Screen. On Android or desktop Chrome, use the browser's "Install app" option. It then opens like an app and works without a connection after the first load.
+- **Your games stay on the device and browser** where you played them. Clearing the site data in the browser deletes them, so use Settings → Backup now and then. Only one tab can have PayUp open at a time.
+- **Sharing works the same:** host a game from the web or from Android, and watch it from either. Game links look like `payup.web.app/g/…`.
+- **Language:** it follows the browser's language, and you can change it in Settings. Add `?lang=he` (or another language code) to the address to try another language.
+- **Updates:** the site updates itself. Reload the page once if you don't see a new version.
+
 ## Good to know
 
 - Only games you tap Share on go online. Everything else stays on your device.
