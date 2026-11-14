@@ -234,4 +234,7 @@
     <string name="replaced_ok">مشاهدة اللعبة</string>
     <string name="delete_game_shared_message">ستُزال من سجلك، وسيتوقف الرابط المباشر عن العمل لكل من يشاهدها.</string>
     <string name="delete_game_offline">لا يمكن حذف لعبة مشتركة بدون اتصال. حاول مجددًا عندما تكون متصلًا.</string>
+    <string name="chips_no_value">الرقائق بلا قيمة ثابتة</string>
+    <string name="chips_no_value_hint">يحصل كل لاعب على حصة من الصندوق بنسبة رقائقه.</string>
+    <string name="chips_share_of_pot">%1$d من %2$d رقاقة = %3$s من الصندوق</string>
 </resources>

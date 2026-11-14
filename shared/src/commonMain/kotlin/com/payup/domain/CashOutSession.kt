@@ -16,7 +16,7 @@ data class CashOutPlayer(
 sealed interface CashOutWrite {
     data class FinalAmount(val playerId: Long, val amount: Int?) : CashOutWrite
     data class Chips(val playerId: Long, val chips: Int?) : CashOutWrite
-    data class ChipSettingsChanged(val chipValue: Int?, val roundToWhole: Boolean) : CashOutWrite
+    data class ChipSettingsChanged(val chipValue: Int?, val roundToWhole: Boolean, val byShare: Boolean = false) : CashOutWrite
 }
 
 /** The session after an event, and what to store because of it (in order). */
@@ -79,9 +79,16 @@ data class CashOutSession(
 
     fun setRoundToWhole(round: Boolean) = changeChipSettings { it.copy(roundToWhole = round) }
 
+    /** Chips have no set value: the pot is split by each player's share of all chips. */
+    fun setByShare(byShare: Boolean) = changeChipSettings { it.copy(byShare = byShare) }
+
     private fun changeChipSettings(change: (ChipSettings) -> ChipSettings): CashOutStep {
         val settings = change(chips)
-        val write = CashOutWrite.ChipSettingsChanged(settings.value.takeIf { settings.enabled }, settings.roundToWhole)
+        val write = CashOutWrite.ChipSettingsChanged(
+            chipValue = settings.value.takeIf { settings.enabled && !settings.byShare },
+            roundToWhole = settings.roundToWhole,
+            byShare = settings.enabled && settings.byShare,
+        )
         return copy(chips = settings).recalculatedFromChips().after(write)
     }
 
@@ -92,6 +99,8 @@ data class CashOutSession(
     fun fieldDone(playerId: Long): CashOutStep {
         val rows = state.rows
         if (chips.enabled) {
+            // Without a value per chip the total is unknown, so nothing can be filled in.
+            if (chips.byShare) return CashOutStep(this)
             // Chips are whole numbers, so the last count is only filled when the pot divides into chips.
             val chipValue = chips.value ?: return CashOutStep(this)
             if (rows.firstOrNull { it.playerId == playerId }?.chipsInput.isNullOrBlank()) return CashOutStep(this)
@@ -119,11 +128,12 @@ data class CashOutSession(
     private fun recalculatedFromChips(): CashOutStep {
         if (!chips.enabled) return CashOutStep(this)
         val counts = players.map { chipInputs[it.id]?.toIntOrNull() }
+        val totalIn = players.map { it.totalIn }
         val chipValue = chips.value
-        val converted: List<Int?> = if (chipValue == null) {
-            players.map { null }
-        } else {
-            ChipConversion.convert(counts, players.map { it.totalIn }, chipValue, chips.roundToWhole)
+        val converted: List<Int?> = when {
+            chips.byShare -> ChipConversion.shares(counts, totalIn, pot, chips.roundToWhole)
+            chipValue == null -> players.map { null }
+            else -> ChipConversion.convert(counts, totalIn, chipValue, chips.roundToWhole)
         }
         val next = copy(inputs = inputs + players.indices.map { players[it].id to (converted[it]?.let(Money::format) ?: "") })
         return CashOutStep(next, players.indices.map { CashOutWrite.FinalAmount(players[it].id, converted[it]) })
@@ -136,20 +146,29 @@ data class CashOutSession(
 
         /**
          * A fresh cash-out for the table, restoring what was stored. Chip settings come from the game if it was
-         * counted in chips, else (switched off) from the last game that was: [lastChipSettings] is (value, round).
+         * counted in chips, else (switched off) from the last game that was: [lastChipSettings].
          */
         fun start(
             players: List<CashOutPlayer>,
             pot: Int,
             savedChipValue: Int?,
             savedRoundToWhole: Boolean,
-            lastChipSettings: Pair<Int, Boolean>?,
+            lastChipSettings: SavedChips?,
+            savedByShare: Boolean = false,
         ): CashOutSession {
+            val lastValueText = lastChipSettings?.value?.let(Money::format).orEmpty()
             val chips = when {
+                savedByShare ->
+                    ChipSettings(enabled = true, valueText = lastValueText, roundToWhole = savedRoundToWhole, byShare = true)
                 savedChipValue != null ->
                     ChipSettings(enabled = true, valueText = Money.format(savedChipValue), roundToWhole = savedRoundToWhole)
                 lastChipSettings != null ->
-                    ChipSettings(enabled = false, valueText = Money.format(lastChipSettings.first), roundToWhole = lastChipSettings.second)
+                    ChipSettings(
+                        enabled = false,
+                        valueText = lastValueText,
+                        roundToWhole = lastChipSettings.roundToWhole,
+                        byShare = lastChipSettings.byShare,
+                    )
                 else -> ChipSettings()
             }
             return CashOutSession(

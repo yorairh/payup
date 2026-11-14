@@ -219,4 +219,7 @@
     <string name="replaced_ok">观看牌局</string>
     <string name="delete_game_shared_message">它将从你的历史记录中移除，所有观看者的实时链接也将失效。</string>
     <string name="delete_game_offline">没有网络连接时无法删除共享牌局，请联网后重试。</string>
+    <string name="chips_no_value">筹码没有固定价值</string>
+    <string name="chips_no_value_hint">每位玩家按筹码占比分得奖池。</string>
+    <string name="chips_share_of_pot">%1$d / %2$d 个筹码 = 奖池的 %3$s</string>
 </resources>

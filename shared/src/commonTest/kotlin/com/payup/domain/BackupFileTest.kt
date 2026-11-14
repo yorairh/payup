@@ -115,4 +115,9 @@ class BackupFileTest {
         val games = List(10_001) { game(startedAt = it.toLong()) }
         assertEquals(BackupReadResult.Invalid, read(Backup(exportedAt = 1, games = games)))
     }
+
+    @Test fun chipShareModeSurvivesARoundTrip() {
+        val original = backup(game().copy(chipsByShare = true))
+        assertEquals(BackupReadResult.Ok(original), read(original))
+    }
 }

@@ -19,7 +19,7 @@ service cloud.firestore {
     function validGame(d) {
       return d.keys().hasOnly([
           'schemaVersion', 'revision', 'hostUid', 'hostKeyHash',
-          'startedAt', 'endedAt', 'defaultBuyIn', 'finished', 'voidedDifference', 'chipValue', 'roundToWhole',
+          'startedAt', 'endedAt', 'defaultBuyIn', 'finished', 'voidedDifference', 'chipValue', 'chipsByShare', 'roundToWhole',
           'currency', 'dealerIndex', 'players', 'transfers'])
         && d.keys().hasAll([
           'schemaVersion', 'revision', 'hostUid', 'hostKeyHash',
@@ -34,6 +34,7 @@ service cloud.firestore {
         && d.finished is bool
         && (!('voidedDifference' in d) || (d.voidedDifference is int && d.voidedDifference > -1000000000 && d.voidedDifference < 1000000000))
         && optionalInt(d, 'chipValue')
+        && (!('chipsByShare' in d) || d.chipsByShare is bool)
         && d.roundToWhole is bool
         && d.currency is string && d.currency.size() <= 8
         && optionalInt(d, 'dealerIndex')

@@ -225,4 +225,7 @@
     <string name="replaced_ok">Assistir ao jogo</string>
     <string name="delete_game_shared_message">Ele será removido do seu histórico, e o link ao vivo deixará de funcionar para todos que assistem.</string>
     <string name="delete_game_offline">Não é possível excluir um jogo compartilhado sem conexão. Tente de novo quando estiver online.</string>
+    <string name="chips_no_value">As fichas não têm valor fixo</string>
+    <string name="chips_no_value_hint">Cada jogador recebe do pote na proporção das suas fichas.</string>
+    <string name="chips_share_of_pot">%1$d de %2$d fichas = %3$s do pote</string>
 </resources>

@@ -16,6 +16,7 @@ New versions install over the old one and keep your games. Always download the n
 ## What you can do
 
 - **Run a game:** add players, record buy-ins and rebuys (with or without chips), deal seats, and cash out at the end. The app tells you who pays whom.
+- **Count in chips:** at cash-out, enter each player's chips. Either set the value of one chip, or turn on "Chips have no set value" and the pot is split by each player's share of all chips.
 - **Share a live game:** tap the share icon on the table screen. A QR code and a link let friends watch the pot and everyone's buy-ins and cash-outs live, from any phone or browser, with nothing to install. They only watch; you edit.
 - **Hand over hosting:** give the host link to someone else if you have to leave. They take over the game and you keep watching it.
 - **Watch a game:** open a game link, or use "Watch a game" on the home screen. When the game ends it is saved into your history.

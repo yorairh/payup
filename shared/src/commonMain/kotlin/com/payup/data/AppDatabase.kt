@@ -10,7 +10,7 @@ import androidx.sqlite.execSQL
 
 @Database(
     entities = [FriendEntity::class, GameEntity::class, PlayerEntity::class, BuyInEntity::class, TransferEntity::class],
-    version = 5,
+    version = 6,
     exportSchema = true,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
@@ -19,7 +19,14 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         /** Every migration, oldest first. Each platform's builder registers all of them. */
-        val MIGRATIONS: Array<Migration> get() = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+        val MIGRATIONS: Array<Migration> get() = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+
+        /** v6: cash-out in chips without a set value (the pot is split by chip share). Existing games are not. */
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override suspend fun migrate(connection: SQLiteConnection) {
+                connection.execSQL("ALTER TABLE games ADD COLUMN chipsByShare INTEGER NOT NULL DEFAULT 0")
+            }
+        }
 
         /** v5: shared games (online id, whether this device hosts it, the host secret). Existing games are not shared. */
         val MIGRATION_4_5 = object : Migration(4, 5) {

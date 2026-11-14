@@ -37,6 +37,7 @@ data class SharedGame(
     val finished: Boolean,
     val voidedDifference: Int = 0,
     val chipValue: Int? = null,
+    val chipsByShare: Boolean = false,
     val roundToWhole: Boolean = true,
     val currency: String,
     /** Position of the dealer in [players], or null when the game started without the card deal. */
@@ -77,6 +78,7 @@ fun GameWithDetails.toSharedGame(): SharedGame = SharedGame(
     finished = game.finished,
     voidedDifference = game.voidedDifference,
     chipValue = game.chipValue,
+    chipsByShare = game.chipsByShare,
     roundToWhole = game.roundToWhole,
     currency = game.currency,
     dealerIndex = players.indexOfFirst { it.player.id == game.dealerPlayerId }.takeIf { it >= 0 },
@@ -108,6 +110,7 @@ fun SharedGame.toGameWithDetails(shareId: String): GameWithDetails {
             finished = finished,
             voidedDifference = voidedDifference,
             chipValue = chipValue,
+            chipsByShare = chipsByShare,
             roundToWhole = roundToWhole,
             dealerPlayerId = dealerIndex?.let { playerIds.getOrNull(it) },
             currency = currency,

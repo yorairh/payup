@@ -228,4 +228,7 @@
     <string name="replaced_ok">Смотреть игру</string>
     <string name="delete_game_shared_message">Она будет удалена из вашей истории, а ссылка для просмотра перестанет работать у всех зрителей.</string>
     <string name="delete_game_offline">Нельзя удалить общую игру без подключения. Попробуйте снова, когда будете онлайн.</string>
+    <string name="chips_no_value">У фишек нет фиксированной стоимости</string>
+    <string name="chips_no_value_hint">Банк делится пропорционально количеству фишек.</string>
+    <string name="chips_share_of_pot">%1$d из %2$d фишек = %3$s банка</string>
 </resources>

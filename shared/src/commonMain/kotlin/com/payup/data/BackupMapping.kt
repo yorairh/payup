@@ -16,6 +16,7 @@ fun GameWithDetails.toBackup(): BackupGame {
         finished = game.finished,
         voidedDifference = game.voidedDifference,
         chipValue = game.chipValue,
+        chipsByShare = game.chipsByShare,
         roundToWhole = game.roundToWhole,
         dealerIndex = dealerIndex,
         currency = game.currency,
@@ -41,6 +42,7 @@ fun BackupGame.toEntity() = GameEntity(
     finished = finished,
     voidedDifference = voidedDifference,
     chipValue = chipValue,
+    chipsByShare = chipsByShare,
     roundToWhole = roundToWhole,
     currency = currency,
 )

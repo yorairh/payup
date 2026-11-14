@@ -1,5 +1,6 @@
 package com.payup.data
 
+import com.payup.domain.SavedChips
 import androidx.room3.withWriteTransaction
 import com.payup.domain.Backup
 import com.payup.domain.BackupGame
@@ -71,6 +72,7 @@ class GameRepository(private val db: AppDatabase) {
                 finished = game.finished,
                 voidedDifference = game.voidedDifference,
                 chipValue = game.chipValue,
+                chipsByShare = game.chipsByShare,
                 roundToWhole = game.roundToWhole,
                 currency = game.currency,
                 shareId = shareId,
@@ -174,14 +176,14 @@ class GameRepository(private val db: AppDatabase) {
     private suspend fun store(gameId: Long, write: CashOutWrite) = when (write) {
         is CashOutWrite.FinalAmount -> dao.setFinalAmount(write.playerId, write.amount)
         is CashOutWrite.Chips -> dao.setChips(write.playerId, write.chips)
-        is CashOutWrite.ChipSettingsChanged -> dao.setChipSettings(gameId, write.chipValue, write.roundToWhole)
+        is CashOutWrite.ChipSettingsChanged -> dao.setChipSettings(gameId, write.chipValue, write.roundToWhole, write.byShare)
     }
 
     suspend fun setDealer(gameId: Long, playerId: Long?) = dao.setDealer(gameId, playerId)
 
-    /** (chip value, round) from the last game counted in chips, or null if there was none. */
-    suspend fun lastChipSettings(): Pair<Int, Boolean>? =
-        dao.lastChipGame()?.let { game -> game.chipValue?.let { it to game.roundToWhole } }
+    /** The chip settings of the last game counted in chips, or null if there was none. */
+    suspend fun lastChipSettings(): SavedChips? =
+        dao.lastChipGame()?.let { SavedChips(it.chipValue, it.roundToWhole, it.chipsByShare) }
 
     /**
      * Settles the game: stores [finalWrites], computes each player's net, voids any counting difference if

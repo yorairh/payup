@@ -225,4 +225,7 @@
     <string name="replaced_ok">Ver la partida</string>
     <string name="delete_game_shared_message">Se quitará de tu historial y el enlace en vivo dejará de funcionar para todos los que lo ven.</string>
     <string name="delete_game_offline">No se puede eliminar una partida compartida sin conexión. Inténtalo de nuevo cuando estés en línea.</string>
+    <string name="chips_no_value">Las fichas no tienen un valor fijo</string>
+    <string name="chips_no_value_hint">Cada jugador recibe del bote según sus fichas.</string>
+    <string name="chips_share_of_pot">%1$d de %2$d fichas = %3$s del bote</string>
 </resources>

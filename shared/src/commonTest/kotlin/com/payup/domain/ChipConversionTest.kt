@@ -56,4 +56,39 @@ class ChipConversionTest {
     fun noChipsAtAll() {
         assertEquals(listOf(null, null), ChipConversion.convert(listOf(null, null), listOf(0, 0), halfShekel, true))
     }
+
+    @Test
+    fun sharesSplitThePotByChipRatio() {
+        val result = ChipConversion.shares(listOf(100, 50, 50), listOf(5000, 5000, 5000), 15000, roundToWhole = false)
+        assertEquals(listOf(7500, 3750, 3750), result)
+    }
+
+    @Test
+    fun sharesRoundDownToShekelsAndGiveTheLeftoverToTheBiggestLoser() {
+        // ₪100 pot, three equal stacks: ₪33.33 each floors to ₪33, the missing ₪1 goes to Noa, who put in the most.
+        val result = ChipConversion.shares(listOf(1, 1, 1), listOf(3333, 3333, 3334), 10000, roundToWhole = true)
+        assertEquals(listOf(3300, 3300, 3400), result)
+        assertEquals(10000, result.sumOf { it!! })
+    }
+
+    @Test
+    fun sharesNeverGiveTheLeftoverToAPlayerWithoutChips() {
+        val result = ChipConversion.shares(listOf(0, 1, 2), listOf(8000, 1000, 1000), 10000, roundToWhole = false)
+        assertEquals(listOf(0, 3334, 6666), result)
+    }
+
+    @Test
+    fun sharesAreUnknownUntilEveryoneHasACount() {
+        assertEquals(listOf<Int?>(null, null), ChipConversion.shares(listOf(10, null), listOf(5000, 5000), 10000, roundToWhole = true))
+    }
+
+    @Test
+    fun sharesAreUnknownWhenThereAreNoChips() {
+        assertEquals(listOf<Int?>(null, null), ChipConversion.shares(listOf(0, 0), listOf(5000, 5000), 10000, roundToWhole = true))
+    }
+
+    @Test
+    fun oneHolderOfAllChipsGetsTheWholePot() {
+        assertEquals(listOf(0, 10000), ChipConversion.shares(listOf(0, 40), listOf(5000, 5000), 10000, roundToWhole = true))
+    }
 }

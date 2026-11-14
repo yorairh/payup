@@ -63,6 +63,10 @@ describe('creating', () => {
     it('lets a user create a game with themselves as host', async () => {
         await assertSucceeds(setDoc(gameDoc(as('host')), game()));
     });
+    it('accepts the chip share setting only as a boolean', async () => {
+        await assertSucceeds(setDoc(gameDoc(as('host')), game({ chipsByShare: true })));
+        await assertFails(setDoc(gameDoc(as('host')), game({ chipsByShare: 'yes' })));
+    });
     it('rejects a game that names someone else as host', async () => {
         await assertFails(setDoc(gameDoc(as('other')), game()));
     });

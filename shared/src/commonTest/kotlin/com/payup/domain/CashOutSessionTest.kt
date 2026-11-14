@@ -132,12 +132,50 @@ class CashOutSessionTest {
             CashOutPlayer(1, "Avi", 5000, finalAmount = 8000, chips = 80),
             CashOutPlayer(2, "Ben", 5000),
         )
-        val s = CashOutSession.start(stored, 10000, savedChipValue = null, savedRoundToWhole = true, lastChipSettings = 100 to false)
+        val s = CashOutSession.start(stored, 10000, savedChipValue = null, savedRoundToWhole = true, lastChipSettings = SavedChips(100, false, false))
         assertEquals("80", s.input(1))
         assertEquals("80", s.state.rows[0].chipsInput)
         assertEquals("", s.input(2))
         assertFalse(s.state.chips.enabled)
         assertEquals("1", s.state.chips.valueText)
+        assertFalse(s.state.chips.roundToWhole)
+    }
+
+    private fun byShare() = fresh().setChipMode(true).session.setByShare(true).session
+
+    @Test
+    fun `chips without a value split the pot as the counts come in`() {
+        var s = byShare()
+        s = s.typedChips(1, "100").session
+        s = s.typedChips(2, "50").session
+        assertEquals("", s.input(1)) // nothing is known until everyone has a count
+        s = s.typedChips(3, "50").session
+        // Rounding to whole shekels is on: 37.5 floors to 37 twice and the spare shekel goes to the first biggest loser.
+        assertEquals("75", s.input(1))
+        assertEquals("38", s.input(2))
+        assertEquals("37", s.input(3))
+        assertEquals(0, s.state.difference)
+    }
+
+    @Test
+    fun `chips without a value never fill in the last count`() {
+        val s = byShare().typedChips(1, "100").session.typedChips(2, "50").session
+        assertEquals(emptyList<CashOutWrite>(), s.fieldDone(2).writes)
+    }
+
+    @Test
+    fun `switching to chips without a value is stored without a chip value`() {
+        val step = fresh().setChipMode(true).session.setByShare(true)
+        assertTrue(step.writes.contains(CashOutWrite.ChipSettingsChanged(chipValue = null, roundToWhole = true, byShare = true)))
+    }
+
+    @Test
+    fun `a game saved in share mode opens in share mode`() {
+        val s = CashOutSession.start(
+            players, 15000, savedChipValue = null, savedRoundToWhole = false, lastChipSettings = null, savedByShare = true,
+        )
+        assertTrue(s.state.chips.enabled)
+        assertTrue(s.state.chips.byShare)
         assertFalse(s.state.chips.roundToWhole)
     }
 }

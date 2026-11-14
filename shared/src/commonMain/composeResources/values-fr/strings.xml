@@ -225,4 +225,7 @@
     <string name="replaced_ok">Suivre la partie</string>
     <string name="delete_game_shared_message">Elle sera retirée de votre historique, et le lien en direct ne fonctionnera plus pour tous ceux qui la suivent.</string>
     <string name="delete_game_offline">Impossible de supprimer une partie partagée sans connexion. Réessayez une fois en ligne.</string>
+    <string name="chips_no_value">Les jetons n'ont pas de valeur fixe</string>
+    <string name="chips_no_value_hint">Chaque joueur reçoit une part du pot proportionnelle à ses jetons.</string>
+    <string name="chips_share_of_pot">%1$d sur %2$d jetons = %3$s du pot</string>
 </resources>

@@ -133,11 +133,11 @@ interface PayUpDao {
     @Query("UPDATE games SET dealerPlayerId = :playerId WHERE id = :gameId")
     suspend fun setDealer(gameId: Long, playerId: Long?)
 
-    @Query("UPDATE games SET chipValue = :chipValue, roundToWhole = :roundToWhole WHERE id = :gameId")
-    suspend fun setChipSettings(gameId: Long, chipValue: Int?, roundToWhole: Boolean)
+    @Query("UPDATE games SET chipValue = :chipValue, roundToWhole = :roundToWhole, chipsByShare = :chipsByShare WHERE id = :gameId")
+    suspend fun setChipSettings(gameId: Long, chipValue: Int?, roundToWhole: Boolean, chipsByShare: Boolean)
 
     /** Chip settings of the most recent game that was counted in chips, to start the next one with. */
-    @Query("SELECT * FROM games WHERE chipValue IS NOT NULL ORDER BY startedAt DESC LIMIT 1")
+    @Query("SELECT * FROM games WHERE chipValue IS NOT NULL OR chipsByShare = 1 ORDER BY startedAt DESC LIMIT 1")
     suspend fun lastChipGame(): GameEntity?
 
     @Query("UPDATE players SET net = :net WHERE id = :id")
