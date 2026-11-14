@@ -26,8 +26,6 @@ val webRandomBytes = RandomBytes { count ->
 
 /** [GameSync] on the Firebase JavaScript SDK, through webApp/firebase-bridge. Games cross as JSON text. */
 class WebGameSync : GameSync {
-    override suspend fun signIn(): String = answer(bridgeSignIn()).jsonPrimitive.content
-
     override suspend fun publish(id: String, hostKeyHash: String, game: SharedGame) {
         answer(bridgePublish(id, hostKeyHash, game.toJson()))
     }

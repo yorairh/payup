@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-PayUp is an Android poker buy-in tracker and settlement app (Kotlin, Jetpack Compose, Room). All data is local to the device; there is no server.
+PayUp is an Android poker buy-in tracker and settlement app (Kotlin, Jetpack Compose, Room). Games are stored on the device. A host can share a game live through Firebase (Firestore and Hosting, project `payup-ae6fc`): `sync/` holds the `GameSync` seam and `SharedGameSyncer`, the Android implementation is `FirebaseGameSync`, the web one is `WebGameSync` over `webApp/firebase-bridge`, and the security rules are in `firebase/firestore.rules` (design in `docs/SHARED_GAMES.md`).
 
 ## Commands
 
@@ -24,7 +24,7 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 - Build output goes to `%USERPROFILE%\.payup-build\androidApp\` (and `\shared\`), not `build/`, because the Hebrew project path breaks the unit-test JVM's classpath on Windows (see the root `build.gradle.kts`). APKs are under `outputs\apk\`, reports under `reports\`, test XML under `test-results\`.
 - The same Hebrew path can corrupt paths inside scripts, so run scripts from the project directory rather than passing the full path.
 - `gh` is at `C:\Program Files\GitHub CLI\gh.exe` and is not on PATH.
-- Only JVM unit tests exist (`shared/src/commonTest` with `kotlin.test` for `domain/`, run with `:shared:testAndroidHostTest`). There is no Robolectric or `androidTest`, so `data/` and `ui/` code is only checked on a real phone. There is no emulator on this machine.
+- Only JVM unit tests exist (`shared/src/commonTest` with `kotlin.test` for `domain/`, run with `:shared:testAndroidHostTest`). There is no Robolectric or `androidTest`, so `data/` and `ui/` code is only checked on a real phone. An Android emulator exists in the SDK (`emulator.backup\emulator.exe`), which was used to test sharing; drive it with adb.
 
 ## Releases
 

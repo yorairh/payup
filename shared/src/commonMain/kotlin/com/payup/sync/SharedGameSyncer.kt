@@ -1,5 +1,7 @@
 package com.payup.sync
 
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
 import com.payup.data.GameRepository
 import com.payup.data.GameWithDetails
 import kotlinx.coroutines.CoroutineScope
@@ -13,8 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 /** How the online copy of the game this device hosts is doing. */
@@ -32,27 +33,16 @@ enum class SyncStatus {
     Stopped,
 }
 
-/** What happened when the host asked to share a game. */
-sealed interface ShareResult {
-    /** The game is online; [link] is what to hand out. */
-    data class Shared(val link: String) : ShareResult
-
-    /** Nothing was shared and nothing was changed on this device; try again later. */
-    data object Failed : ShareResult
-}
-
 /**
  * Keeps the online copy of the game this device hosts equal to the local one. The local database stays the source of
- * truth: every change to the latest hosted game is uploaded whole after [wait], and a failed upload is retried every
- * [retry] until it works. It also uploads once when it starts, which covers a change the app was closed before sending.
+ * truth: every change to the latest hosted game is uploaded whole after a short wait, and a failed upload is retried
+ * every few seconds until it works. It also uploads once when it starts, which covers a change the app was closed before sending.
  */
 class SharedGameSyncer(
     private val repository: GameRepository,
     private val sync: GameSync,
     private val shareIds: ShareIds,
-    scope: CoroutineScope,
-    private val wait: Duration = 1.seconds,
-    private val retry: Duration = 15.seconds,
+    private val scope: CoroutineScope,
 ) {
     private val state = MutableStateFlow(SyncStatus.Synced)
     val status: StateFlow<SyncStatus> = state
@@ -77,17 +67,23 @@ class SharedGameSyncer(
 
     @OptIn(FlowPreview::class)
     private suspend fun watchLocalChanges() {
-        repository.latestHostedGame.debounce(wait.inWholeMilliseconds.coerceAtLeast(1).milliseconds).collectLatest { details ->
-            val id = details?.game?.shareId
-            if (details == null || id == null) {
+        // The query re-emits on every write to the database; only a real change to the hosted game is uploaded.
+        repository.latestHostedGame
+            .map { details -> details?.game?.shareId?.let { Upload(it, details.game.hostKey.orEmpty(), details.toSharedGame()) } }
+            .distinctUntilChanged()
+            .debounce(WAIT)
+            .collectLatest { upload ->
+            if (upload == null) {
                 state.value = SyncStatus.Synced
                 return@collectLatest
             }
+            val id = upload.id
             state.value = SyncStatus.Syncing
-            val hash = sha256Hex(details.game.hostKey.orEmpty())
+            val hash = sha256Hex(upload.hostKey)
+            var retry = RETRY
             while (true) {
                 try {
-                    lock.withLock { if (id !in removed) sync.publish(id, hash, details.toSharedGame()) }
+                    lock.withLock { if (id !in removed) sync.publish(id, hash, upload.game) }
                     state.value = SyncStatus.Synced
                     return@collectLatest
                 } catch (e: GameSyncException) {
@@ -98,27 +94,30 @@ class SharedGameSyncer(
                     }
                     state.value = SyncStatus.Offline
                     delay(retry)
+                    retry = (retry * 2).coerceAtMost(MAX_RETRY)
                 }
             }
         }
     }
 
     /**
-     * Puts game [gameId] online, unless it already is. The game is marked shared on this device only after the first
-     * upload worked, so a game never looks shared when it is not.
+     * Puts game [current] online, unless it already is, and returns the link to hand out; null when that failed (nothing
+     * was changed, try again later). The game is marked shared on this device only after the first upload worked, so a
+     * game never looks shared when it is not.
      */
-    suspend fun share(gameId: Long, current: GameWithDetails): ShareResult {
-        current.game.shareId?.let { return ShareResult.Shared(ShareLinks.viewer(it)) }
+    suspend fun share(current: GameWithDetails): String? {
+        current.game.shareId?.let { return ShareLinks.viewer(it) }
         val id = shareIds.newGameId()
         val key = shareIds.newHostKey()
         return try {
             sync.publish(id, sha256Hex(key), current.toSharedGame())
-            repository.markShared(gameId, id, key)
-            ShareResult.Shared(ShareLinks.viewer(id))
+            repository.markShared(current.game.id, id, key)
+            ShareLinks.viewer(id)
         } catch (e: GameSyncException) {
-            ShareResult.Failed
+            null
         }
     }
+
     /**
      * Deletes game [gameId] from this device. If this device hosts it online, the online copy goes first, so the link
      * stops working; returns false (and changes nothing) when that is not possible without a connection.
@@ -126,42 +125,48 @@ class SharedGameSyncer(
     suspend fun deleteGame(gameId: Long): Boolean {
         val id = repository.hostedShareId(gameId)
         if (id != null) {
-            val removedOnline = lock.withLock {
+            val gone = lock.withLock {
                 try {
                     sync.delete(id)
-                    removed += id
                     true
                 } catch (e: GameSyncException) {
                     // Refused: someone else is the host now (or it is already gone), so there is nothing of ours to remove.
-                    if (e.kind == GameSyncException.Kind.Denied) removed += id
                     e.kind == GameSyncException.Kind.Denied
-                }
+                }.also { if (it) removed += id }
             }
-            if (!removedOnline) return false
+            if (!gone) return false
         }
         repository.deleteGame(gameId)
         return true
     }
 
     /**
-     * Tries to remove the online copy of the unfinished game this device hosts, because it is about to be thrown away.
-     * Never blocks for long and never fails: offline, the online copy simply stays behind.
+     * Removes the online copy of the unfinished game this device hosts, because it is about to be thrown away. Returns at
+     * once: the removal runs in the background and never fails; offline, the online copy simply stays behind.
      */
     suspend fun discardActiveGameOnline() {
         val id = repository.activeHostedShareId() ?: return
-        withTimeoutOrNull(DISCARD_WAIT) {
-            lock.withLock {
-                removed += id
-                try {
-                    sync.delete(id)
-                } catch (e: GameSyncException) {
-                    // Left behind online; nothing more to do.
+        removed += id
+        scope.launch {
+            withTimeoutOrNull(DISCARD_WAIT) {
+                lock.withLock {
+                    try {
+                        sync.delete(id)
+                    } catch (e: GameSyncException) {
+                        // Left behind online; nothing more to do.
+                    }
                 }
             }
         }
     }
 
+    /** What goes online for one hosted game; two equal uploads mean nothing changed. */
+    private data class Upload(val id: String, val hostKey: String, val game: SharedGame)
+
     private companion object {
+        val WAIT = 1.seconds
+        val RETRY = 15.seconds
+        val MAX_RETRY = 5.minutes
         val DISCARD_WAIT = 5.seconds
     }
 }

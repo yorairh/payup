@@ -41,7 +41,7 @@ private fun NavBackStack<NavKey>.replaceAboveHome(route: Route) {
 
 /** Swaps the current screen for [route], keeping the ones below. */
 private fun NavBackStack<NavKey>.replaceTop(route: Route) {
-    if (size > 1) removeAt(lastIndex)
+    pop()
     add(route)
 }
 
@@ -85,8 +85,7 @@ fun PayUpNavHost(
                     onHistory = { back.add(Route.History) },
                     onLeaderboard = { back.add(Route.Leaderboard) },
                     onFriends = { back.add(Route.Friends) },
-                    onWatch = { back.add(Route.Watch(it)) },
-                    onTakeOver = { id, key -> back.add(Route.TakeOver(id, key)) },
+                    onOpenLink = { back.add(it) },
                     onSettings = { back.add(Route.Settings) },
                 )
             }

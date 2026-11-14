@@ -1,5 +1,6 @@
 package com.payup.ui.history
 
+import com.payup.data.hostedOnline
 import com.payup.platform.LocalPlatform
 import com.payup.resources.Res
 import com.payup.resources.delete
@@ -90,10 +91,9 @@ fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
     }
 
     toDelete?.let { game ->
-        val hostedOnline = game.game.isHost && game.game.shareId != null
         ConfirmDialog(
             title = stringResource(Res.string.delete_game_title),
-            message = stringResource(if (hostedOnline) Res.string.delete_game_shared_message else Res.string.delete_game_message),
+            message = stringResource(if (game.game.hostedOnline) Res.string.delete_game_shared_message else Res.string.delete_game_message),
             confirmLabel = stringResource(Res.string.delete),
             onConfirm = { vm.delete(game.game.id) { needsConnection = true }; toDelete = null },
             onDismiss = { toDelete = null },

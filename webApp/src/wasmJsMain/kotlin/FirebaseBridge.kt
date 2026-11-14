@@ -10,9 +10,6 @@ import kotlin.js.Promise
 @JsName("randomHex")
 external fun bridgeRandomHex(count: Int): String
 
-@JsName("signIn")
-external fun bridgeSignIn(): Promise<JsString>
-
 @JsName("publish")
 external fun bridgePublish(id: String, hostKeyHash: String, contentJson: String): Promise<JsString>
 

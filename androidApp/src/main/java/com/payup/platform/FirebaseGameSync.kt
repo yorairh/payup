@@ -33,7 +33,7 @@ class FirebaseGameSync(
 ) : GameSync {
     private fun game(id: String): DocumentReference = db.collection("games").document(id)
 
-    override suspend fun signIn(): String = wrap {
+    private suspend fun signIn(): String = wrap {
         auth.currentUser?.uid ?: checkNotNull(auth.signInAnonymously().await().user).uid
     }
 
@@ -101,10 +101,10 @@ class FirebaseGameSync(
                 doc["revision"] = (existing.getLong("revision") ?: 0L) + 1
                 doc["hostUid"] = uid
                 tx.set(game(id), doc)
+                // The claim is used up here, so a leftover one can never take the game back later.
+                tx.delete(claim)
             }.await()
         }
-        // Tidying up only; the rules do not depend on the claim being removed.
-        runCatching { db.runTransaction { tx -> tx.delete(claim) }.await() }
     }
 
     private suspend fun <T> wrap(block: suspend () -> T): T = try {

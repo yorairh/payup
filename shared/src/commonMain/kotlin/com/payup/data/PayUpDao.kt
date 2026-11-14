@@ -63,7 +63,7 @@ interface PayUpDao {
 
     /** The shared game this device hosts that was started last, finished or not. */
     @Transaction
-    @Query("SELECT * FROM games WHERE shareId IS NOT NULL AND isHost = 1 ORDER BY startedAt DESC, id DESC LIMIT 1")
+    @Query("SELECT * FROM games WHERE shareId IS NOT NULL AND isHost = 1 ORDER BY finished ASC, startedAt DESC, id DESC LIMIT 1")
     fun latestHostedGame(): Flow<GameWithDetails?>
 
     /** The game on this device that is the shared game [shareId] (hosted here, or watched and saved), if any. */

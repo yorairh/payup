@@ -1,5 +1,9 @@
 package com.payup.ui.watch
 
+import com.payup.ui.common.UnreachableMessage
+import com.payup.ui.common.StatusMessage
+import com.payup.ui.common.CenteredColumn
+import com.payup.sync.watchPatiently
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,13 +33,11 @@ import com.payup.data.GameWithDetails
 import com.payup.data.PlayerWithBuyIns
 import com.payup.resources.Res
 import com.payup.resources.buy_ins_count
-import com.payup.resources.retry
 import com.payup.resources.watch_cashed_out
 import com.payup.resources.watch_live
 import com.payup.resources.watch_not_found
 import com.payup.resources.watch_offline
 import com.payup.resources.watch_title
-import com.payup.resources.watch_unreachable
 import com.payup.sync.GameSync
 import com.payup.sync.GameSyncException
 import com.payup.sync.WatchState
@@ -49,9 +49,7 @@ import com.payup.ui.common.money
 import com.payup.ui.common.payUpViewModel
 import com.payup.ui.table.PotHeader
 import com.payup.ui.theme.Gold
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -105,18 +103,7 @@ class WatchViewModel(
                 state.value = WatchUi.Open(if (local.finished) Route.Result(local.id) else Route.Table(local.id))
                 return@launch
             }
-            // If nothing has been heard in a while, say so; a late answer still replaces this.
-            launch {
-                delay(10_000)
-                if (state.value == WatchUi.Loading) state.value = WatchUi.Unreachable
-            }
-            try {
-                sync.watch(shareId).collect { heard -> handle(heard) }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                lostConnection(e)
-            }
+            sync.watchPatiently(shareId).collect { heard -> handle(heard) }
         }
     }
 
@@ -136,11 +123,11 @@ class WatchViewModel(
         }
     }
 
-    private fun lostConnection(error: Exception) {
+    private fun lostConnection(error: GameSyncException) {
         val known = state.value
         state.value = when {
             known is WatchUi.Live -> known.copy(offline = true)
-            error is GameSyncException && error.kind == GameSyncException.Kind.Denied -> WatchUi.NotFound
+            error.kind == GameSyncException.Kind.Denied -> WatchUi.NotFound
             else -> WatchUi.Unreachable
         }
     }
@@ -168,29 +155,14 @@ fun WatchScreen(shareId: String, onBack: () -> Unit, onOpen: (Route) -> Unit) {
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding), horizontalAlignment = Alignment.CenterHorizontally) {
             when (shown) {
-                WatchUi.Loading, is WatchUi.Open -> Centered { CircularProgressIndicator() }
-                WatchUi.NotFound -> Centered { Message(stringResource(Res.string.watch_not_found)) }
-                WatchUi.Unreachable -> Centered {
-                    Message(stringResource(Res.string.watch_unreachable))
-                    Button(onClick = vm::retry) { Text(stringResource(Res.string.retry)) }
-                }
+                WatchUi.Loading, is WatchUi.Open -> CenteredColumn { CircularProgressIndicator() }
+                WatchUi.NotFound -> CenteredColumn { StatusMessage(stringResource(Res.string.watch_not_found)) }
+                WatchUi.Unreachable -> CenteredColumn { UnreachableMessage(vm::retry) }
                 is WatchUi.Live -> ProvideCurrency(shown.game.game.currency) { LiveGame(shown.game) }
             }
         }
     }
 }
-
-@Composable
-private fun Centered(content: @Composable () -> Unit) {
-    Column(
-        Modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) { content() }
-}
-
-@Composable
-private fun Message(text: String) = Text(text, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
 
 @Composable
 private fun LiveGame(game: GameWithDetails) {
