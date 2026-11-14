@@ -16,7 +16,7 @@ data class FriendEntity(
 
 // Every money column is in agorot (1 shekel = 100), see com.payup.domain.Money.
 
-@Entity(tableName = "games")
+@Entity(tableName = "games", indices = [Index(value = ["shareId"], unique = true)])
 data class GameEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val startedAt: Long,
@@ -33,6 +33,15 @@ data class GameEntity(
     val dealerPlayerId: Long? = null,
     /** [com.payup.domain.Currency] name; games from before currencies are shekels. */
     @ColumnInfo(defaultValue = "ILS") val currency: String = "ILS",
+    /**
+     * The online id of a shared game (see docs/SHARED_GAMES.md); null for a game that was never shared. The unique index
+     * stops a watched game from being saved twice.
+     */
+    val shareId: String? = null,
+    /** True on the device that hosts the shared game, so only this device edits it. */
+    @ColumnInfo(defaultValue = "0") val isHost: Boolean = false,
+    /** The secret that proves hosting (the part of the host link after the #); null except on the host's devices. */
+    val hostKey: String? = null,
 )
 
 /** A player in one game. The name is copied so history survives renaming or deleting a friend. */
@@ -97,3 +106,6 @@ data class GameWithDetails(
     val transfers: List<TransferEntity> get() = unorderedTransfers.sortedBy { it.id }
     val pot: Int get() = unorderedPlayers.sumOf { it.totalIn }
 }
+
+/** True when this device is the host of the game's online copy. */
+val GameEntity.hostedOnline: Boolean get() = isHost && shareId != null

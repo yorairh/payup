@@ -3,12 +3,27 @@ package com.payup.ui.table
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.payup.data.GameRepository
+import com.payup.sync.SharedGameSyncer
+import com.payup.sync.SyncStatus
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class TableViewModel(private val repository: GameRepository, private val gameId: Long) : ViewModel() {
+class TableViewModel(
+    private val repository: GameRepository,
+    private val sharedGames: SharedGameSyncer,
+    private val gameId: Long,
+) : ViewModel() {
     val game = repository.game(gameId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    val syncStatus: StateFlow<SyncStatus> = sharedGames.status
+
+    /** Puts the game online (or finds its link if it already is) and reports the link, or null if that failed. */
+    fun share(onResult: (String?) -> Unit) = viewModelScope.launch {
+        val current = game.value ?: return@launch
+        onResult(sharedGames.share(current))
+    }
 
     fun addBuyIn(playerId: Long, amount: Int) = viewModelScope.launch { repository.addBuyIn(playerId, amount) }
 

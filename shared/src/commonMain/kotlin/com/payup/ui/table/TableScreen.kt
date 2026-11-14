@@ -1,5 +1,6 @@
 package com.payup.ui.table
 
+import com.payup.data.hostedOnline
 import com.payup.ui.common.isRtl
 import org.jetbrains.compose.resources.getString
 import com.payup.resources.Res
@@ -13,6 +14,11 @@ import com.payup.resources.edit_buy_in
 import com.payup.resources.end_game
 import com.payup.resources.name_taken
 import com.payup.resources.pot
+import com.payup.resources.share_failed
+import com.payup.resources.share_game
+import com.payup.resources.sync_offline
+import com.payup.resources.sync_stopped
+import com.payup.resources.sync_syncing
 import com.payup.resources.table_title
 import com.payup.resources.undo_last
 import com.payup.resources.undone
@@ -40,6 +46,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -80,6 +87,8 @@ import com.payup.ui.common.money
 import com.payup.ui.common.moneyText
 import com.payup.ui.common.signedMoney
 import com.payup.ui.common.payUpViewModel
+import com.payup.sync.ShareLinks
+import com.payup.sync.SyncStatus
 import com.payup.ui.theme.Gold
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -87,7 +96,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TableScreen(gameId: Long, onBack: () -> Unit, onEndGame: () -> Unit) {
-    val vm = payUpViewModel { TableViewModel(it.repository, gameId) }
+    val vm = payUpViewModel { TableViewModel(it.repository, it.sharedGames, gameId) }
     val details by vm.game.collectAsStateWithLifecycle()
     val game = details ?: return
     ProvideCurrency(game.game.currency) { TableContent(vm, game, onBack, onEndGame) }
@@ -102,12 +111,38 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
     var customFor by remember { mutableStateOf<PlayerWithBuyIns?>(null) }
     var addingPlayer by remember { mutableStateOf(false) }
     var sheetPlayerId by remember { mutableStateOf<Long?>(null) }
+    var shareLink by remember { mutableStateOf<String?>(null) }
+    val hostKey = game.game.hostKey
+    val sharedId = game.game.shareId
+    var sharing by remember { mutableStateOf(false) }
+    val syncStatus by vm.syncStatus.collectAsStateWithLifecycle()
 
     val defaultBuyIn = game.game.defaultBuyIn
 
     Scaffold(
         topBar = {
             PayUpTopBar(stringResource(Res.string.table_title), onBack) {
+                if (game.game.hostedOnline) {
+                    when (syncStatus) {
+                        SyncStatus.Synced -> {}
+                        SyncStatus.Syncing -> Text(stringResource(Res.string.sync_syncing), style = MaterialTheme.typography.labelMedium)
+                        SyncStatus.Offline -> Text(stringResource(Res.string.sync_offline), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error)
+                        SyncStatus.Stopped -> Text(stringResource(Res.string.sync_stopped), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error)
+                    }
+                }
+                IconButton(
+                    enabled = !sharing,
+                    onClick = {
+                        sharing = true
+                        vm.share { link ->
+                            sharing = false
+                            if (link != null) shareLink = link
+                            else scope.launch { snackbar.showSnackbar(getString(Res.string.share_failed)) }
+                        }
+                    },
+                ) {
+                    Icon(Icons.Default.Share, contentDescription = stringResource(Res.string.share_game))
+                }
                 IconButton(onClick = { addingPlayer = true }) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(Res.string.add_player))
                 }
@@ -168,6 +203,14 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
         }
     }
 
+    shareLink?.let { link ->
+        ShareSheet(
+            link,
+            hostLink = if (sharedId != null && hostKey != null) ShareLinks.host(sharedId, hostKey) else null,
+            onDismiss = { shareLink = null },
+        )
+    }
+
     customFor?.let { player ->
         AmountDialog(
             title = stringResource(Res.string.custom_buy_in_title, player.player.name),
@@ -195,7 +238,7 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
 }
 
 @Composable
-private fun PotHeader(pot: Int, buyIns: Int) {
+internal fun PotHeader(pot: Int, buyIns: Int) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(stringResource(Res.string.pot), style = MaterialTheme.typography.titleMedium)
         AnimatedCounter(text = money(pot), value = pot) {

@@ -1,0 +1,78 @@
+rules_version = '2';
+
+// Rules for shared games, see docs/SHARED_GAMES.md.
+// - Anyone signed in (anonymously) who knows a game's id can read that one document; games cannot be listed.
+// - Only the current host (hostUid) can update or delete it.
+// - A takeover first writes a private claim document with the host key; its SHA-256 must match hostKeyHash.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function optionalInt(d, field) {
+      return !(field in d) || d[field] == null || d[field] is int;
+    }
+
+    // The shape and size of a game. Lists cannot be checked item by item in these rules, so only their length is limited.
+    function validGame(d) {
+      return d.keys().hasOnly([
+          'schemaVersion', 'revision', 'hostUid', 'hostKeyHash',
+          'startedAt', 'endedAt', 'defaultBuyIn', 'finished', 'voidedDifference', 'chipValue', 'roundToWhole',
+          'currency', 'dealerIndex', 'players', 'transfers'])
+        && d.keys().hasAll([
+          'schemaVersion', 'revision', 'hostUid', 'hostKeyHash',
+          'startedAt', 'defaultBuyIn', 'finished', 'roundToWhole', 'currency', 'players', 'transfers'])
+        && d.schemaVersion == 1
+        && d.revision is int
+        && d.hostUid is string && d.hostUid.size() > 0 && d.hostUid.size() <= 128
+        && d.hostKeyHash is string && d.hostKeyHash.size() == 64
+        && d.startedAt is int
+        && optionalInt(d, 'endedAt')
+        && d.defaultBuyIn is int && d.defaultBuyIn >= 0 && d.defaultBuyIn <= 1000000000
+        && d.finished is bool
+        && (!('voidedDifference' in d) || (d.voidedDifference is int && d.voidedDifference > -1000000000 && d.voidedDifference < 1000000000))
+        && optionalInt(d, 'chipValue')
+        && d.roundToWhole is bool
+        && d.currency is string && d.currency.size() <= 8
+        && optionalInt(d, 'dealerIndex')
+        && d.players is list && d.players.size() <= 20
+        && d.transfers is list && d.transfers.size() <= 400;
+    }
+
+    match /games/{gameId} {
+      allow get: if signedIn();
+      allow list: if false;
+
+      allow create: if signedIn()
+        && request.resource.data.hostUid == request.auth.uid
+        && request.resource.data.revision == 1
+        && validGame(request.resource.data);
+
+      // The host edits; a new host takes over with a valid claim. The key hash never changes.
+      allow update: if signedIn()
+        && validGame(request.resource.data)
+        && request.resource.data.revision == resource.data.revision + 1
+        && request.resource.data.hostKeyHash == resource.data.hostKeyHash
+        && (resource.data.hostUid == request.auth.uid
+            || (request.resource.data.hostUid == request.auth.uid
+                && exists(/databases/$(database)/documents/games/$(gameId)/claims/$(request.auth.uid))));
+
+      allow delete: if signedIn() && resource.data.hostUid == request.auth.uid;
+
+      // A claim holds the host key of someone taking over. Only its owner can read or remove it.
+      match /claims/{uid} {
+        allow create: if signedIn()
+          && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['key'])
+          && request.resource.data.key is string
+          && request.resource.data.key.size() <= 64
+          && hashing.sha256(request.resource.data.key).toHexString().lower()
+             == get(/databases/$(database)/documents/games/$(gameId)).data.hostKeyHash;
+        allow get, delete: if signedIn() && request.auth.uid == uid;
+        allow list, update: if false;
+      }
+    }
+  }
+}

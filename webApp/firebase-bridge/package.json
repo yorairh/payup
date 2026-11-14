@@ -1,0 +1,9 @@
+{
+  "name": "payup-firebase",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "main": "bridge.js",
+  "dependencies": {
+    "firebase": "13.2.0"
+  }
+}

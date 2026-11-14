@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-PayUp is an Android poker buy-in tracker and settlement app (Kotlin, Jetpack Compose, Room). All data is local to the device; there is no server.
+PayUp is an Android poker buy-in tracker and settlement app (Kotlin, Jetpack Compose, Room). Games are stored on the device. A host can share a game live through Firebase (Firestore and Hosting, project `payup-ae6fc`): `sync/` holds the `GameSync` seam and `SharedGameSyncer`, the Android implementation is `FirebaseGameSync`, the web one is `WebGameSync` over `webApp/firebase-bridge`, and the security rules are in `firebase/firestore.rules` (design in `docs/SHARED_GAMES.md`).
 
 ## Commands
 
@@ -24,12 +24,15 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 - Build output goes to `%USERPROFILE%\.payup-build\androidApp\` (and `\shared\`), not `build/`, because the Hebrew project path breaks the unit-test JVM's classpath on Windows (see the root `build.gradle.kts`). APKs are under `outputs\apk\`, reports under `reports\`, test XML under `test-results\`.
 - The same Hebrew path can corrupt paths inside scripts, so run scripts from the project directory rather than passing the full path.
 - `gh` is at `C:\Program Files\GitHub CLI\gh.exe` and is not on PATH.
-- Only JVM unit tests exist (`shared/src/commonTest` with `kotlin.test` for `domain/`, run with `:shared:testAndroidHostTest`). There is no Robolectric or `androidTest`, so `data/` and `ui/` code is only checked on a real phone. There is no emulator on this machine.
+- Only JVM unit tests exist (`shared/src/commonTest` with `kotlin.test` for `domain/`, run with `:shared:testAndroidHostTest`). There is no Robolectric or `androidTest`, so `data/` and `ui/` code is only checked on a real phone. An Android emulator exists in the SDK (`emulator.backup\emulator.exe`), which was used to test sharing; drive it with adb.
 
 ## Releases
 
-- GitHub repo: `yorairh/payup` (private). Each release is a `vX.Y.Z` tag plus a GitHub release with `PayUp-X.Y.Z.apk` attached.
+- GitHub repo: `yorairh/payup` (public from 0.5.0). Each release is a `vX.Y.Z` tag plus a GitHub release with `PayUp-X.Y.Z.apk` attached.
 - For each release, raise both `versionCode` and `versionName` in `androidApp/build.gradle.kts`.
+- The repo is going **public** (done only after the last roadmap task, together with the 0.5.0 release; the visibility change itself needs the user's go-ahead at that moment). So from now on commit nothing secret or personal: no keys, tokens, signing files, local paths, emails or private data. `google-services.json` and the web Firebase config hold public identifiers only and are fine; what protects the data is `firebase/firestore.rules`. Before going public, scan the whole git history for secrets.
+- Release notes live in `docs/releases/X.Y.Z.md` (like the FluRai repo), written for users in plain words: title, one line, then New / Changed / Good to know. The GitHub release is titled "PayUp X.Y.Z: short summary" and uses that file as its text. `README.md` is for users too.
+- Nothing is released (tag, GitHub release, web deploy, public repo) until every roadmap task is done; test builds in between go to the user as APKs only.
 - The signing key is outside the repo in `%USERPROFILE%\.payup-signing\`. If that folder is missing, release builds come out unsigned. Never commit its contents.
 - Debug and release builds have different signatures, so they can't install over each other. Uninstalling to switch deletes the saved games. Send test APKs built with `assembleRelease`.
 

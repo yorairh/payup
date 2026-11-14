@@ -1,9 +1,13 @@
 package com.payup.ui.history
 
+import com.payup.data.hostedOnline
 import com.payup.platform.LocalPlatform
 import com.payup.resources.Res
 import com.payup.resources.delete
+import com.payup.resources.close
 import com.payup.resources.delete_game_message
+import com.payup.resources.delete_game_offline
+import com.payup.resources.delete_game_shared_message
 import com.payup.resources.delete_game_title
 import com.payup.resources.history
 import com.payup.resources.history_empty
@@ -22,7 +26,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -60,9 +66,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
-    val vm = payUpViewModel { HistoryViewModel(it.repository) }
+    val vm = payUpViewModel { HistoryViewModel(it.repository, it.sharedGames) }
     val games by vm.games.collectAsStateWithLifecycle()
-    var toDelete by remember { mutableStateOf<Long?>(null) }
+    var toDelete by remember { mutableStateOf<GameWithDetails?>(null) }
+    var needsConnection by remember { mutableStateOf(false) }
 
     Scaffold(topBar = { PayUpTopBar(stringResource(Res.string.history), onBack) }) { padding ->
         val list = games ?: return@Scaffold
@@ -78,18 +85,25 @@ fun HistoryScreen(onBack: () -> Unit, onOpenGame: (Long) -> Unit) {
             modifier = Modifier.padding(padding),
         ) {
             items(list, key = { it.game.id }) { game ->
-                HistoryCard(game, onClick = { onOpenGame(game.game.id) }, onDelete = { toDelete = game.game.id })
+                HistoryCard(game, onClick = { onOpenGame(game.game.id) }, onDelete = { toDelete = game })
             }
         }
     }
 
-    toDelete?.let { id ->
+    toDelete?.let { game ->
         ConfirmDialog(
             title = stringResource(Res.string.delete_game_title),
-            message = stringResource(Res.string.delete_game_message),
+            message = stringResource(if (game.game.hostedOnline) Res.string.delete_game_shared_message else Res.string.delete_game_message),
             confirmLabel = stringResource(Res.string.delete),
-            onConfirm = { vm.delete(id); toDelete = null },
+            onConfirm = { vm.delete(game.game.id) { needsConnection = true }; toDelete = null },
             onDismiss = { toDelete = null },
+        )
+    }
+    if (needsConnection) {
+        AlertDialog(
+            onDismissRequest = { needsConnection = false },
+            text = { Text(stringResource(Res.string.delete_game_offline)) },
+            confirmButton = { TextButton(onClick = { needsConnection = false }) { Text(stringResource(Res.string.close)) } },
         )
     }
 }

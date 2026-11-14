@@ -44,6 +44,9 @@ kotlin {
             implementation(libs.navigation3.browser)
             // The Web Worker that runs SQLite, bundled from webApp/worker.
             implementation(npm("sqlite-wasm-worker", layout.projectDirectory.dir("worker").asFile))
+            // The Firebase JavaScript SDK for shared games, wrapped in webApp/firebase-bridge.
+            implementation(npm("payup-firebase", layout.projectDirectory.dir("firebase-bridge").asFile))
+            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

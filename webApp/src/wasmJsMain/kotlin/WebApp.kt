@@ -1,3 +1,4 @@
+import com.payup.ui.routeForLink
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import com.payup.data.AppDatabase
 import com.payup.data.GameRepository
 import com.payup.platform.LocalPlatform
 import com.payup.platform.PlatformServices
+import com.payup.sync.ShareIds
 import com.payup.resources.Res
 import com.payup.resources.already_open_in_another_tab
 import com.payup.resources.payup
@@ -71,6 +73,26 @@ private external fun notifyReady()
 )
 private external fun applyThemeColor(hex: String)
 
+/** The address path of the page, like "/g/abc"; a shared game link opens straight on its screen. */
+@JsFun("() => location.pathname")
+private external fun pagePath(): String
+
+/** The part of the address after the #, like "#abc"; a host link keeps its secret key there. */
+@JsFun("() => location.hash")
+private external fun pageHash(): String
+
+/** Takes the secret key out of the address bar (and so out of the browser history) once the app has read it. */
+@JsFun("() => history.replaceState(null, '', location.pathname)")
+private external fun clearPageHash()
+
+/** The screen a link opened (a shared game link or a host link), or null for the plain app address. */
+private fun linkRoute(): Route? {
+    val path = pagePath()
+    val route = routeForLink(path + pageHash())
+    if (path.startsWith("/h/")) clearPageHash()
+    return route
+}
+
 private val rightToLeftLanguages = setOf("he", "iw", "ar")
 
 @Composable
@@ -91,7 +113,7 @@ fun WebApp() {
                     SingleTab { database ->
                         Providers(database) {
                             Box(Modifier.fillMaxSize()) {
-                                PayUpNavHost(bindToBrowser = { BrowserHistory(it) })
+                                PayUpNavHost(initialRoute = remember { linkRoute() }, bindToBrowser = { BrowserHistory(it) })
                                 InstallHintBanner(Modifier.align(Alignment.BottomCenter))
                             }
                         }
@@ -138,6 +160,8 @@ private fun Providers(database: AppDatabase, content: @Composable () -> Unit) {
             currencyStore = WebSettings.currencyStore,
             appLanguage = WebSettings.language,
             appVersion = APP_VERSION,
+            gameSync = WebGameSync(),
+            shareIds = ShareIds(webRandomBytes),
         )
     }
     val platform = remember(fonts) {
@@ -168,6 +192,7 @@ private fun BrowserHistory(back: NavBackStack<NavKey>) {
                 is Route.Table -> buildBrowserHistoryFragment("table", mapOf("id" to key.gameId.toString()))
                 is Route.CashOut -> buildBrowserHistoryFragment("cashout", mapOf("id" to key.gameId.toString()))
                 is Route.Result -> buildBrowserHistoryFragment("result", mapOf("id" to key.gameId.toString()))
+                is Route.Watch -> buildBrowserHistoryFragment("watch", mapOf("id" to key.shareId))
                 else -> null
             }
         },
@@ -184,6 +209,7 @@ private fun BrowserHistory(back: NavBackStack<NavKey>) {
                 "table" -> id?.let { Route.Table(it) }
                 "cashout" -> id?.let { Route.CashOut(it) }
                 "result" -> id?.let { Route.Result(it) }
+                "watch" -> getBrowserHistoryFragmentParameters(fragment)["id"]?.let { Route.Watch(it) }
                 else -> null
             }
         },

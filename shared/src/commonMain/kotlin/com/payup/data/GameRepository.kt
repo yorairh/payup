@@ -8,6 +8,7 @@ import com.payup.domain.CashOutWrite
 import com.payup.domain.Currency
 import com.payup.domain.GameResult
 import com.payup.domain.Settlement
+import com.payup.sync.SharedGame
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -21,6 +22,74 @@ class GameRepository(private val db: AppDatabase) {
     val history: Flow<List<GameWithDetails>> = dao.history()
 
     fun game(id: Long): Flow<GameWithDetails?> = dao.game(id)
+
+    /** The shared game this device hosts that was started last; the one kept in step with its online copy. */
+    val latestHostedGame: Flow<GameWithDetails?> = dao.latestHostedGame()
+
+    /** The online id of game [gameId] if this device hosts it, else null. */
+    suspend fun hostedShareId(gameId: Long): String? = dao.hostedShareId(gameId)
+
+    /** The online id of the unfinished game this device hosts, if there is one. */
+    suspend fun activeHostedShareId(): String? = dao.activeHostedShareId()
+
+    /** The game on this device that is the shared game [shareId], if any. */
+    suspend fun gameBySharedId(shareId: String): GameEntity? = dao.gameBySharedId(shareId)
+
+    /**
+     * Saves a watched game that has finished into the history, once: if [shareId] is already here, nothing is added and
+     * the existing game's id is returned.
+     */
+    suspend fun saveWatchedGame(shareId: String, game: SharedGame): Long = db.withWriteTransaction {
+        dao.gameBySharedId(shareId)?.let { return@withWriteTransaction it.id }
+        insertSharedGame(shareId, isHost = false, hostKey = null, game)
+    }
+
+    /** True if an unfinished game is on this device; taking over a game would discard it. */
+    suspend fun hasActiveGame(): Boolean = dao.activeGameIds().isNotEmpty()
+
+    /**
+     * Makes the online game [shareId] this device's own running game, hosted here with [hostKey]. An older copy of the
+     * same game and any other unfinished game on this device are replaced. Returns the new local id.
+     */
+    suspend fun adoptHostedGame(shareId: String, hostKey: String, game: SharedGame): Long = db.withWriteTransaction {
+        dao.gameBySharedId(shareId)?.let { deleteGameRows(it.id) }
+        dao.activeGameIds().forEach { deleteGameRows(it) }
+        insertSharedGame(shareId, isHost = true, hostKey = hostKey, game)
+    }
+
+    /** Removes this device's hosted copy of [shareId] (after someone else took over hosting). */
+    suspend fun deleteHostedGame(shareId: String) = db.withWriteTransaction {
+        dao.gameBySharedId(shareId)?.takeIf { it.isHost }?.let { deleteGameRows(it.id) }
+    }
+
+    private suspend fun insertSharedGame(shareId: String, isHost: Boolean, hostKey: String?, game: SharedGame): Long {
+        val gameId = dao.insertGame(
+            GameEntity(
+                startedAt = game.startedAt,
+                endedAt = game.endedAt,
+                defaultBuyIn = game.defaultBuyIn,
+                finished = game.finished,
+                voidedDifference = game.voidedDifference,
+                chipValue = game.chipValue,
+                roundToWhole = game.roundToWhole,
+                currency = game.currency,
+                shareId = shareId,
+                isHost = isHost,
+                hostKey = hostKey,
+            )
+        )
+        val playerIds = game.players.map { p ->
+            val playerId = dao.insertPlayer(PlayerEntity(gameId = gameId, name = p.name, finalAmount = p.finalAmount, net = p.net, chips = p.chips))
+            p.buyIns.forEach { dao.insertBuyIn(BuyInEntity(playerId = playerId, amount = it.amount, createdAt = it.at)) }
+            playerId
+        }
+        game.dealerIndex?.let { dao.setDealer(gameId, playerIds.getOrNull(it)) }
+        dao.insertTransfers(game.transfers.map { TransferEntity(gameId = gameId, fromName = it.fromName, toName = it.toName, amount = it.amount) })
+        return gameId
+    }
+
+    /** Records that game [gameId] is online as [shareId] and that this device hosts it with [hostKey]. */
+    suspend fun markShared(gameId: Long, shareId: String, hostKey: String) = dao.markShared(gameId, shareId, hostKey)
 
     /** Currency of the most recently finished game; the leaderboard adds amounts up without converting. */
     val latestCurrency: Flow<Currency> = dao.latestFinishedCurrencyCode()

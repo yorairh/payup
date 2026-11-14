@@ -1,5 +1,6 @@
 package com.payup.ui.home
 
+import com.payup.ui.Route
 import com.payup.resources.Res
 import com.payup.resources.app_name
 import com.payup.resources.continue_game
@@ -11,6 +12,8 @@ import com.payup.resources.leaderboard
 import com.payup.resources.new_game
 import com.payup.resources.settings
 import com.payup.resources.tagline
+import com.payup.resources.watch_a_game
+import androidx.compose.material3.TextButton
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -67,11 +70,13 @@ fun HomeScreen(
     onHistory: () -> Unit,
     onLeaderboard: () -> Unit,
     onFriends: () -> Unit,
+    onOpenLink: (Route) -> Unit,
     onSettings: () -> Unit,
 ) {
     val vm = payUpViewModel { HomeViewModel(it.repository) }
     val activeGameId by vm.activeGameId.collectAsStateWithLifecycle()
     var confirmDiscard by remember { mutableStateOf(false) }
+    var watching by remember { mutableStateOf(false) }
 
     val pulse by rememberInfiniteTransition(label = "pulse").animateFloat(
         initialValue = 1f,
@@ -142,6 +147,8 @@ fun HomeScreen(
             OutlinedButton(onClick = onFriends, modifier = buttonModifier) {
                 Text(stringResource(Res.string.friends), fontSize = 18.sp)
             }
+            Spacer(Modifier.height(4.dp))
+            TextButton(onClick = { watching = true }) { Text(stringResource(Res.string.watch_a_game)) }
         }
         // The release name, tiny, in the bottom left corner. The corner is not mirrored in right-to-left languages.
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -155,6 +162,13 @@ fun HomeScreen(
             }
         }
         }
+    }
+
+    if (watching) {
+        WatchLinkDialog(
+            onOpen = { watching = false; onOpenLink(it) },
+            onDismiss = { watching = false },
+        )
     }
 
     if (confirmDiscard) {

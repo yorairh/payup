@@ -1,5 +1,17 @@
 package com.payup.ui.common
 
+import com.payup.resources.watch_unreachable
+import com.payup.resources.retry
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.Alignment
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import com.payup.resources.Res
 import com.payup.resources.amount
 import com.payup.resources.back
@@ -219,4 +231,25 @@ fun ConfirmDialog(
         confirmButton = { TextButton(onClick = onConfirm) { Text(confirmLabel) } },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel)) } },
     )
+}
+
+/** A column in the middle of the screen, for a spinner or a short message with its buttons. */
+@Composable
+fun CenteredColumn(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
+    Column(
+        modifier.fillMaxSize().padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        content = content,
+    )
+}
+
+@Composable
+fun StatusMessage(text: String) = Text(text, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
+
+/** "Can't reach the game" with a button to try again. */
+@Composable
+fun UnreachableMessage(onRetry: () -> Unit) {
+    StatusMessage(stringResource(Res.string.watch_unreachable))
+    Button(onClick = onRetry) { Text(stringResource(Res.string.retry)) }
 }

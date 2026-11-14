@@ -5,13 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.payup.data.CurrencyStore
 import com.payup.data.GameRepository
 import com.payup.domain.Money
+import com.payup.sync.SharedGameSyncer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SetupViewModel(private val repository: GameRepository, private val currencyStore: CurrencyStore) : ViewModel() {
+class SetupViewModel(
+    private val repository: GameRepository,
+    private val currencyStore: CurrencyStore,
+    private val sharedGames: SharedGameSyncer,
+) : ViewModel() {
     /** Starts as the currency of the last game played. */
     val currency = MutableStateFlow(currencyStore.lastUsed)
     val friends = repository.friends.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
@@ -44,6 +49,10 @@ class SetupViewModel(private val repository: GameRepository, private val currenc
         val deal = randomDealer.value
         val chosen = currency.value
         currencyStore.lastUsed = chosen
-        viewModelScope.launch { onStarted(repository.startGame(amount, selected.value, chosen), deal) }
+        viewModelScope.launch {
+            // The unfinished game is about to be discarded; its online copy goes with it when that is possible.
+            sharedGames.discardActiveGameOnline()
+            onStarted(repository.startGame(amount, selected.value, chosen), deal)
+        }
     }
 }
