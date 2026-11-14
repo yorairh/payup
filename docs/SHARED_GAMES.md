@@ -14,8 +14,8 @@ Decisions for sharing a live game by link. Rules, sync code and screens come in 
 
 ## Identity and links
 - The id is 128 random bits written as 22 URL-safe characters: unguessable, and games cannot be listed.
-- Viewer link: `https://payup-ae6fc.web.app/g/<id>` (a real path, so Android can open it in the app, task 29).
-- Host link: `https://payup-ae6fc.web.app/h/<id>#<hostKey>`. The host key is 128 random bits after the `#`, which browsers
+- Viewer link: `https://payup.web.app/g/<id>` (a real path, so Android can open it in the app, task 29).
+- Host link: `https://payup.web.app/h/<id>#<hostKey>`. The host key is 128 random bits after the `#`, which browsers
   never send to a server. The document stores only a hash of it (`hostKeyHash`), never the key.
 - The host is the anonymous Firebase user of the device (`hostUid`). A host who reinstalls or clears the browser takes
   control back with the host link; opening it on another device hands the game over (task 27).

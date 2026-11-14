@@ -89,7 +89,7 @@ private external fun clearPageHash()
 private fun linkRoute(): Route? {
     val path = pagePath()
     if (path.startsWith("/h/")) {
-        val link = ShareLinks.parseHostLink("https://payup-ae6fc.web.app" + path + pageHash())
+        val link = ShareLinks.parseHostLink("https://payup.web.app" + path + pageHash())
         clearPageHash()
         return link?.let { Route.TakeOver(it.gameId, it.hostKey) }
     }

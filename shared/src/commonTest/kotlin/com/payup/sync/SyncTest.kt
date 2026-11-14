@@ -135,8 +135,8 @@ class SharedGameTest {
 class ShareLinksTest {
     @kotlin.test.Test
     fun links_have_the_agreed_shape() {
-        kotlin.test.assertEquals("https://payup-ae6fc.web.app/g/abc", ShareLinks.viewer("abc"))
-        kotlin.test.assertEquals("https://payup-ae6fc.web.app/h/abc#key", ShareLinks.host("abc", "key"))
+        kotlin.test.assertEquals("https://payup.web.app/g/abc", ShareLinks.viewer("abc"))
+        kotlin.test.assertEquals("https://payup.web.app/h/abc#key", ShareLinks.host("abc", "key"))
     }
 
     @kotlin.test.Test
@@ -146,17 +146,17 @@ class ShareLinksTest {
         kotlin.test.assertEquals(ShareLinks.HostLink(id, key), ShareLinks.parseHostLink(ShareLinks.host(id, key)))
         kotlin.test.assertEquals(ShareLinks.HostLink(id, key), ShareLinks.parseHostLink("take over: ${ShareLinks.host(id, key)} thanks"))
         kotlin.test.assertEquals(null, ShareLinks.parseHostLink(ShareLinks.viewer(id)))
-        kotlin.test.assertEquals(null, ShareLinks.parseHostLink("https://payup-ae6fc.web.app/h/$id#short"))
-        kotlin.test.assertEquals(null, ShareLinks.parseHostLink("https://payup-ae6fc.web.app/h/$id"))
+        kotlin.test.assertEquals(null, ShareLinks.parseHostLink("https://payup.web.app/h/$id#short"))
+        kotlin.test.assertEquals(null, ShareLinks.parseHostLink("https://payup.web.app/h/$id"))
     }
 
     @kotlin.test.Test
     fun finds_the_id_in_a_pasted_link() {
         val id = "AbCdEfGhIjKlMnOpQrSt-_"
         kotlin.test.assertEquals(id, ShareLinks.parseViewerId(ShareLinks.viewer(id)))
-        kotlin.test.assertEquals(id, ShareLinks.parseViewerId("  Join my game: https://payup-ae6fc.web.app/g/$id?x=1 "))
+        kotlin.test.assertEquals(id, ShareLinks.parseViewerId("  Join my game: https://payup.web.app/g/$id?x=1 "))
         kotlin.test.assertEquals(id, ShareLinks.parseViewerId(id))
-        kotlin.test.assertEquals(null, ShareLinks.parseViewerId("https://payup-ae6fc.web.app/g/short"))
+        kotlin.test.assertEquals(null, ShareLinks.parseViewerId("https://payup.web.app/g/short"))
         kotlin.test.assertEquals(null, ShareLinks.parseViewerId("hello"))
     }
 }
