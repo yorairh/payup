@@ -112,6 +112,8 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
     var addingPlayer by remember { mutableStateOf(false) }
     var sheetPlayerId by remember { mutableStateOf<Long?>(null) }
     var shareLink by remember { mutableStateOf<String?>(null) }
+    val hostKey = game.game.hostKey
+    val sharedId = game.game.shareId
     var sharing by remember { mutableStateOf(false) }
     val syncStatus by vm.syncStatus.collectAsStateWithLifecycle()
 
@@ -209,7 +211,11 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
     }
 
     shareLink?.let { link ->
-        ShareSheet(link, onDismiss = { shareLink = null })
+        ShareSheet(
+            link,
+            hostLink = if (sharedId != null && hostKey != null) ShareLinks.host(sharedId, hostKey) else null,
+            onDismiss = { shareLink = null },
+        )
     }
 
     customFor?.let { player ->

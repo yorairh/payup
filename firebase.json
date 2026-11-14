@@ -11,6 +11,10 @@
       {
         "source": "/g/**",
         "destination": "/index.html"
+      },
+      {
+        "source": "/h/**",
+        "destination": "/index.html"
       }
     ],
     "headers": [

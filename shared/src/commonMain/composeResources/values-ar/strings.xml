@@ -218,4 +218,18 @@
     <string name="watch_a_game">مشاهدة لعبة</string>
     <string name="watch_link_label">الصق رابط اللعبة</string>
     <string name="watch_start">مشاهدة</string>
+    <string name="handover_button">تسليم الإدارة</string>
+    <string name="handover_title">تسليم الإدارة</string>
+    <string name="handover_warning">يمكن لأي شخص لديه هذا الرابط تولّي هذه اللعبة وتعديلها. أعطه فقط لمن تثق به.</string>
+    <string name="handover_message">تولَّ إدارة لعبتي في PayUp: %1$s</string>
+    <string name="takeover_title">هل تتولى إدارة هذه اللعبة؟</string>
+    <string name="takeover_body">تولَّ الإدارة لتعديل هذه اللعبة من هذا الجهاز. سيصبح المضيف الحالي مشاهدًا.</string>
+    <string name="takeover_action">تولّي الإدارة</string>
+    <string name="takeover_watch">مشاهدة فقط</string>
+    <string name="takeover_discard_title">هل تتخلى عن لعبتك غير المنتهية؟</string>
+    <string name="takeover_discard_message">لديك لعبة غير منتهية على هذا الجهاز. تولّي الإدارة سيستبدلها.</string>
+    <string name="takeover_invalid">رابط المضيف هذا لم يعد صالحًا.</string>
+    <string name="replaced_title">شخص آخر تولّى إدارة هذه اللعبة</string>
+    <string name="replaced_message">أنت تشاهدها الآن مباشرة. التغييرات التي أجريتها دون اتصال ولم تُرسل فُقدت.</string>
+    <string name="replaced_ok">مشاهدة اللعبة</string>
 </resources>

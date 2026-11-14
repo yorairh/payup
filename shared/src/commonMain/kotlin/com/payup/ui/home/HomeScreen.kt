@@ -70,6 +70,7 @@ fun HomeScreen(
     onLeaderboard: () -> Unit,
     onFriends: () -> Unit,
     onWatch: (String) -> Unit,
+    onTakeOver: (String, String) -> Unit,
     onSettings: () -> Unit,
 ) {
     val vm = payUpViewModel { HomeViewModel(it.repository) }
@@ -164,7 +165,11 @@ fun HomeScreen(
     }
 
     if (watching) {
-        WatchLinkDialog(onWatch = { watching = false; onWatch(it) }, onDismiss = { watching = false })
+        WatchLinkDialog(
+            onWatch = { watching = false; onWatch(it) },
+            onTakeOver = { id, key -> watching = false; onTakeOver(id, key) },
+            onDismiss = { watching = false },
+        )
     }
 
     if (confirmDiscard) {

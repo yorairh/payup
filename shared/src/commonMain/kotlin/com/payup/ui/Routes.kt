@@ -23,6 +23,9 @@ sealed interface Route : NavKey {
 
     /** Follows the shared game with this online id, read-only. */
     @Serializable data class Watch(val shareId: String) : Route
+
+    /** Offers to take over hosting of a shared game, with the secret host key from its host link. */
+    @Serializable data class TakeOver(val shareId: String, val hostKey: String) : Route
 }
 
 /** Tells the saved-state code how to write every [Route] (needed on platforms without reflection). */
@@ -40,6 +43,7 @@ val RouteSavedStateConfiguration = SavedStateConfiguration {
             subclass(Route.History::class)
             subclass(Route.Friends::class)
             subclass(Route.Watch::class)
+            subclass(Route.TakeOver::class)
         }
     }
 }

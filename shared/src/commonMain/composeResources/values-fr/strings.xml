@@ -209,4 +209,18 @@
     <string name="watch_a_game">Suivre une partie</string>
     <string name="watch_link_label">Collez le lien de la partie</string>
     <string name="watch_start">Suivre</string>
+    <string name="handover_button">Passer la main</string>
+    <string name="handover_title">Passer la main</string>
+    <string name="handover_warning">Toute personne ayant ce lien peut prendre le contrôle de cette partie et la modifier. Ne le donnez qu'à quelqu'un de confiance.</string>
+    <string name="handover_message">Prenez la main sur ma partie PayUp : %1$s</string>
+    <string name="takeover_title">Prendre le contrôle de cette partie ?</string>
+    <string name="takeover_body">Prenez le contrôle pour modifier cette partie depuis cet appareil. L'hôte actuel deviendra spectateur.</string>
+    <string name="takeover_action">Prendre le contrôle</string>
+    <string name="takeover_watch">Juste regarder</string>
+    <string name="takeover_discard_title">Abandonner votre partie en cours ?</string>
+    <string name="takeover_discard_message">Vous avez une partie en cours sur cet appareil. La prise de contrôle la remplace.</string>
+    <string name="takeover_invalid">Ce lien d'hôte n'est plus valide.</string>
+    <string name="replaced_title">Quelqu'un d'autre a pris le contrôle de cette partie</string>
+    <string name="replaced_message">Vous la suivez maintenant en direct. Ce que vous avez modifié hors ligne sans l'envoyer est perdu.</string>
+    <string name="replaced_ok">Suivre la partie</string>
 </resources>

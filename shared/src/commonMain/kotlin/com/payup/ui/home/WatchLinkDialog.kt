@@ -19,8 +19,9 @@ import org.jetbrains.compose.resources.stringResource
 
 /** Asks for a pasted game link (the phone has no links that open the app yet) and hands back the game id in it. */
 @Composable
-fun WatchLinkDialog(onWatch: (String) -> Unit, onDismiss: () -> Unit) {
+fun WatchLinkDialog(onWatch: (String) -> Unit, onTakeOver: (String, String) -> Unit, onDismiss: () -> Unit) {
     var text by remember { mutableStateOf("") }
+    val hostLink = ShareLinks.parseHostLink(text)
     val id = ShareLinks.parseViewerId(text)
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -34,7 +35,10 @@ fun WatchLinkDialog(onWatch: (String) -> Unit, onDismiss: () -> Unit) {
             )
         },
         confirmButton = {
-            TextButton(onClick = { id?.let(onWatch) }, enabled = id != null) { Text(stringResource(Res.string.watch_start)) }
+            TextButton(
+                onClick = { if (hostLink != null) onTakeOver(hostLink.gameId, hostLink.hostKey) else id?.let(onWatch) },
+                enabled = hostLink != null || id != null,
+            ) { Text(stringResource(Res.string.watch_start)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel)) } },
     )

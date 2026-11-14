@@ -15,6 +15,22 @@ object ShareLinks {
         return candidate.takeIf { it.length == ID_LENGTH && it.all(::isIdChar) }
     }
 
+    /** The two halves of a host link: the game id and the secret host key. */
+    data class HostLink(val gameId: String, val hostKey: String)
+
+    /** The id and key inside a pasted host link (`/h/<id>#<key>`), or null if [text] holds none. */
+    fun parseHostLink(text: String): HostLink? {
+        val trimmed = text.trim()
+        val marker = trimmed.indexOf("/h/")
+        if (marker < 0) return null
+        val afterMarker = trimmed.substring(marker + 3)
+        val id = afterMarker.takeWhile(::isIdChar)
+        val rest = afterMarker.removePrefix(id)
+        if (id.length != ID_LENGTH || !rest.startsWith("#")) return null
+        val key = rest.substring(1).takeWhile(::isIdChar)
+        return if (key.length == ID_LENGTH) HostLink(id, key) else null
+    }
+
     private const val ID_LENGTH = 22
 
     private fun isIdChar(c: Char) = c in 'A'..'Z' || c in 'a'..'z' || c in '0'..'9' || c == '-' || c == '_'

@@ -212,4 +212,18 @@
     <string name="watch_a_game">Следить за игрой</string>
     <string name="watch_link_label">Вставьте ссылку на игру</string>
     <string name="watch_start">Смотреть</string>
+    <string name="handover_button">Передать управление</string>
+    <string name="handover_title">Передать управление</string>
+    <string name="handover_warning">Любой, у кого есть эта ссылка, может взять игру под свой контроль и редактировать её. Давайте её только тем, кому доверяете.</string>
+    <string name="handover_message">Возьмите на себя мою игру в PayUp: %1$s</string>
+    <string name="takeover_title">Взять игру под управление?</string>
+    <string name="takeover_body">Возьмите управление, чтобы редактировать игру с этого устройства. Нынешний ведущий станет зрителем.</string>
+    <string name="takeover_action">Взять управление</string>
+    <string name="takeover_watch">Только смотреть</string>
+    <string name="takeover_discard_title">Удалить вашу незавершённую игру?</string>
+    <string name="takeover_discard_message">На этом устройстве есть незавершённая игра. Передача управления заменит её.</string>
+    <string name="takeover_invalid">Эта ссылка ведущего больше недействительна.</string>
+    <string name="replaced_title">Кто-то другой взял игру под управление</string>
+    <string name="replaced_message">Теперь вы смотрите её онлайн. Изменения, сделанные без связи и не отправленные, потеряны.</string>
+    <string name="replaced_ok">Смотреть игру</string>
 </resources>

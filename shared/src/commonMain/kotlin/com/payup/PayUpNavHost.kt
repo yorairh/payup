@@ -25,6 +25,8 @@ import com.payup.ui.result.ResultScreen
 import com.payup.ui.settings.SettingsScreen
 import com.payup.ui.setup.SetupScreen
 import com.payup.ui.table.TableScreen
+import com.payup.ui.takeover.TakeOverScreen
+import com.payup.ui.takeover.HostLostDialog
 import com.payup.ui.watch.WatchScreen
 
 /** Screens fade into each other, as they always have. */
@@ -71,6 +73,7 @@ fun PayUpNavHost(initialRoute: Route? = null, bindToBrowser: @Composable (NavBac
                     onLeaderboard = { back.add(Route.Leaderboard) },
                     onFriends = { back.add(Route.Friends) },
                     onWatch = { back.add(Route.Watch(it)) },
+                    onTakeOver = { id, key -> back.add(Route.TakeOver(id, key)) },
                     onSettings = { back.add(Route.Settings) },
                 )
             }
@@ -117,9 +120,19 @@ fun PayUpNavHost(initialRoute: Route? = null, bindToBrowser: @Composable (NavBac
             entry<Route.Friends> {
                 FriendsScreen(onBack = { back.pop() })
             }
+            entry<Route.TakeOver> { key ->
+                TakeOverScreen(
+                    key.shareId,
+                    key.hostKey,
+                    onBack = { back.pop() },
+                    onWatch = { back.replaceTop(Route.Watch(key.shareId)) },
+                    onHosting = { back.replaceAboveHome(Route.Table(it)) },
+                )
+            }
             entry<Route.Watch> { key ->
                 WatchScreen(key.shareId, onBack = { back.pop() }, onOpen = { back.replaceTop(it) })
             }
         },
     )
+    HostLostDialog(onWatch = { back.replaceAboveHome(Route.Watch(it)) })
 }
