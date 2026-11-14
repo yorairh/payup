@@ -206,4 +206,18 @@
     <string name="watch_a_game">Watch a game</string>
     <string name="watch_link_label">Paste the game link</string>
     <string name="watch_start">Watch</string>
+    <string name="handover_button">Hand over hosting</string>
+    <string name="handover_title">Hand over hosting</string>
+    <string name="handover_warning">Anyone with this link can take over this game and edit it. Only give it to someone you trust.</string>
+    <string name="handover_message">Take over hosting my PayUp game: %1$s</string>
+    <string name="takeover_title">Take over this game?</string>
+    <string name="takeover_body">Take over to edit this game from this device. The current host will become a viewer.</string>
+    <string name="takeover_action">Take over</string>
+    <string name="takeover_watch">Just watch</string>
+    <string name="takeover_discard_title">Discard your unfinished game?</string>
+    <string name="takeover_discard_message">You have an unfinished game on this device. Taking over replaces it.</string>
+    <string name="takeover_invalid">This host link isn't valid any more.</string>
+    <string name="replaced_title">Someone else took over this game</string>
+    <string name="replaced_message">You are now watching it live. Anything you changed while offline and never sent is lost.</string>
+    <string name="replaced_ok">Watch the game</string>
 </resources>

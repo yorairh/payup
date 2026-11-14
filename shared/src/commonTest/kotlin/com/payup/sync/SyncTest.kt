@@ -140,6 +140,17 @@ class ShareLinksTest {
     }
 
     @kotlin.test.Test
+    fun finds_id_and_key_in_a_host_link() {
+        val id = "AbCdEfGhIjKlMnOpQrSt-_"
+        val key = "ZyXwVuTsRqPoNmLkJiHg-_"
+        kotlin.test.assertEquals(ShareLinks.HostLink(id, key), ShareLinks.parseHostLink(ShareLinks.host(id, key)))
+        kotlin.test.assertEquals(ShareLinks.HostLink(id, key), ShareLinks.parseHostLink("take over: ${ShareLinks.host(id, key)} thanks"))
+        kotlin.test.assertEquals(null, ShareLinks.parseHostLink(ShareLinks.viewer(id)))
+        kotlin.test.assertEquals(null, ShareLinks.parseHostLink("https://payup-ae6fc.web.app/h/$id#short"))
+        kotlin.test.assertEquals(null, ShareLinks.parseHostLink("https://payup-ae6fc.web.app/h/$id"))
+    }
+
+    @kotlin.test.Test
     fun finds_the_id_in_a_pasted_link() {
         val id = "AbCdEfGhIjKlMnOpQrSt-_"
         kotlin.test.assertEquals(id, ShareLinks.parseViewerId(ShareLinks.viewer(id)))

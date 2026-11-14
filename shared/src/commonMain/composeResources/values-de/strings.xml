@@ -206,4 +206,18 @@
     <string name="watch_a_game">Spiel verfolgen</string>
     <string name="watch_link_label">Spiel-Link einfügen</string>
     <string name="watch_start">Zuschauen</string>
+    <string name="handover_button">Gastgeberrolle übergeben</string>
+    <string name="handover_title">Gastgeberrolle übergeben</string>
+    <string name="handover_warning">Jeder mit diesem Link kann dieses Spiel übernehmen und bearbeiten. Gib ihn nur Personen, denen du vertraust.</string>
+    <string name="handover_message">Übernimm mein PayUp-Spiel: %1$s</string>
+    <string name="takeover_title">Dieses Spiel übernehmen?</string>
+    <string name="takeover_body">Übernimm das Spiel, um es von diesem Gerät aus zu bearbeiten. Der bisherige Gastgeber wird Zuschauer.</string>
+    <string name="takeover_action">Übernehmen</string>
+    <string name="takeover_watch">Nur zuschauen</string>
+    <string name="takeover_discard_title">Dein unfertiges Spiel verwerfen?</string>
+    <string name="takeover_discard_message">Auf diesem Gerät läuft ein unfertiges Spiel. Die Übernahme ersetzt es.</string>
+    <string name="takeover_invalid">Dieser Gastgeber-Link ist nicht mehr gültig.</string>
+    <string name="replaced_title">Jemand anderes hat dieses Spiel übernommen</string>
+    <string name="replaced_message">Du schaust es jetzt live an. Änderungen, die du offline gemacht und nicht gesendet hast, sind verloren.</string>
+    <string name="replaced_ok">Spiel ansehen</string>
 </resources>

@@ -209,4 +209,18 @@
     <string name="watch_a_game">Acompanhar um jogo</string>
     <string name="watch_link_label">Cole o link do jogo</string>
     <string name="watch_start">Assistir</string>
+    <string name="handover_button">Passar o comando</string>
+    <string name="handover_title">Passar o comando</string>
+    <string name="handover_warning">Qualquer pessoa com este link pode assumir este jogo e editá-lo. Dê-o só a alguém de confiança.</string>
+    <string name="handover_message">Assuma meu jogo no PayUp: %1$s</string>
+    <string name="takeover_title">Assumir este jogo?</string>
+    <string name="takeover_body">Assuma para editar este jogo neste dispositivo. O anfitrião atual passará a ser espectador.</string>
+    <string name="takeover_action">Assumir</string>
+    <string name="takeover_watch">Só assistir</string>
+    <string name="takeover_discard_title">Descartar seu jogo não terminado?</string>
+    <string name="takeover_discard_message">Você tem um jogo não terminado neste dispositivo. Assumir o substitui.</string>
+    <string name="takeover_invalid">Este link de anfitrião não é mais válido.</string>
+    <string name="replaced_title">Outra pessoa assumiu este jogo</string>
+    <string name="replaced_message">Você agora o assiste ao vivo. O que você alterou sem conexão e não foi enviado foi perdido.</string>
+    <string name="replaced_ok">Assistir ao jogo</string>
 </resources>

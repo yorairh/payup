@@ -77,8 +77,24 @@ private external fun applyThemeColor(hex: String)
 @JsFun("() => location.pathname")
 private external fun pagePath(): String
 
-/** The screen a link opened (a shared game link), or null for the plain app address. */
-private fun linkRoute(): Route? = ShareLinks.parseViewerId(pagePath().takeIf { it.startsWith("/g/") }.orEmpty())?.let { Route.Watch(it) }
+/** The part of the address after the #, like "#abc"; a host link keeps its secret key there. */
+@JsFun("() => location.hash")
+private external fun pageHash(): String
+
+/** Takes the secret key out of the address bar (and so out of the browser history) once the app has read it. */
+@JsFun("() => history.replaceState(null, '', location.pathname)")
+private external fun clearPageHash()
+
+/** The screen a link opened (a shared game link or a host link), or null for the plain app address. */
+private fun linkRoute(): Route? {
+    val path = pagePath()
+    if (path.startsWith("/h/")) {
+        val link = ShareLinks.parseHostLink("https://payup-ae6fc.web.app" + path + pageHash())
+        clearPageHash()
+        return link?.let { Route.TakeOver(it.gameId, it.hostKey) }
+    }
+    return ShareLinks.parseViewerId(path.takeIf { it.startsWith("/g/") }.orEmpty())?.let { Route.Watch(it) }
+}
 
 private val rightToLeftLanguages = setOf("he", "iw", "ar")
 

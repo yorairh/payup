@@ -212,4 +212,18 @@
     <string name="watch_a_game">צפייה במשחק</string>
     <string name="watch_link_label">הדביקו את קישור המשחק</string>
     <string name="watch_start">צפייה</string>
+    <string name="handover_button">העברת הניהול</string>
+    <string name="handover_title">העברת הניהול</string>
+    <string name="handover_warning">כל מי שיש לו את הקישור הזה יכול להשתלט על המשחק ולערוך אותו. תנו אותו רק למי שאתם סומכים עליו.</string>
+    <string name="handover_message">קבלו את הניהול של משחק ה-PayUp שלי: %1$s</string>
+    <string name="takeover_title">להשתלט על המשחק?</string>
+    <string name="takeover_body">השתלטו כדי לערוך את המשחק מהמכשיר הזה. המארח הנוכחי יהפוך לצופה.</string>
+    <string name="takeover_action">השתלטות</string>
+    <string name="takeover_watch">רק לצפות</string>
+    <string name="takeover_discard_title">למחוק את המשחק הלא גמור שלכם?</string>
+    <string name="takeover_discard_message">יש לכם משחק לא גמור במכשיר הזה. ההשתלטות תחליף אותו.</string>
+    <string name="takeover_invalid">קישור המארח הזה כבר לא תקף.</string>
+    <string name="replaced_title">מישהו אחר השתלט על המשחק</string>
+    <string name="replaced_message">אתם צופים בו עכשיו בשידור חי. שינויים שעשיתם בלי חיבור ולא נשלחו אבדו.</string>
+    <string name="replaced_ok">צפייה במשחק</string>
 </resources>

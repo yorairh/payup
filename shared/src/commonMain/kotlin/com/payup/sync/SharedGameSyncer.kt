@@ -54,6 +54,16 @@ class SharedGameSyncer(
     private val state = MutableStateFlow(SyncStatus.Synced)
     val status: StateFlow<SyncStatus> = state
 
+    private val lostGame = MutableStateFlow<String?>(null)
+
+    /** The online id of a game this device used to host but someone else took over; null when there is none. */
+    val lostHosting: StateFlow<String?> = lostGame
+
+    /** The person has been told that hosting moved away; clears [lostHosting]. */
+    fun acknowledgeLostHosting() {
+        lostGame.value = null
+    }
+
     init {
         scope.launch { watchLocalChanges() }
     }
@@ -76,6 +86,7 @@ class SharedGameSyncer(
                 } catch (e: GameSyncException) {
                     if (e.kind == GameSyncException.Kind.Denied) {
                         state.value = SyncStatus.Stopped
+                        lostGame.value = id
                         return@collectLatest
                     }
                     state.value = SyncStatus.Offline

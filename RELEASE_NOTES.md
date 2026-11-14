@@ -12,6 +12,7 @@ and copied into the GitHub release.
   lose your connection, the top bar says "Offline" and the app keeps trying.
 - **Watch a game.** Open a game link, or use "Watch a game" on the home screen and paste it. You see the pot, each player's
   buy-ins and cash-outs, live. Read-only.
+- **Hand over hosting.** Pass the game to someone else, for example when the host has to leave: share the host link from "Hand over hosting". The new host can edit the game, and the old host switches to watching it live.
 - **Finished games are kept.** When a game you watched ends, it is saved into your history and counts in your leaderboard.
 - The app is a bit bigger to download (about 15 MB instead of 10) because of the online sharing.
 
