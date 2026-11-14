@@ -3,7 +3,8 @@
     "public": "web-dist",
     "ignore": [
       "firebase.json",
-      "**/.*",
+      "**/.git/**",
+      "**/.DS_Store",
       "**/node_modules/**"
     ],
     "cleanUrls": true,

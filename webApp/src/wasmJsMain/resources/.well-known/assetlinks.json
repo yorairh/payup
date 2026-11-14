@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.payup",
+      "sha256_cert_fingerprints": [
+        "4B:15:CA:A7:D4:98:F7:A3:3C:96:74:C8:8E:7E:FC:98:97:38:5F:02:48:82:E4:A8:62:C9:04:9D:CA:B6:5A:2B"
+      ]
+    }
+  }
+]

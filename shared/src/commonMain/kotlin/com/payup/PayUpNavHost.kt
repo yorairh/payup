@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -50,10 +51,22 @@ private fun NavBackStack<NavKey>.pop() {
 
 /** The screens and how they lead to each other, the same on every platform. The web passes [bindToBrowser] to tie the back stack to the browser history. */
 @Composable
-fun PayUpNavHost(initialRoute: Route? = null, bindToBrowser: @Composable (NavBackStack<NavKey>) -> Unit = {}) {
+fun PayUpNavHost(
+    initialRoute: Route? = null,
+    incomingRoute: Route? = null,
+    onIncomingHandled: () -> Unit = {},
+    bindToBrowser: @Composable (NavBackStack<NavKey>) -> Unit = {},
+) {
     // [initialRoute] is a screen opened by a link (the web); Back from it goes Home.
     val back = rememberNavBackStack(RouteSavedStateConfiguration, *listOfNotNull<NavKey>(Route.Home, initialRoute).toTypedArray())
     bindToBrowser(back)
+    // A link tapped while the app is open or starting (Android): Back from it goes Home.
+    LaunchedEffect(incomingRoute) {
+        incomingRoute?.let {
+            back.replaceAboveHome(it)
+            onIncomingHandled()
+        }
+    }
     NavDisplay(
         backStack = back,
         onBack = { back.pop() },
