@@ -14,6 +14,7 @@ and copied into the GitHub release.
   buy-ins and cash-outs, live. Read-only.
 - **Hand over hosting.** Pass the game to someone else, for example when the host has to leave: share the host link from "Hand over hosting". The new host can edit the game, and the old host switches to watching it live.
 - **Deleting a shared game removes its link.** When you delete a game you hosted from your history, the online copy goes too (this needs a connection). A game you only watched is deleted from your device only.
+- **Links open in the app.** Tapping a game link on an Android phone with PayUp installed opens it in PayUp; without the app it opens in the browser.
 - **Finished games are kept.** When a game you watched ends, it is saved into your history and counts in your leaderboard.
 - The app is a bit bigger to download (about 15 MB instead of 10) because of the online sharing.
 
