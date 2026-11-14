@@ -199,4 +199,14 @@
     <string name="sync_offline">Hors ligne</string>
     <string name="sync_stopped">Partage arrêté</string>
     <string name="share_message">Suivez ma partie PayUp en direct : %1$s</string>
+    <string name="retry">Réessayer</string>
+    <string name="watch_title">Spectateur</string>
+    <string name="watch_live">En direct</string>
+    <string name="watch_offline">Hors ligne</string>
+    <string name="watch_not_found">Cette partie n'est pas disponible. Le lien est peut-être incorrect ou l'hôte l'a supprimée.</string>
+    <string name="watch_unreachable">Impossible d'accéder à la partie. Vérifiez votre connexion.</string>
+    <string name="watch_cashed_out">A encaissé %1$s</string>
+    <string name="watch_a_game">Suivre une partie</string>
+    <string name="watch_link_label">Collez le lien de la partie</string>
+    <string name="watch_start">Suivre</string>
 </resources>

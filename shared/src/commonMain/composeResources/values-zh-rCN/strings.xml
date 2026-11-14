@@ -193,4 +193,14 @@
     <string name="sync_offline">离线</string>
     <string name="sync_stopped">分享已停止</string>
     <string name="share_message">实时关注我的 PayUp 牌局：%1$s</string>
+    <string name="retry">重试</string>
+    <string name="watch_title">观战中</string>
+    <string name="watch_live">实时</string>
+    <string name="watch_offline">离线</string>
+    <string name="watch_not_found">此牌局不可用。链接可能有误，或主持人已将其删除。</string>
+    <string name="watch_unreachable">无法连接到牌局，请检查网络。</string>
+    <string name="watch_cashed_out">已兑现 %1$s</string>
+    <string name="watch_a_game">观看牌局</string>
+    <string name="watch_link_label">粘贴牌局链接</string>
+    <string name="watch_start">观看</string>
 </resources>

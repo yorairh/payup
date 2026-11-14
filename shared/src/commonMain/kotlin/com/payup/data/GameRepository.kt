@@ -8,6 +8,7 @@ import com.payup.domain.CashOutWrite
 import com.payup.domain.Currency
 import com.payup.domain.GameResult
 import com.payup.domain.Settlement
+import com.payup.sync.SharedGame
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -24,6 +25,39 @@ class GameRepository(private val db: AppDatabase) {
 
     /** The shared game this device hosts that was started last; the one kept in step with its online copy. */
     val latestHostedGame: Flow<GameWithDetails?> = dao.latestHostedGame()
+
+    /** The game on this device that is the shared game [shareId], if any. */
+    suspend fun gameBySharedId(shareId: String): GameEntity? = dao.gameBySharedId(shareId)
+
+    /**
+     * Saves a watched game that has finished into the history, once: if [shareId] is already here, nothing is added and
+     * the existing game's id is returned.
+     */
+    suspend fun saveWatchedGame(shareId: String, game: SharedGame): Long = db.withWriteTransaction {
+        dao.gameBySharedId(shareId)?.let { return@withWriteTransaction it.id }
+        val gameId = dao.insertGame(
+            GameEntity(
+                startedAt = game.startedAt,
+                endedAt = game.endedAt,
+                defaultBuyIn = game.defaultBuyIn,
+                finished = game.finished,
+                voidedDifference = game.voidedDifference,
+                chipValue = game.chipValue,
+                roundToWhole = game.roundToWhole,
+                currency = game.currency,
+                shareId = shareId,
+                isHost = false,
+            )
+        )
+        val playerIds = game.players.map { p ->
+            val playerId = dao.insertPlayer(PlayerEntity(gameId = gameId, name = p.name, finalAmount = p.finalAmount, net = p.net, chips = p.chips))
+            p.buyIns.forEach { dao.insertBuyIn(BuyInEntity(playerId = playerId, amount = it.amount, createdAt = it.at)) }
+            playerId
+        }
+        game.dealerIndex?.let { dao.setDealer(gameId, playerIds.getOrNull(it)) }
+        dao.insertTransfers(game.transfers.map { TransferEntity(gameId = gameId, fromName = it.fromName, toName = it.toName, amount = it.amount) })
+        gameId
+    }
 
     /** Records that game [gameId] is online as [shareId] and that this device hosts it with [hostKey]. */
     suspend fun markShared(gameId: Long, shareId: String, hostKey: String) = dao.markShared(gameId, shareId, hostKey)

@@ -41,6 +41,7 @@ import com.payup.data.GameRepository
 import com.payup.platform.LocalPlatform
 import com.payup.platform.PlatformServices
 import com.payup.sync.ShareIds
+import com.payup.sync.ShareLinks
 import com.payup.resources.Res
 import com.payup.resources.already_open_in_another_tab
 import com.payup.resources.payup
@@ -72,6 +73,13 @@ private external fun notifyReady()
 )
 private external fun applyThemeColor(hex: String)
 
+/** The address path of the page, like "/g/abc"; a shared game link opens straight on its screen. */
+@JsFun("() => location.pathname")
+private external fun pagePath(): String
+
+/** The screen a link opened (a shared game link), or null for the plain app address. */
+private fun linkRoute(): Route? = ShareLinks.parseViewerId(pagePath().takeIf { it.startsWith("/g/") }.orEmpty())?.let { Route.Watch(it) }
+
 private val rightToLeftLanguages = setOf("he", "iw", "ar")
 
 @Composable
@@ -92,7 +100,7 @@ fun WebApp() {
                     SingleTab { database ->
                         Providers(database) {
                             Box(Modifier.fillMaxSize()) {
-                                PayUpNavHost(bindToBrowser = { BrowserHistory(it) })
+                                PayUpNavHost(initialRoute = remember { linkRoute() }, bindToBrowser = { BrowserHistory(it) })
                                 InstallHintBanner(Modifier.align(Alignment.BottomCenter))
                             }
                         }
@@ -171,6 +179,7 @@ private fun BrowserHistory(back: NavBackStack<NavKey>) {
                 is Route.Table -> buildBrowserHistoryFragment("table", mapOf("id" to key.gameId.toString()))
                 is Route.CashOut -> buildBrowserHistoryFragment("cashout", mapOf("id" to key.gameId.toString()))
                 is Route.Result -> buildBrowserHistoryFragment("result", mapOf("id" to key.gameId.toString()))
+                is Route.Watch -> buildBrowserHistoryFragment("watch", mapOf("id" to key.shareId))
                 else -> null
             }
         },
@@ -187,6 +196,7 @@ private fun BrowserHistory(back: NavBackStack<NavKey>) {
                 "table" -> id?.let { Route.Table(it) }
                 "cashout" -> id?.let { Route.CashOut(it) }
                 "result" -> id?.let { Route.Result(it) }
+                "watch" -> getBrowserHistoryFragmentParameters(fragment)["id"]?.let { Route.Watch(it) }
                 else -> null
             }
         },

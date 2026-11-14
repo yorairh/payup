@@ -208,4 +208,14 @@
     <string name="sync_offline">غير متصل</string>
     <string name="sync_stopped">توقفت المشاركة</string>
     <string name="share_message">تابع لعبتي في PayUp مباشرة: %1$s</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="watch_title">مشاهدة</string>
+    <string name="watch_live">مباشر</string>
+    <string name="watch_offline">غير متصل</string>
+    <string name="watch_not_found">هذه اللعبة غير متاحة. ربما الرابط خاطئ أو أزالها المضيف.</string>
+    <string name="watch_unreachable">تعذر الوصول إلى اللعبة. تحقق من الاتصال.</string>
+    <string name="watch_cashed_out">سحب %1$s</string>
+    <string name="watch_a_game">مشاهدة لعبة</string>
+    <string name="watch_link_label">الصق رابط اللعبة</string>
+    <string name="watch_start">مشاهدة</string>
 </resources>
