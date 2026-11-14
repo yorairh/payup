@@ -226,4 +226,6 @@
     <string name="replaced_title">מישהו אחר השתלט על המשחק</string>
     <string name="replaced_message">אתם צופים בו עכשיו בשידור חי. שינויים שעשיתם בלי חיבור ולא נשלחו אבדו.</string>
     <string name="replaced_ok">צפייה במשחק</string>
+    <string name="delete_game_shared_message">המשחק יוסר מההיסטוריה שלכם, והקישור החי יפסיק לעבוד עבור כל מי שצופה.</string>
+    <string name="delete_game_offline">אי אפשר למחוק משחק משותף בלי חיבור. נסו שוב כשתהיו מחוברים.</string>
 </resources>

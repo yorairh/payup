@@ -223,4 +223,6 @@
     <string name="replaced_title">Outra pessoa assumiu este jogo</string>
     <string name="replaced_message">Você agora o assiste ao vivo. O que você alterou sem conexão e não foi enviado foi perdido.</string>
     <string name="replaced_ok">Assistir ao jogo</string>
+    <string name="delete_game_shared_message">Ele será removido do seu histórico, e o link ao vivo deixará de funcionar para todos que assistem.</string>
+    <string name="delete_game_offline">Não é possível excluir um jogo compartilhado sem conexão. Tente de novo quando estiver online.</string>
 </resources>

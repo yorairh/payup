@@ -232,4 +232,6 @@
     <string name="replaced_title">شخص آخر تولّى إدارة هذه اللعبة</string>
     <string name="replaced_message">أنت تشاهدها الآن مباشرة. التغييرات التي أجريتها دون اتصال ولم تُرسل فُقدت.</string>
     <string name="replaced_ok">مشاهدة اللعبة</string>
+    <string name="delete_game_shared_message">ستُزال من سجلك، وسيتوقف الرابط المباشر عن العمل لكل من يشاهدها.</string>
+    <string name="delete_game_offline">لا يمكن حذف لعبة مشتركة بدون اتصال. حاول مجددًا عندما تكون متصلًا.</string>
 </resources>

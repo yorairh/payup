@@ -13,6 +13,7 @@ and copied into the GitHub release.
 - **Watch a game.** Open a game link, or use "Watch a game" on the home screen and paste it. You see the pot, each player's
   buy-ins and cash-outs, live. Read-only.
 - **Hand over hosting.** Pass the game to someone else, for example when the host has to leave: share the host link from "Hand over hosting". The new host can edit the game, and the old host switches to watching it live.
+- **Deleting a shared game removes its link.** When you delete a game you hosted from your history, the online copy goes too (this needs a connection). A game you only watched is deleted from your device only.
 - **Finished games are kept.** When a game you watched ends, it is saved into your history and counts in your leaderboard.
 - The app is a bit bigger to download (about 15 MB instead of 10) because of the online sharing.
 

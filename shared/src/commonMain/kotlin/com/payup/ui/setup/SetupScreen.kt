@@ -73,7 +73,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SetupScreen(onBack: () -> Unit, onStarted: (gameId: Long, deal: Boolean) -> Unit) {
-    val vm = payUpViewModel { SetupViewModel(it.repository, it.currencyStore) }
+    val vm = payUpViewModel { SetupViewModel(it.repository, it.currencyStore, it.sharedGames) }
     val currency by vm.currency.collectAsStateWithLifecycle()
     val friends by vm.friends.collectAsStateWithLifecycle()
     val buyIn by vm.buyIn.collectAsStateWithLifecycle()

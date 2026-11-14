@@ -226,4 +226,6 @@
     <string name="replaced_title">Кто-то другой взял игру под управление</string>
     <string name="replaced_message">Теперь вы смотрите её онлайн. Изменения, сделанные без связи и не отправленные, потеряны.</string>
     <string name="replaced_ok">Смотреть игру</string>
+    <string name="delete_game_shared_message">Она будет удалена из вашей истории, а ссылка для просмотра перестанет работать у всех зрителей.</string>
+    <string name="delete_game_offline">Нельзя удалить общую игру без подключения. Попробуйте снова, когда будете онлайн.</string>
 </resources>

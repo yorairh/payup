@@ -217,4 +217,6 @@
     <string name="replaced_title">其他人接管了这局牌</string>
     <string name="replaced_message">你现在正在实时观看。你离线时所做但未发送的更改已丢失。</string>
     <string name="replaced_ok">观看牌局</string>
+    <string name="delete_game_shared_message">它将从你的历史记录中移除，所有观看者的实时链接也将失效。</string>
+    <string name="delete_game_offline">没有网络连接时无法删除共享牌局，请联网后重试。</string>
 </resources>

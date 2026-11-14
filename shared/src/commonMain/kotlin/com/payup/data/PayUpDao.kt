@@ -70,6 +70,14 @@ interface PayUpDao {
     @Query("SELECT * FROM games WHERE shareId = :shareId LIMIT 1")
     suspend fun gameBySharedId(shareId: String): GameEntity?
 
+    /** The online id of game [gameId] if this device hosts it. */
+    @Query("SELECT shareId FROM games WHERE id = :gameId AND isHost = 1")
+    suspend fun hostedShareId(gameId: Long): String?
+
+    /** The online id of the unfinished game this device hosts, if any. */
+    @Query("SELECT shareId FROM games WHERE finished = 0 AND isHost = 1 AND shareId IS NOT NULL LIMIT 1")
+    suspend fun activeHostedShareId(): String?
+
     @Query("UPDATE games SET shareId = :shareId, isHost = 1, hostKey = :hostKey WHERE id = :gameId")
     suspend fun markShared(gameId: Long, shareId: String, hostKey: String)
 
