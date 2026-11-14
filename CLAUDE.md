@@ -28,10 +28,10 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 
 ## Releases
 
-- GitHub repo: `yorairh/payup` (private). Each release is a `vX.Y.Z` tag plus a GitHub release with `PayUp-X.Y.Z.apk` attached.
+- GitHub repo: `yorairh/payup` (public from 0.5.0). Each release is a `vX.Y.Z` tag plus a GitHub release with `PayUp-X.Y.Z.apk` attached.
 - For each release, raise both `versionCode` and `versionName` in `androidApp/build.gradle.kts`.
 - The repo is going **public** (done only after the last roadmap task, together with the 0.5.0 release; the visibility change itself needs the user's go-ahead at that moment). So from now on commit nothing secret or personal: no keys, tokens, signing files, local paths, emails or private data. `google-services.json` and the web Firebase config hold public identifiers only and are fine; what protects the data is `firebase/firestore.rules`. Before going public, scan the whole git history for secrets.
-- Release notes live in `RELEASE_NOTES.md`, written for users in plain words. When a task changes what a user sees, add a line under "Unreleased" in the same commit. At release time rename that section to the version and use it as the GitHub release text.
+- Release notes live in `docs/releases/X.Y.Z.md` (like the FluRai repo), written for users in plain words: title, one line, then New / Changed / Good to know. The GitHub release is titled "PayUp X.Y.Z: short summary" and uses that file as its text. `README.md` is for users too.
 - Nothing is released (tag, GitHub release, web deploy, public repo) until every roadmap task is done; test builds in between go to the user as APKs only.
 - The signing key is outside the repo in `%USERPROFILE%\.payup-signing\`. If that folder is missing, release builds come out unsigned. Never commit its contents.
 - Debug and release builds have different signatures, so they can't install over each other. Uninstalling to switch deletes the saved games. Send test APKs built with `assembleRelease`.
