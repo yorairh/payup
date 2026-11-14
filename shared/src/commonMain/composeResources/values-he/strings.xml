@@ -202,4 +202,14 @@
     <string name="sync_offline">לא מחובר</string>
     <string name="sync_stopped">השיתוף הופסק</string>
     <string name="share_message">עקבו אחרי משחק הפוקר שלי ב-PayUp בשידור חי: %1$s</string>
+    <string name="retry">ניסיון חוזר</string>
+    <string name="watch_title">צופים במשחק</string>
+    <string name="watch_live">חי</string>
+    <string name="watch_offline">לא מחובר</string>
+    <string name="watch_not_found">המשחק לא זמין. ייתכן שהקישור שגוי או שהמארח הסיר אותו.</string>
+    <string name="watch_unreachable">אי אפשר להגיע למשחק. בדקו את החיבור.</string>
+    <string name="watch_cashed_out">משך %1$s</string>
+    <string name="watch_a_game">צפייה במשחק</string>
+    <string name="watch_link_label">הדביקו את קישור המשחק</string>
+    <string name="watch_start">צפייה</string>
 </resources>

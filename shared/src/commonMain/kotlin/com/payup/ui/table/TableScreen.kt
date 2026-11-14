@@ -239,7 +239,7 @@ private fun TableContent(vm: TableViewModel, game: GameWithDetails, onBack: () -
 }
 
 @Composable
-private fun PotHeader(pot: Int, buyIns: Int) {
+internal fun PotHeader(pot: Int, buyIns: Int) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(stringResource(Res.string.pot), style = MaterialTheme.typography.titleMedium)
         AnimatedCounter(text = money(pot), value = pot) {

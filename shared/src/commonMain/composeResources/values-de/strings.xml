@@ -196,4 +196,14 @@
     <string name="sync_offline">Offline</string>
     <string name="sync_stopped">Teilen beendet</string>
     <string name="share_message">Verfolge mein PayUp-Spiel live: %1$s</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="watch_title">Zuschauen</string>
+    <string name="watch_live">Live</string>
+    <string name="watch_offline">Offline</string>
+    <string name="watch_not_found">Dieses Spiel ist nicht verfügbar. Der Link ist falsch oder der Gastgeber hat es entfernt.</string>
+    <string name="watch_unreachable">Spiel nicht erreichbar. Prüfe deine Verbindung.</string>
+    <string name="watch_cashed_out">Ausgezahlt: %1$s</string>
+    <string name="watch_a_game">Spiel verfolgen</string>
+    <string name="watch_link_label">Spiel-Link einfügen</string>
+    <string name="watch_start">Zuschauen</string>
 </resources>

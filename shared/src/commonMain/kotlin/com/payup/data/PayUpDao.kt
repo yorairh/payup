@@ -66,6 +66,10 @@ interface PayUpDao {
     @Query("SELECT * FROM games WHERE shareId IS NOT NULL AND isHost = 1 ORDER BY startedAt DESC, id DESC LIMIT 1")
     fun latestHostedGame(): Flow<GameWithDetails?>
 
+    /** The game on this device that is the shared game [shareId] (hosted here, or watched and saved), if any. */
+    @Query("SELECT * FROM games WHERE shareId = :shareId LIMIT 1")
+    suspend fun gameBySharedId(shareId: String): GameEntity?
+
     @Query("UPDATE games SET shareId = :shareId, isHost = 1, hostKey = :hostKey WHERE id = :gameId")
     suspend fun markShared(gameId: Long, shareId: String, hostKey: String)
 

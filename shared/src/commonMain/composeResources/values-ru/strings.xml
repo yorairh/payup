@@ -202,4 +202,14 @@
     <string name="sync_offline">Нет связи</string>
     <string name="sync_stopped">Трансляция остановлена</string>
     <string name="share_message">Следите за моей игрой в PayUp онлайн: %1$s</string>
+    <string name="retry">Повторить</string>
+    <string name="watch_title">Просмотр</string>
+    <string name="watch_live">Онлайн</string>
+    <string name="watch_offline">Нет связи</string>
+    <string name="watch_not_found">Эта игра недоступна. Возможно, ссылка неверна или ведущий её удалил.</string>
+    <string name="watch_unreachable">Не удаётся открыть игру. Проверьте подключение.</string>
+    <string name="watch_cashed_out">Забрал %1$s</string>
+    <string name="watch_a_game">Следить за игрой</string>
+    <string name="watch_link_label">Вставьте ссылку на игру</string>
+    <string name="watch_start">Смотреть</string>
 </resources>

@@ -199,4 +199,14 @@
     <string name="sync_offline">Sin conexión</string>
     <string name="sync_stopped">Compartir detenido</string>
     <string name="share_message">Sigue mi partida de PayUp en vivo: %1$s</string>
+    <string name="retry">Reintentar</string>
+    <string name="watch_title">Viendo</string>
+    <string name="watch_live">En vivo</string>
+    <string name="watch_offline">Sin conexión</string>
+    <string name="watch_not_found">Esta partida no está disponible. El enlace puede ser incorrecto o el anfitrión la eliminó.</string>
+    <string name="watch_unreachable">No se puede acceder a la partida. Revisa tu conexión.</string>
+    <string name="watch_cashed_out">Retiró %1$s</string>
+    <string name="watch_a_game">Ver una partida</string>
+    <string name="watch_link_label">Pega el enlace de la partida</string>
+    <string name="watch_start">Ver</string>
 </resources>
